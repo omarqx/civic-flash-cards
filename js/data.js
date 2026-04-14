@@ -1,0 +1,192 @@
+/**
+ * USCIS 2025 Naturalization Civics Test — 128 Questions
+ * Categories:
+ *   A: Principles of American Government
+ *   B: System of Government
+ *   C: Rights and Responsibilities
+ *   D: Colonial Period and Independence
+ *   E: 1800s
+ *   F: Recent American History
+ *   G: Geography
+ *   H: Symbols and Holidays
+ */
+
+export const CATEGORIES = {
+  A: { id: 'A', name: 'Principles of American Government', icon: 'balance', color: '#2a6b2c' },
+  B: { id: 'B', name: 'System of Government', icon: 'account_balance', color: '#4d626c' },
+  C: { id: 'C', name: 'Rights and Responsibilities', icon: 'gavel', color: '#4b6551' },
+  D: { id: 'D', name: 'Colonial Period and Independence', icon: 'flag', color: '#9e422c' },
+  E: { id: 'E', name: '1800s', icon: 'history', color: '#6d4c41' },
+  F: { id: 'F', name: 'Recent American History', icon: 'public', color: '#455a64' },
+  G: { id: 'G', name: 'Geography', icon: 'map', color: '#2e7d32' },
+  H: { id: 'H', name: 'Symbols and Holidays', icon: 'star', color: '#1565c0' },
+};
+
+export const FLASHCARDS = [
+  // ===== A: Principles of American Government (1–28) =====
+  { id: 1, q: "What is the form of government of the United States?", a: "Republic. Representative democracy.", cat: "A" },
+  { id: 2, q: "What is the supreme law of the land?", a: "The U.S. Constitution.", cat: "A" },
+  { id: 3, q: "The U.S. Constitution starts with the words \"We the People.\" What does \"We the People\" mean?", a: "Self-government. Popular sovereignty. Consent of the governed. People govern themselves.", cat: "A" },
+  { id: 4, q: "How does the U.S. Constitution protect individual rights?", a: "The Bill of Rights. The first 10 amendments.", cat: "A" },
+  { id: 5, q: "What does the U.S. Constitution do?", a: "Defines the framework for the U.S. government. Defines the government. Protects basic rights of Americans.", cat: "A" },
+  { id: 6, q: "How are changes made to the U.S. Constitution?", a: "Amendments.", cat: "A" },
+  { id: 7, q: "What does the Bill of Rights protect?", a: "The basic rights of all people living in the United States.", cat: "A" },
+  { id: 8, q: "How many amendments does the U.S. Constitution have?", a: "Twenty-seven (27).", cat: "A" },
+  { id: 9, q: "Why is the Declaration of Independence important?", a: "It declared independence from Great Britain. It said that people have natural rights.", cat: "A" },
+  { id: 10, q: "What founding document said the American colonies were free from Britain?", a: "The Declaration of Independence.", cat: "A" },
+  { id: 11, q: "What is self-government?", a: "Powers come from the people. Government responds to the people.", cat: "A" },
+  { id: 12, q: "Who wrote the Declaration of Independence?", a: "Thomas Jefferson.", cat: "A" },
+  { id: 13, q: "What are two rights in the Declaration of Independence?", a: "Life; liberty; pursuit of happiness.", cat: "A" },
+  { id: 14, q: "What is freedom of religion?", a: "You can practice any religion or not practice a religion.", cat: "A" },
+  { id: 15, q: "What is the economic system of the United States?", a: "Capitalism. Free market economy.", cat: "A" },
+  { id: 16, q: "What is the rule of law?", a: "Everyone must follow the law. Leaders must obey the law. Government must obey the law. No one is above the law.", cat: "A" },
+  { id: 17, q: "What are the two parts of the U.S. Congress?", a: "The Senate and the House of Representatives.", cat: "A" },
+  { id: 18, q: "Name one right in the First Amendment.", a: "Speech; religion; assembly; press; petition the government.", cat: "A" },
+  { id: 19, q: "How many amendments make up the Bill of Rights?", a: "Ten (10).", cat: "A" },
+  { id: 20, q: "What did the Emancipation Proclamation do?", a: "Freed slaves in the Confederate (Southern) states. Freed slaves in most Southern states.", cat: "A" },
+  { id: 21, q: "What did Susan B. Anthony do?", a: "She fought for women's rights. She fought for civil rights.", cat: "A" },
+  { id: 22, q: "What is one right or freedom from the First Amendment?", a: "Speech; religion; assembly; press; petition the government.", cat: "A" },
+  { id: 23, q: "What is the \"rule of law\"?", a: "Everyone must follow the law. Leaders must obey the law. No one is above the law.", cat: "A" },
+  { id: 24, q: "What are \"inalienable rights\"?", a: "Individual freedoms that people are born with and that no government can take away.", cat: "A" },
+  { id: 25, q: "What is one responsibility that is only for United States citizens?", a: "Serve on a jury. Vote in a federal election.", cat: "A" },
+  { id: 26, q: "Name one right only for United States citizens.", a: "Vote in a federal election. Run for federal office.", cat: "A" },
+  { id: 27, q: "What are two ways that Americans can participate in their democracy?", a: "Vote; join a political party; help with a campaign; join a civic group; join a community group; give an elected official your opinion on an issue; call Senators and Representatives; publicly support or oppose an issue or policy; run for office; write to a newspaper.", cat: "A" },
+  { id: 28, q: "When is the last day you can send in federal income tax forms?", a: "April 15.", cat: "A" },
+
+  // ===== B: System of Government (29–70) =====
+  { id: 29, q: "How many U.S. Senators are there?", a: "One hundred (100).", cat: "B" },
+  { id: 30, q: "We elect a U.S. Senator for how many years?", a: "Six (6) years.", cat: "B" },
+  { id: 31, q: "Who is one of your state's U.S. Senators now?", a: "Answers will vary by state. [Visit senate.gov for current senators.]", cat: "B" },
+  { id: 32, q: "The House of Representatives has how many voting members?", a: "Four hundred thirty-five (435).", cat: "B" },
+  { id: 33, q: "We elect a U.S. Representative for how many years?", a: "Two (2) years.", cat: "B" },
+  { id: 34, q: "Name your U.S. Representative.", a: "Answers will vary by congressional district. [Visit house.gov for your representative.]", cat: "B" },
+  { id: 35, q: "Who does a U.S. Senator represent?", a: "All people of the state.", cat: "B" },
+  { id: 36, q: "Why do some states have more Representatives than other states?", a: "Because of the state's population. Because they have more people. Because some states have more people.", cat: "B" },
+  { id: 37, q: "We elect a President for how many years?", a: "Four (4) years.", cat: "B" },
+  { id: 38, q: "In what month do we vote for President?", a: "November.", cat: "B" },
+  { id: 39, q: "What is the name of the President of the United States now?", a: "Answers will vary. [Visit whitehouse.gov for current president.]", cat: "B" },
+  { id: 40, q: "What is the name of the Vice President of the United States now?", a: "Answers will vary. [Visit whitehouse.gov for current vice president.]", cat: "B" },
+  { id: 41, q: "If the President can no longer serve, who becomes President?", a: "The Vice President.", cat: "B" },
+  { id: 42, q: "If both the President and the Vice President can no longer serve, who becomes President?", a: "The Speaker of the House.", cat: "B" },
+  { id: 43, q: "Who is the Commander in Chief of the military?", a: "The President.", cat: "B" },
+  { id: 44, q: "Who signs bills to become laws?", a: "The President.", cat: "B" },
+  { id: 45, q: "Who vetoes bills?", a: "The President.", cat: "B" },
+  { id: 46, q: "What does the President's Cabinet do?", a: "Advises the President.", cat: "B" },
+  { id: 47, q: "What are two Cabinet-level positions?", a: "Secretary of Agriculture; Secretary of Commerce; Secretary of Defense; Secretary of Education; Secretary of Energy; Secretary of Health and Human Services; Secretary of Homeland Security; Secretary of Housing and Urban Development; Secretary of the Interior; Secretary of Labor; Secretary of State; Secretary of Transportation; Secretary of the Treasury; Secretary of Veterans Affairs; Attorney General; Vice President.", cat: "B" },
+  { id: 48, q: "What does the judicial branch do?", a: "Reviews laws. Explains laws. Resolves disputes (disagreements). Decides if a law goes against the Constitution.", cat: "B" },
+  { id: 49, q: "What is the highest court in the United States?", a: "The Supreme Court.", cat: "B" },
+  { id: 50, q: "How many justices are on the Supreme Court?", a: "Nine (9).", cat: "B" },
+  { id: 51, q: "Who is the Chief Justice of the United States now?", a: "Answers will vary. [Visit supremecourt.gov for current chief justice.]", cat: "B" },
+  { id: 52, q: "Under our Constitution, some powers belong to the federal government. What is one power of the federal government?", a: "To print money; to declare war; to create an army; to make treaties.", cat: "B" },
+  { id: 53, q: "Under our Constitution, some powers belong to the states. What is one power of the states?", a: "Provide schooling and education; provide protection (police); provide safety (fire departments); give a driver's license; approve zoning and land use.", cat: "B" },
+  { id: 54, q: "Who is the Governor of your state now?", a: "Answers will vary by state. [Check your state government website.]", cat: "B" },
+  { id: 55, q: "What is the capital of your state?", a: "Answers will vary by state.", cat: "B" },
+  { id: 56, q: "What are the two major political parties in the United States?", a: "Democratic and Republican.", cat: "B" },
+  { id: 57, q: "What is the political party of the President now?", a: "Answers will vary. [Check current news for the president's party.]", cat: "B" },
+  { id: 58, q: "What is the name of the Speaker of the House of Representatives now?", a: "Answers will vary. [Visit house.gov for current speaker.]", cat: "B" },
+  { id: 59, q: "Name one branch or part of the government.", a: "Congress (legislative); President (executive); the courts (judicial).", cat: "B" },
+  { id: 60, q: "What stops one branch of government from becoming too powerful?", a: "Checks and balances. Separation of powers.", cat: "B" },
+  { id: 61, q: "Who makes federal laws?", a: "Congress. Senate and House of Representatives. (U.S. or national) legislature.", cat: "B" },
+  { id: 62, q: "What are the three branches of government?", a: "Legislative, executive, and judicial.", cat: "B" },
+  { id: 63, q: "The House of Representatives has how many voting members?", a: "Four hundred thirty-five (435).", cat: "B" },
+  { id: 64, q: "Why do we have three branches of government?", a: "So no branch is too powerful. Checks and balances. Separation of powers.", cat: "B" },
+  { id: 65, q: "Who does a member of the House of Representatives represent?", a: "Citizens in his/her congressional district.", cat: "B" },
+  { id: 66, q: "What is the Electoral College?", a: "A process for electing the President. A group of electors who formally elect the President and Vice President.", cat: "B" },
+  { id: 67, q: "What is one thing Benjamin Franklin is famous for?", a: "U.S. diplomat; oldest member of the Constitutional Convention; first Postmaster General of the United States; writer of \"Poor Richard's Almanac\"; started the first free libraries.", cat: "B" },
+  { id: 68, q: "Who is known as the \"Father of Our Country\"?", a: "George Washington.", cat: "B" },
+  { id: 69, q: "Who was the first President?", a: "George Washington.", cat: "B" },
+  { id: 70, q: "What territory did the United States buy from France in 1803?", a: "The Louisiana Territory. Louisiana.", cat: "B" },
+
+  // ===== C: Rights and Responsibilities (71–80) =====
+  { id: 71, q: "Name one war fought by the United States in the 1800s.", a: "War of 1812; Mexican-American War; Civil War; Spanish-American War.", cat: "C" },
+  { id: 72, q: "What group of people was taken and sold as slaves?", a: "Africans. People from Africa.", cat: "C" },
+  { id: 73, q: "What is one promise you make when you become a United States citizen?", a: "Give up loyalty to other countries; defend the Constitution and laws of the United States; obey the laws of the United States; serve in the U.S. military (if needed); serve (do important work for) the nation (if needed); be loyal to the United States.", cat: "C" },
+  { id: 74, q: "How old do citizens have to be to vote for President?", a: "Eighteen (18) and older.", cat: "C" },
+  { id: 75, q: "What are two rights of everyone living in the United States?", a: "Freedom of expression; freedom of speech; freedom of assembly; freedom to petition the government; freedom of religion; the right to bear arms.", cat: "C" },
+  { id: 76, q: "What do we show loyalty to when we say the Pledge of Allegiance?", a: "The United States. The flag.", cat: "C" },
+  { id: 77, q: "Name one right guaranteed by the First Amendment.", a: "Speech; religion; assembly; press; petition the government.", cat: "C" },
+  { id: 78, q: "What is the freedom of the press?", a: "The media can report on any actions of the government. The government cannot tell the media what to report.", cat: "C" },
+  { id: 79, q: "What does the right to bear arms mean?", a: "You have the right to own a gun (subject to rules and limitations).", cat: "C" },
+  { id: 80, q: "What happened at the Constitutional Convention?", a: "The Constitution was written. The Founding Fathers wrote the Constitution.", cat: "C" },
+
+  // ===== D: Colonial Period and Independence (81–100) =====
+  { id: 81, q: "When was the Constitution written?", a: "1787.", cat: "D" },
+  { id: 82, q: "The Federalist Papers supported the passage of the U.S. Constitution. Name one of the writers.", a: "James Madison; Alexander Hamilton; John Jay; Publius.", cat: "D" },
+  { id: 83, q: "What is one thing Benjamin Franklin is famous for?", a: "U.S. diplomat; oldest member of the Constitutional Convention; first Postmaster General; writer of \"Poor Richard's Almanac\"; started the first free libraries.", cat: "D" },
+  { id: 84, q: "Who was the first President?", a: "George Washington.", cat: "D" },
+  { id: 85, q: "What did the Declaration of Independence do?", a: "Announced our independence (from Great Britain). Declared our independence (from Great Britain). Said that the United States is free (from Great Britain).", cat: "D" },
+  { id: 86, q: "There were 13 original states. Name three.", a: "New Hampshire; Massachusetts; Rhode Island; Connecticut; New York; New Jersey; Pennsylvania; Delaware; Maryland; Virginia; North Carolina; South Carolina; Georgia.", cat: "D" },
+  { id: 87, q: "When was the Declaration of Independence adopted?", a: "July 4, 1776.", cat: "D" },
+  { id: 88, q: "What happened at the Constitutional Convention?", a: "The Constitution was written. The Founding Fathers wrote the Constitution.", cat: "D" },
+  { id: 89, q: "Why did the colonists fight the British?", a: "Because of high taxes (taxation without representation); because the British army stayed in their houses (quartering); because they didn't have self-government.", cat: "D" },
+  { id: 90, q: "Who wrote the Federalist Papers?", a: "James Madison; Alexander Hamilton; John Jay; Publius.", cat: "D" },
+  { id: 91, q: "Who lived in America before the Europeans arrived?", a: "American Indians. Native Americans.", cat: "D" },
+  { id: 92, q: "What was one reason colonists came to America?", a: "Freedom; political liberty; religious freedom; economic opportunity; practice their religion; escape persecution.", cat: "D" },
+  { id: 93, q: "Who is the \"Father of Our Country\"?", a: "George Washington.", cat: "D" },
+  { id: 94, q: "What was the name of the war between the North and the South?", a: "The Civil War. The War between the States.", cat: "D" },
+  { id: 95, q: "Name one problem that led to the Civil War.", a: "Slavery; economic reasons; states' rights.", cat: "D" },
+  { id: 96, q: "What was one important thing that Abraham Lincoln did?", a: "Freed the slaves (Emancipation Proclamation); saved (preserved) the Union; led the United States during the Civil War.", cat: "D" },
+  { id: 97, q: "What did the Emancipation Proclamation do?", a: "Freed the slaves. Freed slaves in the Confederacy. Freed slaves in the Confederate states. Freed slaves in most Southern states.", cat: "D" },
+  { id: 98, q: "What amendment gives citizenship to all persons born in the United States?", a: "The 14th Amendment.", cat: "D" },
+  { id: 99, q: "When did all men get the right to vote?", a: "After the Civil War. During Reconstruction. With the 15th Amendment. 1870.", cat: "D" },
+  { id: 100, q: "When did all women get the right to vote?", a: "1920. With the 19th Amendment.", cat: "D" },
+
+  // ===== E: 1800s (101–110) =====
+  { id: 101, q: "What did Martin Luther King, Jr. do?", a: "He fought for civil rights. He worked for equality for all Americans.", cat: "E" },
+  { id: 102, q: "What major event happened on September 11, 2001, in the United States?", a: "Terrorists attacked the United States. Terrorists took over two planes and crashed them into the World Trade Center in New York City.", cat: "E" },
+  { id: 103, q: "Name one American Indian tribe in the United States.", a: "Cherokee; Navajo; Sioux; Chippewa; Choctaw; Pueblo; Apache; Iroquois; Creek; Blackfeet; Seminole; Cheyenne; Arawak; Shawnee; Mohegan; Huron; Oneida; Lakota; Crow; Teton; Hopi; Inuit.", cat: "E" },
+  { id: 104, q: "Name one of the two longest rivers in the United States.", a: "Missouri River; Mississippi River.", cat: "E" },
+  { id: 105, q: "What ocean is on the West Coast of the United States?", a: "Pacific Ocean.", cat: "E" },
+  { id: 106, q: "What ocean is on the East Coast of the United States?", a: "Atlantic Ocean.", cat: "E" },
+  { id: 107, q: "Name one U.S. territory.", a: "Puerto Rico; U.S. Virgin Islands; American Samoa; Northern Mariana Islands; Guam.", cat: "E" },
+
+  // ===== F: Recent American History (108–119) =====
+  { id: 108, q: "Name one state that borders Canada.", a: "Maine; New Hampshire; Vermont; New York; Pennsylvania; Ohio; Michigan; Minnesota; North Dakota; Montana; Idaho; Washington; Alaska.", cat: "F" },
+  { id: 109, q: "Name one state that borders Mexico.", a: "California; Arizona; New Mexico; Texas.", cat: "F" },
+  { id: 110, q: "What is the capital of the United States?", a: "Washington, D.C.", cat: "F" },
+  { id: 111, q: "Where is the Statue of Liberty?", a: "New York (Harbor); Liberty Island. [Also acceptable: New Jersey; near New York City; on the Hudson River.]", cat: "F" },
+  { id: 112, q: "Why does the flag have 13 stripes?", a: "Because there were 13 original colonies. Because the stripes represent the original colonies.", cat: "F" },
+  { id: 113, q: "Why does the flag have 50 stars?", a: "Because there is one star for each state. Because each star represents a state. Because there are 50 states.", cat: "F" },
+  { id: 114, q: "What is the name of the national anthem?", a: "\"The Star-Spangled Banner.\"", cat: "F" },
+  { id: 115, q: "When do we celebrate Independence Day?", a: "July 4.", cat: "F" },
+  { id: 116, q: "Name two national U.S. holidays.", a: "New Year's Day; Martin Luther King, Jr. Day; Presidents' Day; Memorial Day; Independence Day; Labor Day; Columbus Day; Veterans Day; Thanksgiving; Christmas.", cat: "F" },
+  { id: 117, q: "What did the 19th Amendment do?", a: "Gave women the right to vote. Gave women suffrage.", cat: "F" },
+  { id: 118, q: "What movement tried to end racial discrimination?", a: "The civil rights movement.", cat: "F" },
+  { id: 119, q: "What is one war fought by the United States in the 1900s?", a: "World War I; World War II; Korean War; Vietnam War; Gulf War (Persian Gulf War).", cat: "F" },
+
+  // ===== G: Geography (120–125) =====
+  { id: 120, q: "Who was President during World War I?", a: "Woodrow Wilson.", cat: "G" },
+  { id: 121, q: "Who was President during the Great Depression and World War II?", a: "Franklin D. Roosevelt.", cat: "G" },
+  { id: 122, q: "Who did the United States fight in World War II?", a: "Japan, Germany, and Italy.", cat: "G" },
+  { id: 123, q: "Before he was President, Eisenhower was a general. What war was he in?", a: "World War II.", cat: "G" },
+  { id: 124, q: "During the Cold War, what was the main concern of the United States?", a: "Communism. The spread of communism.", cat: "G" },
+  { id: 125, q: "What did the civil rights movement do?", a: "Fought to end racial discrimination.", cat: "G" },
+
+  // ===== H: Symbols and Holidays (126–128) =====
+  { id: 126, q: "What did Martin Luther King, Jr. do?", a: "Fought for civil rights. Worked for equality for all Americans. Worked to ensure that people would \"not be judged by the color of their skin but by the content of their character.\"", cat: "H" },
+  { id: 127, q: "What is one thing the United States is known for?", a: "Freedom; democracy; opportunity; the American Dream.", cat: "H" },
+  { id: 128, q: "Why is the Statue of Liberty important?", a: "It was a gift from France. It represents freedom. It welcomes immigrants.", cat: "H" },
+];
+
+// Session type definitions
+export const SESSION_TYPES = {
+  mock: { id: 'mock', name: 'Interview Mock', cardCount: 10, icon: 'record_voice_over', timeLimit: 7, description: 'Simulate a real interview' },
+  daily: { id: 'daily', name: 'Daily Review', cardCount: 16, icon: 'today', timeLimit: 15, description: 'Quick daily practice' },
+  weekly: { id: 'weekly', name: 'Weekly Review', cardCount: 32, icon: 'date_range', timeLimit: 30, description: 'Reinforce weekly progress' },
+  monthly: { id: 'monthly', name: 'Monthly Review', cardCount: 64, icon: 'calendar_month', timeLimit: 60, description: 'Comprehensive monthly check' },
+  full: { id: 'full', name: 'Full Study', cardCount: 128, icon: 'school', timeLimit: 0, description: 'Study all 128 questions' },
+};
+
+// Study tips
+export const STUDY_TIPS = [
+  "Saying the answers out loud helps bridge the gap between passive recognition and active recall. Try it for the next card!",
+  "Try to answer before flipping the card. Active recall strengthens memory more than passive review.",
+  "Take breaks every 20-25 minutes. Your brain consolidates memories during rest periods.",
+  "Focus on cards rated 0-2 first. These need the most attention before your interview.",
+  "Relate answers to personal experiences or current events to make them more memorable.",
+  "Teaching someone else what you've learned is one of the most effective study techniques.",
+  "Try grouping related questions together mentally — it helps with associative memory.",
+  "Don't rush through cards. Spend a moment reflecting on each answer, even ones you know well.",
+  "The civics test asks 10 questions and you need to answer 6 correctly. Focus on your weakest areas.",
+  "Review your mistakes from the last session before starting a new one.",
+];
