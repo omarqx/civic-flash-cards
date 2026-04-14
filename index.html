@@ -6,11 +6,11 @@
   <title>Civic Flash Cards — USCIS Naturalization Test Study</title>
   <meta name="description" content="Master the 128 USCIS Naturalization Civics Test questions with spaced repetition flash cards. Track your progress with smart study sessions.">
   <meta name="theme-color" content="#002868">
-  <link rel="apple-touch-icon" href="/civic-flash-cards/pwa-192x192.png">
+  <link rel="apple-touch-icon" href="/pwa-192x192.png">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%23002868'/><rect y='10' width='32' height='6' fill='%23BF0A30'/><rect y='22' width='32' height='10' fill='%23BF0A30'/><text x='16' y='22' font-size='18' text-anchor='middle' fill='white'>★</text></svg>">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%23002868' stroke='%23002868' stroke-width='0'/><rect y='10' width='32' height='6' fill='%23BF0A30'/><rect y='22' width='32' height='10' fill='%23BF0A30'/><text x='16' y='22' font-size='18' text-anchor='middle'>★</text></svg>">
 
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -21,89 +21,10 @@
 <body>
   <a href="#main-content" class="skip-link">Skip to main content</a>
 
-  <div id="app">
-    <!-- Top Navigation Bar -->
-    <header class="topbar">
-      <a href="#/dashboard" class="topbar-brand" aria-label="Civic Flash Cards — Home">
-        Civic Flash Cards
-      </a>
+  <!-- Root Web Component — everything renders inside here -->
+  <civic-app></civic-app>
 
-      <nav aria-label="Main navigation">
-        <ul class="topbar-nav">
-          <li>
-            <a href="#/dashboard" class="topbar-link" data-route="dashboard">Dashboard</a>
-          </li>
-          <li>
-            <a href="#/library" class="topbar-link" data-route="library">Library</a>
-          </li>
-          <li>
-            <a href="#/stats" class="topbar-link" data-route="stats">Stats</a>
-          </li>
-          <li>
-            <a href="#/settings" class="topbar-link" data-route="settings">Settings</a>
-          </li>
-        </ul>
-      </nav>
-
-      <div class="topbar-spacer"></div>
-
-      <button id="btn-keyboard-help" class="topbar-icon-btn" aria-label="Keyboard shortcuts" title="Keyboard shortcuts (?)">
-        <span class="material-icons-round">keyboard</span>
-      </button>
-    </header>
-
-    <!-- App Body: Sidebar + Main -->
-    <div class="app-body">
-      <!-- Left Sidebar -->
-      <aside id="sidebar" aria-label="Sidebar navigation">
-        <nav aria-label="Sidebar">
-          <ul class="nav-links">
-            <li>
-              <a href="#/dashboard" class="nav-link" data-route="dashboard">
-                <span class="material-icons-round">home</span>
-                Dashboard
-              </a>
-            </li>
-            <li>
-              <a href="#/library" class="nav-link" data-route="library">
-                <span class="material-icons-round">menu_book</span>
-                Card Library
-              </a>
-            </li>
-            <li>
-              <a href="#/stats" class="nav-link" data-route="stats">
-                <span class="material-icons-round">bar_chart</span>
-                Statistics
-              </a>
-            </li>
-            <li>
-              <a href="#/settings" class="nav-link" data-route="settings">
-                <span class="material-icons-round">settings</span>
-                Settings
-              </a>
-            </li>
-          </ul>
-        </nav>
-
-        <div class="sidebar-footer">
-          <button id="btn-reset-progress" class="nav-link" style="color: var(--red);">
-            <span class="material-icons-round">delete_forever</span>
-            Reset Progress
-          </button>
-        </div>
-      </aside>
-
-      <!-- Main Content -->
-      <main id="main-content" tabindex="-1">
-        <!-- Views render here -->
-      </main>
-    </div>
-  </div>
-
-  <!-- Toast Notifications -->
-  <div id="toast-container" aria-live="polite" aria-atomic="true"></div>
-
-  <!-- Keyboard Shortcuts Modal -->
+  <!-- Keyboard shortcuts modal (outside app for z-index layering) -->
   <dialog id="shortcuts-modal" class="modal" aria-label="Keyboard shortcuts">
     <div class="modal-header">
       <h2>Keyboard Shortcuts</h2>
@@ -119,7 +40,6 @@
         <div class="shortcut-row"><span>Back / Close</span><kbd>Esc</kbd></div>
         <div class="shortcut-row"><span>Dashboard</span><kbd>1</kbd></div>
         <div class="shortcut-row"><span>Library</span><kbd>2</kbd></div>
-        <div class="shortcut-row"><span>Shortcuts</span><kbd>?</kbd></div>
       </div>
       <div class="shortcut-group">
         <h3>Study Mode</h3>
