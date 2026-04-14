@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Civic Flash Cards — USCIS Naturalization Test Study</title>
+  <meta name="description" content="Master the 128 USCIS Naturalization Civics Test questions with spaced repetition flash cards. Track your progress with smart study sessions.">
+  <meta name="theme-color" content="#002868">
+  <link rel="apple-touch-icon" href="/pwa-192x192.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%23002868' stroke='%23002868' stroke-width='0'/><rect y='10' width='32' height='6' fill='%23BF0A30'/><rect y='22' width='32' height='10' fill='%23BF0A30'/><text x='16' y='22' font-size='18' text-anchor='middle'>★</text></svg>">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Barlow:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+</head>
+<body>
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+
+  <!-- Root Web Component — everything renders inside here -->
+  <civic-app></civic-app>
+
+  <!-- Keyboard shortcuts modal (outside app for z-index layering) -->
+  <dialog id="shortcuts-modal" class="modal" aria-label="Keyboard shortcuts">
+    <div class="modal-header">
+      <h2>Keyboard Shortcuts</h2>
+      <button class="modal-close" aria-label="Close" autofocus>
+        <span class="material-icons-round">close</span>
+      </button>
+    </div>
+    <div class="modal-content">
+      <div class="shortcut-group">
+        <h3>Navigation</h3>
+        <div class="shortcut-row"><span>Move focus</span><kbd>Tab</kbd></div>
+        <div class="shortcut-row"><span>Activate</span><kbd>Enter</kbd></div>
+        <div class="shortcut-row"><span>Back / Close</span><kbd>Esc</kbd></div>
+        <div class="shortcut-row"><span>Dashboard</span><kbd>1</kbd></div>
+        <div class="shortcut-row"><span>Library</span><kbd>2</kbd></div>
+      </div>
+      <div class="shortcut-group">
+        <h3>Study Mode</h3>
+        <div class="shortcut-row"><span>Flip card</span><kbd>Space</kbd></div>
+        <div class="shortcut-row"><span>Prev / Next</span><kbd>←</kbd> <kbd>→</kbd></div>
+        <div class="shortcut-row"><span>Rate card</span><kbd>0</kbd> – <kbd>5</kbd></div>
+      </div>
+      <div class="shortcut-group">
+        <h3>Library</h3>
+        <div class="shortcut-row"><span>Focus search</span><kbd>F</kbd></div>
+        <div class="shortcut-row"><span>Toggle mastered</span><kbd>M</kbd></div>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- Vite entry point -->
+  <script type="module" src="/src/main.ts"></script>
+</body>
+</html>
