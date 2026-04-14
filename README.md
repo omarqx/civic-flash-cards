@@ -8,22 +8,22 @@ A progressive web app for mastering all **128 USCIS Naturalization Civics Test**
 
 ## Features
 
-- **128 official questions** from the 2025 USCIS Civics Test, organised into 8 categories
-- **Spaced repetition** — cards you find harder appear more often
-- **Study sessions** — rate each card 0–5 and track your mastery over time
-- **Card library** — search, filter by category or mastery level, and flip any card inline
-- **Statistics view** — session history, per-category mastery rings, and aggregate progress
-- **PWA / offline** — installable on iOS and Android, works without a network connection
+- **128 official questions** from the 2025 USCIS Civics Test across 8 categories
+- **Spaced repetition** — cards you struggle with surface more often; mastered cards fade back
+- **Study sessions** — rate each card 0–5, session score calculated on completion
+- **Card library** — search all 128 questions, filter by category or mastery level, expand to reveal answers inline
+- **Statistics** — session history, per-category mastery rings, aggregate progress over time
+- **PWA / offline** — installable on iOS and Android, works without a network connection after first load
 - **Keyboard-first** — full keyboard navigation and hotkeys for power users
-- **Patriotic Brutalism** design — bold red-white-blue theme with Oswald + Barlow typefaces
+- **Patriotic Brutalism** design — bold red-white-blue palette, thick borders, Oswald + Barlow typefaces
 
 ## Keyboard Shortcuts
 
 | Key | Action |
 |-----|--------|
-| `1` | Go to Dashboard |
-| `2` | Go to Library |
-| `?` | Open keyboard shortcuts modal |
+| `1` | Dashboard |
+| `2` | Library |
+| `?` | Keyboard shortcuts modal |
 | `Space` | Flip card (study mode) |
 | `←` / `→` | Previous / next card |
 | `0` – `5` | Rate current card |
@@ -45,19 +45,23 @@ A progressive web app for mastering all **128 USCIS Naturalization Civics Test**
 
 ## Tech Stack
 
-- **Vite 6** — build tooling and dev server
-- **TypeScript** — strict mode, type-checked entry point
-- **RxJS 7** — reactive keyboard handling and event streams
-- **vite-plugin-pwa** — service worker and Web App Manifest for offline support
-- Vanilla JS modules (no framework) — light DOM, zero runtime overhead
-- **GitHub Actions** — automated deployment to GitHub Pages on every push to `main`
+| Layer | Choice |
+|-------|--------|
+| Build | Vite 6 |
+| Language | TypeScript 5 (strict mode) |
+| UI | Vanilla Web Components (light DOM, no framework) |
+| Reactivity | RxJS 7 — BehaviorSubjects for state, `fromEvent` for keyboard/nav |
+| PWA | vite-plugin-pwa — service worker + Web App Manifest |
+| Deployment | GitHub Actions → GitHub Pages |
+
+Non-dashboard views (`study`, `library`, `stats`, `settings`) are lazy-loaded via dynamic `import()` and preloaded on nav-link hover/focus so navigation feels instant.
 
 ## Local Development
 
 ```bash
 npm install
-npm run dev       # dev server at http://localhost:5173
-npm run build     # production build → dist/
+npm run dev       # dev server → http://localhost:5173
+npm run build     # type-check + production build → dist/
 npm run preview   # serve the production build locally
 ```
 
@@ -65,19 +69,40 @@ npm run preview   # serve the production build locally
 
 ```
 civic-flash-cards/
-├── css/
-│   └── index.css          # Patriotic Brutalism design system
-├── js/
-│   ├── data.js            # 128 USCIS questions + category definitions
-│   ├── store.js           # Spaced-repetition state, localStorage persistence
-│   ├── router.js          # Hash-based SPA router
-│   ├── components.js      # Shared UI render functions
-│   ├── dashboard.js       # Dashboard view
-│   ├── study.js           # Study mode (card flip + ratings)
-│   ├── library.js         # Card library (search + filter)
-│   └── app.js             # App bootstrap, keyboard handling, nav
 ├── src/
-│   └── main.ts            # Vite / TypeScript entry point
+│   ├── components/
+│   │   ├── app/
+│   │   │   ├── civic-app.ts        # Root shell — router, keyboard, mobile nav
+│   │   │   ├── civic-topbar.ts     # Top navigation bar
+│   │   │   └── civic-sidebar.ts    # Side navigation
+│   │   ├── shared/
+│   │   │   ├── flash-card.ts       # Flip card with 3-D animation
+│   │   │   ├── mastery-bar.ts      # 5-segment mastery indicator
+│   │   │   ├── rating-bar.ts       # 0–5 rating buttons
+│   │   │   ├── session-launcher.ts # Session type cards on dashboard
+│   │   │   ├── card-brutal.ts      # Library card tile
+│   │   │   ├── card-detail-modal.ts# Card detail overlay
+│   │   │   ├── stat-colored.ts     # Coloured stat block
+│   │   │   ├── trend-chart.ts      # Mini session score trend
+│   │   │   └── civic-toast.ts      # Toast notification system
+│   │   └── views/
+│   │       ├── civic-dashboard.ts  # Dashboard (eagerly loaded)
+│   │       ├── civic-study.ts      # Study mode (lazy)
+│   │       ├── civic-library.ts    # Card library (lazy)
+│   │       ├── civic-stats.ts      # Statistics (lazy)
+│   │       └── civic-settings.ts   # Settings (lazy)
+│   ├── data/
+│   │   └── flashcards.ts           # 128 questions + category definitions
+│   ├── router/
+│   │   └── router.ts               # Hash-based SPA router
+│   ├── state/
+│   │   ├── store.ts                # RxJS reactive store, localStorage persistence
+│   │   └── session-manager.ts      # Active study session state
+│   ├── styles/
+│   │   └── index.css               # Patriotic Brutalism design system
+│   ├── types/
+│   │   └── index.ts                # Shared TypeScript interfaces
+│   └── main.ts                     # Vite entry point
 ├── public/
 │   ├── pwa-192x192.png
 │   └── pwa-512x512.png
@@ -88,4 +113,4 @@ civic-flash-cards/
 
 ## Data & Privacy
 
-All study progress is stored locally in `localStorage` — nothing is sent to any server. Resetting progress clears only the app's own keys.
+All study progress is stored in `localStorage` — nothing leaves your device. Resetting progress clears only the app's own keys (`civic_mastery`, `civic_sessions`, `civic_settings`).
