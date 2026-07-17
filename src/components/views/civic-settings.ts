@@ -3,6 +3,7 @@
  */
 import { Store } from '../../state/store';
 import { showToast } from '../shared/civic-toast';
+import { todayISO, addDaysISO } from '../../utils/dates';
 
 export class CivicSettings extends HTMLElement {
   connectedCallback() { this.render(); }
@@ -20,6 +21,14 @@ export class CivicSettings extends HTMLElement {
         </div>
 
         <div class="settings-panel">
+          <div class="setting-row">
+            <div>
+              <div class="setting-row-title">Interview Date${settings.interviewDateIsDefault ? ' <span class="setting-row-note">(suggested)</span>' : ''}</div>
+              <div class="setting-row-desc">Your study plan paces itself to this date</div>
+            </div>
+            <input type="date" class="interview-date-input" id="settings-interview-date"
+                   min="${addDaysISO(todayISO(), 1)}" value="${settings.interviewDate ?? ''}">
+          </div>
           <div class="setting-row">
             <div>
               <div class="setting-row-title">Theme</div>
@@ -50,6 +59,14 @@ export class CivicSettings extends HTMLElement {
         </div>
       </div>
     `;
+
+    this.querySelector('#settings-interview-date')?.addEventListener('change', (e) => {
+      const v = (e.target as HTMLInputElement).value;
+      if (v && v > todayISO()) {
+        Store.setInterviewDate(v, false);
+        this.render();
+      }
+    });
 
     const themeButtons: [string, 'light' | 'dark' | 'system'][] = [
       ['#settings-theme-light', 'light'],

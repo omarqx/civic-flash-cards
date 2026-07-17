@@ -916,6 +916,27 @@ flash-card { display: block; width: 100%; max-width: 620px; }
   justify-content: center;
 }
 .modal-close:hover { background: var(--paper); }
+
+/* Interview date prompt */
+.interview-modal { max-width: 420px; }
+.interview-modal-body { padding: var(--sp-6); text-align: center; }
+.interview-modal-body h2 {
+  font-family: var(--font-display); font-size: 1.3rem; font-weight: 600;
+  margin: 8px 0 6px; line-height: 1.3;
+}
+.interview-modal-body p { color: var(--ink-soft); font-size: 0.85rem; margin-bottom: var(--sp-4); }
+.interview-modal-body .eyebrow { justify-content: center; }
+.interview-date-input {
+  font-family: var(--font-body); font-size: 0.9rem; color: var(--ink);
+  background: var(--paper); border: 1px solid var(--hairline); border-radius: var(--radius-md);
+  padding: 8px 12px; margin-bottom: var(--sp-4);
+}
+.interview-date-input:focus-visible { outline: 2px solid var(--gold); outline-offset: 1px; }
+.interview-modal-actions { display: flex; gap: var(--sp-3); justify-content: center; flex-wrap: wrap; }
+.btn-quiet { background: none; color: var(--ink-soft); border-color: var(--hairline); }
+.btn-quiet:hover { color: var(--ink); }
+.setting-row-note { font-size: 0.7rem; font-weight: 500; color: var(--gold-text); }
+
 .shortcut-group { margin-bottom: var(--sp-5); }
 .shortcut-group h3 {
   font-size: 0.7rem;
