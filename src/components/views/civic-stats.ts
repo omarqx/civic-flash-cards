@@ -32,35 +32,23 @@ export class CivicStats extends HTMLElement {
     this.innerHTML = `
       <div>
         <div class="stats-view-header">
+          <div class="eyebrow">The Record</div>
           <h1>Statistics</h1>
           <p>Track your progress toward mastering all 128 civics questions.</p>
+          <div class="double-rule"></div>
         </div>
 
         <div class="stats-grid-4">
-          <div class="stat-colored stat-green" style="flex-direction: column; align-items: flex-start; gap: 4px;">
-            <span style="font-size: 2rem; font-weight: 800;">${stats.mastered}</span>
-            <span class="stat-colored-label" style="margin-left: 0;">Mastered</span>
-          </div>
-          <div class="stat-colored stat-pink" style="flex-direction: column; align-items: flex-start; gap: 4px;">
-            <span style="font-size: 2rem; font-weight: 800;">${stats.inProgress}</span>
-            <span class="stat-colored-label" style="margin-left: 0;">In Progress</span>
-          </div>
-          <div class="stat-colored stat-yellow" style="flex-direction: column; align-items: flex-start; gap: 4px;">
-            <span style="font-size: 2rem; font-weight: 800;">${stats.notStarted}</span>
-            <span class="stat-colored-label" style="margin-left: 0;">Not Started</span>
-          </div>
-          <div class="stat-colored" style="flex-direction: column; align-items: flex-start; gap: 4px; background: var(--white);">
-            <span style="font-size: 2rem; font-weight: 800;">${sessions.length}</span>
-            <span class="stat-colored-label" style="margin-left: 0;">Sessions</span>
-          </div>
+          <div class="stat-block"><span class="stat-block-num">${stats.mastered}</span><span class="stat-block-label">Mastered</span></div>
+          <div class="stat-block"><span class="stat-block-num">${stats.inProgress}</span><span class="stat-block-label">In Progress</span></div>
+          <div class="stat-block"><span class="stat-block-num">${stats.notStarted}</span><span class="stat-block-label">Not Started</span></div>
+          <div class="stat-block"><span class="stat-block-num">${sessions.length}</span><span class="stat-block-label">Sessions</span></div>
         </div>
 
-        <div class="section-title"><span class="material-icons-round">category</span> Category Mastery</div>
-        <div style="border: var(--border); background: var(--white); padding: 16px; margin-bottom: 24px;">
-          ${catRows}
-        </div>
+        <div class="section-head"><h2>Category Mastery</h2></div>
+        <div class="category-panel">${catRows}</div>
 
-        <div class="section-title"><span class="material-icons-round">history</span> All Sessions</div>
+        <div class="section-head"><h2>All Sessions</h2></div>
         ${sessions.length === 0
           ? '<div class="empty-state"><span class="material-icons-round">history</span><p>No sessions yet.</p></div>'
           : `<div class="history-list" role="list">${sessions.map(s => {

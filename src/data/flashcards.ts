@@ -185,8 +185,8 @@ export const CAT_ICONS: Record<CategoryId, string> = {
 };
 
 export const CAT_COLORS: Record<CategoryId, string> = {
-  A: 'var(--pink)', B: 'var(--teal)', C: 'var(--blue)', D: 'var(--magenta)',
-  E: 'var(--yellow)', F: 'var(--orange)', G: 'var(--green)', H: '#93C5FD',
+  A: '#46608F', B: '#5A7350', C: '#A05C3B', D: '#8A6F2F',
+  E: '#4E6A6A', F: '#6A7A42', G: '#9E5A55', H: '#8A7B4F',
 };
 
 export const SESSION_ICONS: Record<string, string> = {

@@ -59,7 +59,7 @@ export class CardDetailModal extends HTMLElement {
           <div class="card-detail-body">
             <div class="card-detail-section">
               <div class="card-detail-section-title">Question</div>
-              <div class="card-detail-section-content" style="font-family: var(--font-display); font-weight: 800; font-size: 1.1rem; text-transform: uppercase;">${card.q}</div>
+              <div class="card-detail-section-content card-detail-question">${card.q}</div>
             </div>
             <div class="card-detail-section">
               <div class="card-detail-section-title">Answer</div>
@@ -85,12 +85,7 @@ export class CardDetailModal extends HTMLElement {
                 <div class="card-detail-section-title">Rating History</div>
                 <div style="display: flex; gap: 3px; flex-wrap: wrap;">
                   ${mastery.ratingHistory.slice(-20).map(r => `
-                    <span style="display: inline-flex; align-items: center; justify-content: center;
-                      width: 24px; height: 24px; border: 1.5px solid var(--black);
-                      font-size: 0.7rem; font-weight: 800;
-                      background: ${r.rating >= 4 ? 'var(--green-light)' : r.rating >= 2 ? 'var(--yellow-light)' : 'var(--pink-light)'};">
-                      ${r.rating}
-                    </span>
+                    <span class="rating-chip ${r.rating >= 4 ? 'good' : r.rating >= 2 ? 'mid' : 'low'}">${r.rating}</span>
                   `).join('')}
                 </div>
               </div>
