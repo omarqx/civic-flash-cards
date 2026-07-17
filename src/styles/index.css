@@ -478,17 +478,19 @@ body::before {
 }
 .countdown-line strong { color: var(--ink); font-weight: 600; }
 .countdown-day { color: var(--gold-text); font-weight: 600; }
-.punch-clip-note { font-size: 0.68rem; color: var(--ink-soft); margin-bottom: 6px; }
-.punch-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
+.punch-clip-note { font-size: 0.66rem; color: var(--ink-soft); margin-bottom: 6px; }
+/* Ticket-punch look: small round holes, one week per row */
+.punch-grid { display: grid; grid-template-columns: repeat(7, 16px); gap: 7px; justify-content: start; }
 .punch-cell {
-  aspect-ratio: 1; display: flex; align-items: center; justify-content: center;
-  border: 1px solid var(--hairline-soft); border-radius: 4px;
-  font-size: 0.7rem; color: var(--ink-soft); background: var(--paper);
+  width: 16px; height: 16px;
+  display: flex; align-items: center; justify-content: center;
+  border: 1px solid var(--hairline); border-radius: 50%;
+  font-size: 0.62rem; line-height: 1; color: var(--ink-soft);
 }
 .punch-cell.punched { color: var(--gold); border-color: var(--gold-soft); background: var(--gold-tint); }
-.punch-cell.missed { color: var(--hairline); }
+.punch-cell.missed { border-color: var(--hairline-soft); color: var(--hairline); }
 .punch-cell.today { border: 2px solid var(--navy); }
-.punch-cell.interview { color: var(--red); font-weight: 700; }
+.punch-cell.interview { color: var(--red); border-style: dashed; }
 
 /* Generic right-rail box */
 .sidebar-box {
