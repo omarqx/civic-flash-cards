@@ -566,9 +566,11 @@ body::before {
   color: #fff;
 }
 
-/* Listen mode hides rating interactions; arrows stay as player prev/next */
+/* Listen mode hides rating interactions and the practice speaker button
+   (narration is already running); arrows stay as player prev/next */
 .listen-mode .btn-still-learning,
 .listen-mode .btn-i-know-this,
+.listen-mode .flashcard-speak,
 .listen-mode rating-bar { display: none; }
 
 /* Certificate flashcard */

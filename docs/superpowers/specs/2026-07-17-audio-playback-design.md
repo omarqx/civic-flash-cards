@@ -125,7 +125,7 @@ Flipping the toggle off: audio stops immediately, player bar hides, rating bar r
 
 The session-bar progress (rated count) and the player bar (listening position) coexist; only one is visually prominent per mode.
 
-**Styling:** all new CSS in `src/styles/index.css` using Federal Editorial tokens (hairlines, `--gold` accents, `--navy` primary, tabular figures, 6px radius). Light DOM throughout.
+**Styling:** all new CSS in `src/styles/index.css` using Federal Editorial tokens (hairlines, `--gold` accents, `--navy` primary, tabular figures, 6px radius). Light DOM throughout. Implementation deviation: the mode toggle's active segment shipped navy (`--navy`) instead of gold — white text on `--gold` fails AA contrast.
 
 ## 4. Offline & PWA
 

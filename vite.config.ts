@@ -35,7 +35,7 @@ export default defineConfig({
             },
           },
           {
-            urlPattern: /\/audio\/.+\.mp3$/,
+            urlPattern: /\/audio\/.+\.mp3(\?.*)?$/,
             handler: 'CacheFirst',
             options: {
               cacheName: 'card-audio',

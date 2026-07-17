@@ -206,8 +206,6 @@ export class CivicStudy extends HTMLElement {
     this.listenSub.add(AudioPlayer.status$.subscribe(s => {
       if (this.mode === 'listen' && s === 'complete') this.showListenComplete();
     }));
-
-    AudioPlayer.seekToCard(this.currentIndex); // the toggle tap is the user gesture
   }
 
   private exitListen() {

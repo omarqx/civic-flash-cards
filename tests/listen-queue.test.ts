@@ -7,6 +7,8 @@ const manifest: AudioManifest = {
   'a-1': { hash: 'h', duration: 6 },
   'q-2': { hash: 'h', duration: 3 },
   'a-2': { hash: 'h', duration: 5 },
+  'q-4': { hash: 'h', duration: 4 },
+  // no a-4: one-missing-clip case
 };
 
 describe('buildQueue', () => {
@@ -34,6 +36,13 @@ describe('buildQueue', () => {
     expect(q.items[0].qDuration).toBe(0);
     expect(q.items[0].aDuration).toBe(0);
     expect(q.items[0].total).toBe(MISSING_CLIP_DWELL + 5 + MISSING_CLIP_DWELL);
+  });
+
+  it('uses MISSING_CLIP_DWELL only for the missing side when one clip is present', () => {
+    const q = buildQueue([4], manifest, 5, 2);
+    expect(q.items[0].qDuration).toBe(4);
+    expect(q.items[0].aDuration).toBe(0);
+    expect(q.items[0].total).toBe(4 / 2 + 5 + MISSING_CLIP_DWELL);
   });
 
   it('handles an empty id list', () => {
