@@ -210,12 +210,13 @@ function getDailyPlan(): DailyPlan {
 /** Single mutator for the interview date — prompt and settings both use this. */
 function setInterviewDate(dateISO: string, isDefault: boolean): void {
   const today = todayISO();
-  updateSettings({ interviewDate: dateISO, interviewDateIsDefault: isDefault, prepStartDate: today });
-  // Re-snapshot today's quota (overwrite quota, keep any mastered already earned today)
+  // Re-snapshot today's quota FIRST — the settings$ emission below re-renders
+  // consumers synchronously, and they must read the fresh log.
   const log = { ...punchlog$.getValue() };
   const daysForQuota = Math.max(1, daysBetween(today, dateISO));
   log[today] = { quota: computeQuota(remainingUnmastered(), daysForQuota), mastered: log[today]?.mastered ?? 0 };
   punchlog$.next(log);
+  updateSettings({ interviewDate: dateISO, interviewDateIsDefault: isDefault, prepStartDate: today });
 }
 
 function getPunchLog(): PunchLog {
