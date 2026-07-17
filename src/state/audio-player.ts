@@ -31,6 +31,7 @@ let gapTimer: ReturnType<typeof setTimeout> | null = null;
 let tickerSub: Subscription | null = null;
 let oneShot = false;           // playClip() in flight — ended must not advance
 let errorToastShown = false;
+let clipToken = 0;             // bumped on each real-clip start/failure; guards against double-advance
 
 function ensureAudio(): HTMLAudioElement {
   if (!audio) {
@@ -122,9 +123,10 @@ function startPhase(p: ListenPhase): void {
   clearGapTimer();
   const el = ensureAudio();
   oneShot = false;
+  const token = ++clipToken;
   el.src = clipUrl(kind, id);
   el.playbackRate = rate();
-  void el.play().catch(onError);
+  void el.play().catch(err => onPlayRejected(err, token));
   pushPosition();
 }
 
@@ -149,9 +151,20 @@ function onEnded(): void {
   advance();
 }
 
+function onPlayRejected(err: unknown, token: number): void {
+  if (err instanceof DOMException && err.name === 'AbortError') return; // benign: src changed, pause() raced, or stop()
+  handleClipFailure(token);
+}
+
 function onError(): void {
   if (oneShot) { oneShot = false; return; }
+  handleClipFailure(clipToken);
+}
+
+function handleClipFailure(token: number): void {
+  if (token !== clipToken) return; // stale — already handled or superseded
   if (status$.getValue() !== 'playing') return;
+  clipToken++; // consume the token so the second signal for this same failure is stale
   if (!errorToastShown) {
     errorToastShown = true;
     showToast("Some audio isn't available offline", 'info');
@@ -243,7 +256,8 @@ function stop(): void {
 
 function playClip(kind: ClipKind, id: number): void {
   if (!hasClip(kind, id)) return;
-  if (status$.getValue() === 'playing') return; // the loop owns the element
+  const s = status$.getValue();
+  if (s === 'playing' || s === 'paused') return; // the loop owns the element
   const el = ensureAudio();
   oneShot = true;
   el.src = clipUrl(kind, id);
