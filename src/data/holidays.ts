@@ -30,5 +30,21 @@ const RULES: Array<{ holiday: Holiday; match: (d: Date) => boolean }> = [
 ];
 
 export function getTodaysHoliday(date: Date = new Date()): Holiday | null {
+  // Preview override: ?holiday=<name fragment> (e.g. ?holiday=independence)
+  // forces a holiday on; ?holiday alone previews the next upcoming one.
+  const params = new URLSearchParams(window.location.search);
+  if (params.has('holiday')) {
+    const q = (params.get('holiday') ?? '').trim().toLowerCase();
+    if (q) {
+      const hit = RULES.find(r => r.holiday.name.toLowerCase().includes(q));
+      if (hit) return hit.holiday;
+    }
+    const probe = new Date(date);
+    for (let i = 0; i < 366; i++) {
+      const hit = RULES.find(r => r.match(probe));
+      if (hit) return hit.holiday;
+      probe.setDate(probe.getDate() + 1);
+    }
+  }
   return RULES.find(r => r.match(date))?.holiday ?? null;
 }
