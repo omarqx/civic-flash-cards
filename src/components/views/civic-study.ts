@@ -32,6 +32,7 @@ export class CivicStudy extends HTMLElement {
   private timerSeconds = 0;
   private streak = 0;
   private sessionCompleted = false;
+  private hostListenersBound = false;
   private destroy$ = new Subject<void>();
   private mode: 'practice' | 'listen' = 'practice';
   private listenSub: Subscription | null = null;
@@ -453,11 +454,17 @@ export class CivicStudy extends HTMLElement {
   private goPrev() { if (this.currentIndex > 0) { this.currentIndex--; this.renderCard(); } }
 
   private attachEvents() {
-    this.addEventListener('flip', () => this.flipCard());
+    // Host-level listeners survive innerHTML re-renders, so bind them once per
+    // instance — "Study Again" re-runs render() and would stack duplicates.
+    if (!this.hostListenersBound) {
+      this.hostListenersBound = true;
 
-    this.addEventListener('rate', ((e: CustomEvent) => {
-      this.rateCard(e.detail.rating);
-    }) as EventListener);
+      this.addEventListener('flip', () => this.flipCard());
+
+      this.addEventListener('rate', ((e: CustomEvent) => {
+        this.rateCard(e.detail.rating);
+      }) as EventListener);
+    }
 
     this.addEventListener('speak', ((e: CustomEvent) => {
       const card = this.cards[this.currentIndex];
