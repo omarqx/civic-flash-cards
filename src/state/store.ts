@@ -5,8 +5,9 @@ import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import { map } from 'rxjs/internal/operators/map';
 import { distinctUntilChanged } from 'rxjs/internal/operators/distinctUntilChanged';
 import { FLASHCARDS, CATEGORIES, SESSION_TYPES } from '../data/flashcards';
-import type { CardMastery, StudySession, AppSettings, MasteryStats, CategoryStat, CategoryId } from '../types';
+import type { CardMastery, StudySession, AppSettings, MasteryStats, CategoryStat, CategoryId, PunchLog, PunchDay, DailyPlan } from '../types';
 import { Observable } from 'rxjs/internal/Observable';
+import { todayISO, daysBetween, addDaysISO } from '../utils/dates';
 
 // v2: question bank replaced with the official 2025 USCIS 128-question list
 // (ids renumbered to the official numbering), so old progress keys are orphaned.
@@ -14,6 +15,7 @@ const KEYS = {
   mastery: 'civic_mastery_v2',
   sessions: 'civic_sessions_v2',
   settings: 'civic_settings',
+  punchlog: 'civic_punchlog_v1',
 } as const;
 
 const LEGACY_KEYS = ['civic_mastery', 'civic_sessions'] as const;
@@ -25,15 +27,20 @@ const mastery$ = new BehaviorSubject<Record<number, CardMastery>>(
 const sessions$ = new BehaviorSubject<StudySession[]>(
   load(KEYS.sessions, [])
 );
-const DEFAULT_SETTINGS: AppSettings = { hideMastered: false, shuffleDefault: false, theme: 'system' };
+const DEFAULT_SETTINGS: AppSettings = {
+  hideMastered: false, shuffleDefault: false, theme: 'system',
+  interviewDate: null, interviewDateIsDefault: false, prepStartDate: null,
+};
 const settings$ = new BehaviorSubject<AppSettings>(
   { ...DEFAULT_SETTINGS, ...load(KEYS.settings, {}) }
 );
+const punchlog$ = new BehaviorSubject<PunchLog>(load(KEYS.punchlog, {}));
 
 // Auto-persist
 mastery$.subscribe(d => save(KEYS.mastery, d));
 sessions$.subscribe(d => save(KEYS.sessions, d));
 settings$.subscribe(d => save(KEYS.settings, d));
+punchlog$.subscribe(d => save(KEYS.punchlog, d));
 
 // ── Derived observables ──
 const masteryStats$: Observable<MasteryStats> = mastery$.pipe(
@@ -105,6 +112,7 @@ function getCardMastery(cardId: number): CardMastery {
 function setCardRating(cardId: number, rating: number): CardMastery {
   const all = { ...mastery$.getValue() };
   const card = { ...(all[cardId] || defaultMastery()) };
+  const prevLevel = card.masteryLevel;
   card.rating = rating;
   card.ratingHistory = [...card.ratingHistory, { rating, at: Date.now() }];
   card.reviewCount++;
@@ -113,6 +121,18 @@ function setCardRating(cardId: number, rating: number): CardMastery {
   card.masteryLevel = Math.round(recent.reduce((a, b) => a + b, 0) / recent.length);
   all[cardId] = card;
   mastery$.next(all);
+
+  // Punch log: count first crossings into mastered (4+) toward today's quota
+  if (prevLevel < 4 && card.masteryLevel >= 4) {
+    const s = settings$.getValue();
+    const today = todayISO();
+    if (s.interviewDate && daysBetween(today, s.interviewDate) >= 0) {
+      ensureTodayEntry();
+      const log = { ...punchlog$.getValue() };
+      log[today] = { ...log[today], mastered: log[today].mastered + 1 };
+      punchlog$.next(log);
+    }
+  }
   return card;
 }
 
@@ -151,6 +171,57 @@ function isCardMastered(cardId: number): boolean {
   return m.masteryLevel >= 4;
 }
 
+// ── Interview countdown plan math ──
+function remainingUnmastered(): number {
+  const all = mastery$.getValue();
+  return FLASHCARDS.filter(c => !(all[c.id] && all[c.id].masteryLevel >= 4)).length;
+}
+
+function computeQuota(remaining: number, daysForQuota: number): number {
+  return remaining === 0 ? 0 : Math.max(1, Math.ceil(remaining / daysForQuota));
+}
+
+/** Ensure today's punch entry exists (only while a live, unexpired date is set). */
+function ensureTodayEntry(): void {
+  const s = settings$.getValue();
+  if (!s.interviewDate) return;
+  const today = todayISO();
+  if (daysBetween(today, s.interviewDate) < 0) return; // expired — prompt will reset
+  const log = punchlog$.getValue();
+  if (log[today]) return;
+  const daysForQuota = Math.max(1, daysBetween(today, s.interviewDate));
+  punchlog$.next({ ...log, [today]: { quota: computeQuota(remainingUnmastered(), daysForQuota), mastered: 0 } });
+}
+
+function getDailyPlan(): DailyPlan {
+  const s = settings$.getValue();
+  const today = todayISO();
+  const interviewDate = s.interviewDate;
+  const daysLeft = interviewDate ? daysBetween(today, interviewDate) : 30;
+  const expired = daysLeft < 0;
+  if (interviewDate && !expired) ensureTodayEntry();
+  const daysForQuota = Math.max(1, daysLeft);
+  const quotaToday = expired ? 0 : computeQuota(remainingUnmastered(), daysForQuota);
+  const masteredToday = punchlog$.getValue()[today]?.mastered ?? 0;
+  const dailySize = Math.min(40, Math.max(10, quotaToday + 6));
+  return { interviewDate, isDefault: s.interviewDateIsDefault, daysLeft, expired, quotaToday, masteredToday, dailySize };
+}
+
+/** Single mutator for the interview date — prompt and settings both use this. */
+function setInterviewDate(dateISO: string, isDefault: boolean): void {
+  const today = todayISO();
+  updateSettings({ interviewDate: dateISO, interviewDateIsDefault: isDefault, prepStartDate: today });
+  // Re-snapshot today's quota (overwrite quota, keep any mastered already earned today)
+  const log = { ...punchlog$.getValue() };
+  const daysForQuota = Math.max(1, daysBetween(today, dateISO));
+  log[today] = { quota: computeQuota(remainingUnmastered(), daysForQuota), mastered: log[today]?.mastered ?? 0 };
+  punchlog$.next(log);
+}
+
+function getPunchLog(): PunchLog {
+  return punchlog$.getValue();
+}
+
 // ── Sessions ──
 function getSessions(): StudySession[] {
   return sessions$.getValue();
@@ -174,13 +245,15 @@ function createSession(type: string, categoryFilter: string[] | null = null): St
     pool = pool.filter(c => categoryFilter.includes(c.cat));
   }
 
+  const count = type === 'daily' ? getDailyPlan().dailySize : sessionType.cardCount;
+
   let selected;
   if (type === 'full') {
     selected = shuffle(pool);
   } else if (type === 'mock') {
     // A real interview draws questions at random from the whole pool,
     // not from the applicant's weakest cards.
-    selected = shuffle(pool).slice(0, sessionType.cardCount);
+    selected = shuffle(pool).slice(0, count);
   } else {
     // Randomize before the stable sort so equally-ranked cards don't
     // fall back to ID order, then shuffle the selection so the session
@@ -194,7 +267,7 @@ function createSession(type: string, categoryFilter: string[] | null = null): St
       if (ma.masteryLevel !== mb.masteryLevel) return ma.masteryLevel - mb.masteryLevel;
       return (ma.lastReviewedAt || 0) - (mb.lastReviewedAt || 0);
     });
-    selected = shuffle(pool.slice(0, sessionType.cardCount));
+    selected = shuffle(pool.slice(0, count));
   }
 
   return {
@@ -239,10 +312,12 @@ function resetAll(): void {
   localStorage.removeItem(KEYS.mastery);
   localStorage.removeItem(KEYS.sessions);
   localStorage.removeItem(KEYS.settings);
+  localStorage.removeItem(KEYS.punchlog);
   for (const key of LEGACY_KEYS) localStorage.removeItem(key);
   mastery$.next({});
   sessions$.next([]);
   settings$.next(DEFAULT_SETTINGS);
+  punchlog$.next({});
 }
 
 export const Store = {
@@ -250,4 +325,5 @@ export const Store = {
   getMastery, getCardMastery, setCardRating, getMasteryStats, getCategoryStats,
   isCardMastered, getSessions, createSession, saveSession,
   getSettings, updateSettings, resetAll,
+  punchlog$, getDailyPlan, setInterviewDate, getPunchLog,
 };
