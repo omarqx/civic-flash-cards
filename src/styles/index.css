@@ -806,6 +806,7 @@ flash-card { display: block; width: 100%; max-width: 620px; }
    MODAL / DIALOG
    ============================================================ */
 .modal {
+  margin: auto;
   border: 1px solid var(--hairline);
   border-radius: var(--radius-lg);
   background: var(--surface);
