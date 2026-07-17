@@ -356,7 +356,7 @@ body::before {
 }
 .section-head h2 { font-family: var(--font-display); font-size: 1.25rem; font-weight: 600; }
 .section-head-link { font-size: 0.82rem; font-weight: 600; color: var(--navy); text-decoration: none; }
-.section-head-link:hover { color: var(--gold); }
+.section-head-link:hover { color: var(--gold-text); }
 .eyebrow-quiet { color: var(--ink-soft); }
 
 /* Study plan launchers */
