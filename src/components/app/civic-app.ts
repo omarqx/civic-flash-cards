@@ -22,7 +22,9 @@ import type { ViewName } from '../../types';
 import './civic-topbar';
 import './civic-sidebar';
 import '../shared/civic-toast';
+import '../shared/interview-date-modal';
 import '../views/civic-dashboard';
+import type { InterviewDateModal } from '../shared/interview-date-modal';
 
 // ── Preload functions for intent-based loading ──
 const preloadMap: Record<string, () => Promise<unknown>> = {
@@ -77,6 +79,15 @@ export class CivicApp extends HTMLElement {
     this.setupMobileNav();
     this.setupNavSync();
     this.setupPreloading();
+    this.setupInterviewPrompt();
+  }
+
+  private setupInterviewPrompt() {
+    const plan = Store.getDailyPlan();
+    if (plan.interviewDate !== null && !plan.expired) return;
+    const modal = document.createElement('interview-date-modal') as InterviewDateModal;
+    document.body.appendChild(modal);
+    modal.open(plan.expired);
   }
 
   private setupTheme() {
