@@ -1,6 +1,7 @@
 /**
- * <stat-colored> — Colored stat block with icon + value + label
- * Attributes: icon, value, label, variant (stat-green, stat-pink, stat-yellow)
+ * <stat-colored> — Ledger row with a colored dot, label, and value.
+ * Attributes: value, label, variant (stat-green, stat-pink, stat-yellow).
+ * `icon` is accepted in observedAttributes for backward compatibility but is not rendered.
  */
 export class StatColored extends HTMLElement {
   static observedAttributes = ['icon', 'value', 'label', 'variant'];

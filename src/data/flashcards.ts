@@ -179,18 +179,9 @@ export const CAT_CSS: Record<CategoryId, string> = {
   E: 'cat-E', F: 'cat-F', G: 'cat-G', H: 'cat-H',
 };
 
-export const CAT_ICONS: Record<CategoryId, string> = {
-  A: '⚖️', B: '🏛️', C: '⚡', D: '🏴',
-  E: '📜', F: '🌐', G: '🗺️', H: '⭐',
-};
-
 export const CAT_COLORS: Record<CategoryId, string> = {
   A: '#46608F', B: '#5A7350', C: '#A05C3B', D: '#8A6F2F',
   E: '#4E6A6A', F: '#6A7A42', G: '#9E5A55', H: '#8A7B4F',
-};
-
-export const SESSION_ICONS: Record<string, string> = {
-  mock: '🎤', daily: '📅', weekly: '📆', monthly: '🗓️', full: '📚',
 };
 
 export const SESSION_BADGE_COLORS: Record<string, string> = {

@@ -15,6 +15,7 @@
   --red: #9E2B25;
   --red-soft: #F5E7E6;
   --gold: #B08D3E;
+  --gold-text: #7A6228;  /* gold for text on paper/surface — ≥4.5:1 */
   --gold-soft: #C9AE6E;
   --gold-tint: #F5EFDD;
   --green: #4C7A48;
@@ -102,7 +103,7 @@ body::before {
 /* Shared editorial helpers */
 .eyebrow {
   font-size: 0.7rem; font-weight: 700; letter-spacing: 0.14em;
-  text-transform: uppercase; color: var(--gold);
+  text-transform: uppercase; color: var(--gold-text);
   display: flex; align-items: center; gap: 10px;
 }
 .double-rule {
@@ -273,39 +274,17 @@ body::before {
   background: var(--gold-bright);
   color: var(--black);
 }
-.btn-green {
-  background: var(--green);
-  color: var(--white);
-}
 .btn-white {
   background: var(--white);
   color: var(--black);
 }
 .btn-navy { background: var(--navy); color: #F4F1E8; border-color: var(--navy); }
 .btn-navy:hover { background: #2A4270; }
-.btn-outline {
-  background: var(--bg);
-  color: var(--black);
-  box-shadow: none;
-}
-.btn-outline:hover { box-shadow: var(--shadow-brutal-sm); }
 
 .btn-sm {
   padding: var(--sp-2) var(--sp-3);
   font-size: 0.7rem;
 }
-.btn-lg {
-  padding: var(--sp-5) var(--sp-8);
-  font-size: 0.9rem;
-}
-.btn-icon-only {
-  width: 40px;
-  height: 40px;
-  padding: 0;
-  background: var(--white);
-  box-shadow: var(--shadow-brutal-sm);
-}
-.btn-icon-only .material-icons-round { font-size: 1.2rem; }
 
 /* ============================================================
    QUESTION CARD TILE
@@ -350,20 +329,11 @@ body::before {
 .cat-A { background: #E9EDF4; color: #46608F; }
 .cat-B { background: #EAF0E6; color: #5A7350; }
 .cat-C { background: #F5EAE2; color: #A05C3B; }
-.cat-D { background: #F5EFDD; color: #8A6F2F; }
+.cat-D { background: #F5EFDD; color: #755E28; }
 .cat-E { background: #E8ECEC; color: #4E6A6A; }
 .cat-F { background: #EBEFE0; color: #6A7A42; }
-.cat-G { background: #F5E7E6; color: #9E5A55; }
-.cat-H { background: #F2EEE3; color: #8A7B4F; }
-
-.cat-icon-A { color: #46608F; }
-.cat-icon-B { color: #5A7350; }
-.cat-icon-C { color: #A05C3B; }
-.cat-icon-D { color: #8A6F2F; }
-.cat-icon-E { color: #4E6A6A; }
-.cat-icon-F { color: #6A7A42; }
-.cat-icon-G { color: #9E5A55; }
-.cat-icon-H { color: #8A7B4F; }
+.cat-G { background: #F5E7E6; color: #8A4B46; }
+.cat-H { background: #F2EEE3; color: #6F6340; }
 
 /* ============================================================
    DASHBOARD
@@ -399,7 +369,7 @@ body::before {
 }
 .session-launcher:hover { box-shadow: var(--shadow-soft); transform: translateY(-2px); border-color: rgba(176,141,62,0.5); }
 .session-launcher:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
-.session-launcher-roman { font-family: var(--font-display); font-size: 0.85rem; font-weight: 600; color: var(--gold); letter-spacing: 0.08em; }
+.session-launcher-roman { font-family: var(--font-display); font-size: 0.85rem; font-weight: 600; color: var(--gold-text); letter-spacing: 0.08em; }
 .session-launcher-name { font-family: var(--font-display); font-size: 1.05rem; font-weight: 600; margin: 6px 0 2px; }
 .session-launcher-meta { font-size: 0.76rem; color: var(--ink-soft); }
 .session-launcher-rule { height: 1px; background: var(--hairline-soft); margin: 12px 0 10px; }
@@ -435,7 +405,7 @@ body::before {
   display: flex; justify-content: space-between; align-items: center;
   padding: 8px 18px; font-size: 0.85rem;
 }
-stat-colored + stat-colored .ledger-row { border-top: 1px solid var(--hairline-soft); }
+.progress-ledger-rows stat-colored + stat-colored .ledger-row { border-top: 1px solid var(--hairline-soft); }
 .ledger-row-label { color: var(--ink-soft); display: flex; align-items: center; gap: 8px; }
 .ledger-dot { width: 7px; height: 7px; border-radius: 50%; background: rgba(26,43,74,0.25); }
 .ledger-row.stat-green .ledger-dot { background: var(--gold); }
@@ -637,7 +607,7 @@ flash-card { display: block; width: 100%; max-width: 620px; }
   background: var(--paper); border: 1px solid var(--hairline); border-radius: var(--radius-md);
   padding: 14px 18px 16px;
 }
-.study-tip-header { color: var(--gold); margin-bottom: 6px; }
+.study-tip-header { color: var(--gold-text); margin-bottom: 6px; }
 .study-tip p { font-family: var(--font-display); font-style: italic; font-size: 0.85rem; color: var(--ink-soft); line-height: 1.5; }
 
 /* ============================================================
@@ -654,7 +624,7 @@ flash-card { display: block; width: 100%; max-width: 620px; }
   font-size: 0.82rem; color: var(--ink-soft); margin: var(--sp-4) 0 var(--sp-5);
 }
 .library-stat-value { font-family: var(--font-display); font-weight: 600; font-size: 1rem; color: var(--ink); }
-.library-stat-value.stat-gold { color: var(--gold); }
+.library-stat-value.stat-gold { color: var(--gold-text); }
 .library-stat-sep { color: var(--hairline); }
 
 /* Card detail overlay */
@@ -899,18 +869,6 @@ flash-card { display: block; width: 100%; max-width: 620px; }
   border-radius: 4px;
   background: var(--paper);
   margin: 0 1px;
-}
-
-/* Toggle switch (brutalist) */
-.toggle-wrap {
-  display: flex;
-  align-items: center;
-  gap: var(--sp-2);
-  font-size: 0.75rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  cursor: pointer;
 }
 
 /* Loading spinner */
