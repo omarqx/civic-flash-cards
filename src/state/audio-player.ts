@@ -31,7 +31,8 @@ let gapTimer: ReturnType<typeof setTimeout> | null = null;
 let tickerSub: Subscription | null = null;
 let oneShot = false;           // playClip() in flight — ended must not advance
 let errorToastShown = false;
-let clipToken = 0;             // bumped on each real-clip start/failure; guards against double-advance
+let clipToken = 0;             // bumped on each real-clip start; stale tokens are ignored
+let clipFailureHandled = false; // current clip's failure already advanced — dedupe the second signal
 
 function ensureAudio(): HTMLAudioElement {
   if (!audio) {
@@ -124,6 +125,7 @@ function startPhase(p: ListenPhase): void {
   const el = ensureAudio();
   oneShot = false;
   const token = ++clipToken;
+  clipFailureHandled = false;
   el.src = clipUrl(kind, id);
   el.playbackRate = rate();
   void el.play().catch(err => onPlayRejected(err, token));
@@ -162,9 +164,10 @@ function onError(): void {
 }
 
 function handleClipFailure(token: number): void {
-  if (token !== clipToken) return; // stale — already handled or superseded
+  if (token !== clipToken) return; // stale — a newer clip has started
+  if (clipFailureHandled) return; // this clip's failure already advanced (both signals fire, in either order)
   if (status$.getValue() !== 'playing') return;
-  clipToken++; // consume the token so the second signal for this same failure is stale
+  clipFailureHandled = true;
   if (!errorToastShown) {
     errorToastShown = true;
     showToast("Some audio isn't available offline", 'info');
@@ -210,7 +213,7 @@ function resume(): void {
   status$.next('playing');
   startTicker();
   if (silence) startSilence(gapRemaining); // silenceMs untouched → elapsed stays correct
-  else void audio?.play().catch(onError);
+  else void audio?.play().catch(err => onPlayRejected(err, clipToken));
 }
 
 function toggle(): void {
