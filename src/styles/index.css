@@ -470,6 +470,26 @@ body::before {
 .ledger-row.stat-pink .ledger-dot { background: var(--navy); }
 .ledger-row-value { font-weight: 600; font-variant-numeric: tabular-nums; }
 
+/* Countdown + punch card */
+.countdown-line {
+  padding: 10px 18px;
+  border-bottom: 1px solid var(--hairline-soft);
+  font-size: 0.8rem; color: var(--ink-soft);
+}
+.countdown-line strong { color: var(--ink); font-weight: 600; }
+.countdown-day { color: var(--gold-text); font-weight: 600; }
+.punch-clip-note { font-size: 0.68rem; color: var(--ink-soft); margin-bottom: 6px; }
+.punch-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
+.punch-cell {
+  aspect-ratio: 1; display: flex; align-items: center; justify-content: center;
+  border: 1px solid var(--hairline-soft); border-radius: 4px;
+  font-size: 0.7rem; color: var(--ink-soft); background: var(--paper);
+}
+.punch-cell.punched { color: var(--gold); border-color: var(--gold-soft); background: var(--gold-tint); }
+.punch-cell.missed { color: var(--hairline); }
+.punch-cell.today { border: 2px solid var(--navy); }
+.punch-cell.interview { color: var(--red); font-weight: 700; }
+
 /* Generic right-rail box */
 .sidebar-box {
   background: var(--surface); border: 1px solid var(--hairline);

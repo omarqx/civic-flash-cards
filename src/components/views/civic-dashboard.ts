@@ -8,6 +8,8 @@ import { Router } from '../../router/router';
 import { showToast } from '../shared/civic-toast';
 import { getTodaysHoliday } from '../../data/holidays';
 import type { Flashcard, CategoryId } from '../../types';
+import { Subject } from 'rxjs/internal/Subject';
+import { takeUntil } from 'rxjs/internal/operators/takeUntil';
 
 // Ensure child custom elements are registered
 import '../shared/session-launcher';
@@ -16,20 +18,39 @@ import '../shared/mastery-bar';
 import '../shared/stat-colored';
 import '../shared/trend-chart';
 import '../shared/card-detail-modal';
+import '../shared/punch-card';
 
 export class CivicDashboard extends HTMLElement {
   private categoryFilter = 'all';
   private hideMastered = false;
   private shuffled = false;
+  private destroy$ = new Subject<void>();
 
   connectedCallback() {
     this.hideMastered = Store.getSettings().hideMastered;
     this.render();
+
+    let lastKey = '';
+    Store.settings$.pipe(takeUntil(this.destroy$)).subscribe(s => {
+      const key = `${s.interviewDate}|${s.prepStartDate}`;
+      if (lastKey && key !== lastKey) this.render();
+      lastKey = key;
+    });
+  }
+
+  disconnectedCallback() {
+    this.destroy$.next();
   }
 
   private render() {
     const stats = Store.getMasteryStats();
     const sessions = Store.getSessions();
+    const plan = Store.getDailyPlan();
+    const countdown = plan.interviewDate === null || plan.expired
+      ? ''
+      : plan.daysLeft === 0
+        ? `<div class="countdown-line countdown-day">Interview day — you've got this.</div>`
+        : `<div class="countdown-line"><strong>${plan.daysLeft} day${plan.daysLeft === 1 ? '' : 's'} to interview</strong>${plan.quotaToday > 0 ? ` · master ~${plan.quotaToday} a day` : ' · all 128 mastered!'}</div>`;
 
     const greeting = new Date().getHours() < 12 ? 'Good morning' : new Date().getHours() < 18 ? 'Good afternoon' : 'Good evening';
     const dateStr = new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
@@ -87,17 +108,19 @@ export class CivicDashboard extends HTMLElement {
               <span class="progress-ledger-num">${stats.mastered}</span>
               <span class="progress-ledger-of">of ${stats.total} mastered</span>
             </div>
+            ${countdown}
             <div class="progress-ledger-rows">
               <stat-colored value="${stats.mastered}" label="Mastered" variant="stat-green"></stat-colored>
               <stat-colored value="${stats.inProgress}" label="In progress" variant="stat-pink"></stat-colored>
               <stat-colored value="${stats.notStarted}" label="Not started" variant="stat-yellow"></stat-colored>
             </div>
-            <button class="btn btn-navy" id="start-study-mode">Start Daily Review</button>
+            <button class="btn btn-navy" id="start-study-mode">Start Daily Review · ${plan.dailySize} cards</button>
           </div>
           <div class="sidebar-box">
             <div class="sidebar-box-header">Mastery Trend</div>
             <div class="mastery-trend"><trend-chart></trend-chart></div>
           </div>
+          <punch-card></punch-card>
         </div>
       </div>
     `;
@@ -109,10 +132,11 @@ export class CivicDashboard extends HTMLElement {
 
   private renderLaunchers() {
     const grid = this.querySelector('#session-grid')!;
+    const dailySize = Store.getDailyPlan().dailySize;
     const types = Object.values(SESSION_TYPES);
     types.forEach(type => {
       const launcher = document.createElement('session-launcher') as InstanceType<typeof import('../shared/session-launcher').SessionLauncher>;
-      launcher.sessionType = type;
+      launcher.sessionType = type.id === 'daily' ? { ...type, cardCount: dailySize } : type;
       grid.appendChild(launcher);
     });
   }
