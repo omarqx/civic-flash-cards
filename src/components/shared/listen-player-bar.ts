@@ -25,7 +25,7 @@ export class ListenPlayerBar extends HTMLElement {
     const { playbackRate, recallGapSeconds } = Store.getSettings();
     this.innerHTML = `
       <div class="lpb">
-        <div class="lpb-track" id="lpb-track" role="slider" aria-label="Listening progress"></div>
+        <div class="lpb-track" id="lpb-track" role="group" aria-label="Listening progress"></div>
         <div class="lpb-controls">
           <span class="lpb-time" id="lpb-elapsed">0:00</span>
           <div class="lpb-buttons">
@@ -90,11 +90,12 @@ export class ListenPlayerBar extends HTMLElement {
     if (!this.queue) { track.innerHTML = ''; return; }
     if (total) total.textContent = fmt(this.queue.totalDuration);
     track.innerHTML = this.queue.items.map((item, i) => `
-      <div class="lpb-chunk" data-index="${i}"
+      <button type="button" class="lpb-chunk" data-index="${i}"
            style="flex-grow:${item.total}"
-           title="Card ${item.cardId}">
+           title="Card ${item.cardId}"
+           aria-label="Go to card ${item.cardId} (${i + 1} of ${this.queue!.items.length})">
         <div class="lpb-chunk-fill"></div>
-      </div>
+      </button>
     `).join('');
   }
 
