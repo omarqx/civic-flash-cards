@@ -17,6 +17,8 @@ import '../shared/flash-card';
 import '../shared/rating-bar';
 import '../shared/stat-colored';
 import '../shared/mastery-bar';
+import '../shared/civic-celebration';
+import type { CivicCelebration } from '../shared/civic-celebration';
 
 export class CivicStudy extends HTMLElement {
   private session: StudySession | null = null;
@@ -223,6 +225,30 @@ export class CivicStudy extends HTMLElement {
 
     const ratings = Object.values(saved.ratings);
     const mastered = ratings.filter(r => r >= 4).length;
+    const isMock = saved.type === 'mock';
+    const correct = ratings.filter(r => r >= 4).length;
+    const passed = correct >= 12;
+
+    const headerBlock = isMock
+      ? passed
+        ? `
+              <div style="font-size: 3rem; margin-bottom: 12px;">🎉</div>
+              <div style="font-family: var(--font-display); font-weight: 600; font-size: 1.5rem; margin-bottom: 8px; color: var(--gold-text);">You Passed!</div>
+              <p style="margin-bottom: 24px; color: var(--gray-500);">
+                You answered ${correct} of ${ratings.length} correctly — 12 is a passing score.
+              </p>`
+        : `
+              <div style="font-size: 3rem; margin-bottom: 12px;">🏆</div>
+              <div style="font-family: var(--font-display); font-weight: 600; font-size: 1.5rem; margin-bottom: 8px;">Keep Practicing</div>
+              <p style="margin-bottom: 24px; color: var(--gray-500);">
+                You answered ${correct} of ${ratings.length} correctly — you need 12 to pass. You'll get there.
+              </p>`
+      : `
+              <div style="font-size: 3rem; margin-bottom: 12px;">🏆</div>
+              <div style="font-family: var(--font-display); font-weight: 600; font-size: 1.5rem; margin-bottom: 8px;">Session Complete!</div>
+              <p style="margin-bottom: 24px; color: var(--gray-500);">
+                You reviewed ${ratings.length} cards with an average score of ${saved.score.toFixed(1)}/5.
+              </p>`;
 
     const completeEl = this.querySelector('#session-complete') as HTMLElement | null;
     if (completeEl) {
@@ -231,11 +257,7 @@ export class CivicStudy extends HTMLElement {
         <div class="card-detail-overlay" id="complete-overlay">
           <div class="card-detail" style="text-align: center;">
             <div class="card-detail-body" style="padding: 40px;">
-              <div style="font-size: 3rem; margin-bottom: 12px;">🏆</div>
-              <div style="font-family: var(--font-display); font-weight: 600; font-size: 1.5rem; margin-bottom: 8px;">Session Complete!</div>
-              <p style="margin-bottom: 24px; color: var(--gray-500);">
-                You reviewed ${ratings.length} cards with an average score of ${saved.score.toFixed(1)}/5.
-              </p>
+              ${headerBlock}
               <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-bottom: 16px;">
                 <stat-colored icon="check_circle" value="${mastered}" label="Mastered" variant="stat-green"></stat-colored>
                 <stat-colored icon="trending_up" value="${ratings.length - mastered}" label="Learning" variant="stat-pink"></stat-colored>
@@ -257,6 +279,13 @@ export class CivicStudy extends HTMLElement {
       completeEl.querySelector('#complete-overlay')?.addEventListener('click', (e) => {
         if ((e.target as HTMLElement).id === 'complete-overlay') Router.navigate('#/dashboard');
       });
+
+      if (isMock && passed) {
+        const celebration = document.createElement('civic-celebration') as CivicCelebration;
+        document.body.appendChild(celebration);
+        celebration.blast();
+        setTimeout(() => celebration.remove(), 6000);
+      }
     }
   }
 

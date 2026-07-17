@@ -707,6 +707,11 @@ flash-card { display: block; width: 100%; max-width: 620px; }
   box-shadow: var(--shadow-soft);
   animation: scale-in 200ms var(--ease);
 }
+
+.celebration-canvas {
+  position: fixed; inset: 0; z-index: 3000;
+  pointer-events: none;
+}
 .card-detail-header {
   display: flex;
   justify-content: space-between;
