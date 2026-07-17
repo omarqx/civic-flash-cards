@@ -35,6 +35,7 @@ export class CivicStudy extends HTMLElement {
   private destroy$ = new Subject<void>();
   private mode: 'practice' | 'listen' = 'practice';
   private listenSub: Subscription | null = null;
+  private listenCompleted = false;
 
   connectedCallback() {
     this.session = SessionManager.get();
@@ -49,6 +50,9 @@ export class CivicStudy extends HTMLElement {
     this.streak = 0;
     this.timerSeconds = 0;
     this.mode = 'practice';
+    this.listenCompleted = false;
+    this.listenSub?.unsubscribe();
+    this.listenSub = null;
 
     this.render();
     this.renderCard();
@@ -169,6 +173,12 @@ export class CivicStudy extends HTMLElement {
       slot.appendChild(document.createElement('listen-player-bar'));
     }
     AudioPlayer.load(this.session.cardIds);
+    // Seek BEFORE subscribing: load() resets the player index to 0 and pushes
+    // position$ (a BehaviorSubject), so subscribing first would replay
+    // {cardIndex: 0} and clobber this.currentIndex. Seeking here starts
+    // playback at the current card (the toggle tap is the user gesture) and
+    // leaves position$ holding the matching cardIndex for the replay below.
+    AudioPlayer.seekToCard(this.currentIndex);
 
     this.listenSub?.unsubscribe();
     this.listenSub = new Subscription();
@@ -203,12 +213,14 @@ export class CivicStudy extends HTMLElement {
   private exitListen() {
     this.listenSub?.unsubscribe();
     this.listenSub = null;
+    this.listenCompleted = false;
     AudioPlayer.stop();
     this.querySelector('#player-bar-slot')!.innerHTML = '';
     this.renderCard(); // restores hint text and unflipped state
   }
 
   private showListenComplete() {
+    this.listenCompleted = true;
     const queue = AudioPlayer.queue$.getValue();
     const count = this.cards.length;
     const minutes = queue ? Math.max(1, Math.round(queue.totalDuration / 60)) : 0;
@@ -234,6 +246,7 @@ export class CivicStudy extends HTMLElement {
     `;
     completeEl.querySelector('#listen-replay')?.addEventListener('click', () => {
       completeEl.style.display = 'none';
+      this.listenCompleted = false;
       this.currentIndex = 0;
       this.renderCard();
       AudioPlayer.seekToCard(0);
@@ -406,6 +419,8 @@ export class CivicStudy extends HTMLElement {
   handleKey(e: KeyboardEvent) {
     if (this.sessionCompleted) return;
     if (this.mode === 'listen') {
+      // Completion overlay is up: freeze transport keys; only Escape exits.
+      if (this.listenCompleted && e.key !== 'Escape') return;
       switch (e.key) {
         case ' ': e.preventDefault(); AudioPlayer.toggle(); return;
         case 'ArrowLeft': e.preventDefault(); AudioPlayer.prev(); return;
