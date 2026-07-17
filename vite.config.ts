@@ -34,6 +34,21 @@ export default defineConfig({
               },
             },
           },
+          {
+            urlPattern: /\/audio\/.+\.mp3(\?.*)?$/,
+            handler: 'CacheFirst',
+            options: {
+              cacheName: 'card-audio',
+              rangeRequests: true, // iOS Safari fetches audio with Range requests
+              expiration: {
+                maxEntries: 300,
+                maxAgeSeconds: 60 * 60 * 24 * 365, // 1 year
+              },
+              cacheableResponse: {
+                statuses: [0, 200],
+              },
+            },
+          },
         ],
       },
       manifest: {
