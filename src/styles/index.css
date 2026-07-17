@@ -516,6 +516,8 @@ stat-colored + stat-colored .ledger-row { border-top: 1px solid var(--hairline-s
 .session-count { font-family: var(--font-display); font-size: 0.9rem; font-weight: 600; font-variant-numeric: tabular-nums; }
 
 /* Certificate flashcard */
+#flashcard-container { width: 100%; display: flex; justify-content: center; }
+flash-card { display: block; width: 100%; max-width: 620px; }
 .flashcard-scene { width: 100%; max-width: 620px; perspective: 1500px; }
 .flashcard {
   position: relative; width: 100%; min-height: 340px;
