@@ -312,108 +312,62 @@ body::before {
 .btn-icon-only .material-icons-round { font-size: 1.2rem; }
 
 /* ============================================================
-   CARDS — Brutalist with colored headers
+   QUESTION CARD TILE
    ============================================================ */
 .card-brutal {
-  background: var(--white);
-  border: var(--border);
-  display: flex;
-  flex-direction: column;
-  transition: all var(--dur);
+  display: flex; flex-direction: column;
+  background: var(--surface);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius-md);
+  overflow: hidden; cursor: pointer;
+  transition: box-shadow .18s var(--ease), transform .18s var(--ease);
 }
-.card-brutal:hover {
-  transform: translate(-2px, -2px);
-  box-shadow: 6px 6px 0 var(--black);
-}
-
+.card-brutal:hover { box-shadow: var(--shadow-soft); transform: translateY(-2px); }
+.card-brutal:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
 .card-brutal-header {
-  padding: var(--sp-2) var(--sp-3);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  font-size: 0.65rem;
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  border-bottom: var(--border);
+  padding: 8px 14px;
+  font-size: 0.64rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
+  display: flex; justify-content: space-between; align-items: center;
 }
-
-.card-brutal-body {
-  padding: var(--sp-4);
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: var(--sp-2);
+.card-brutal-qnum {
+  font-family: var(--font-display); font-style: italic; font-weight: 500;
+  letter-spacing: 0; text-transform: none; font-size: 0.78rem; opacity: 0.8;
 }
-
+.card-brutal-body { padding: 14px 14px 12px; flex: 1; }
 .card-brutal-title {
-  font-family: var(--font-display);
-  font-weight: 800;
-  font-size: 1rem;
-  text-transform: uppercase;
-  letter-spacing: -0.01em;
-  line-height: 1.2;
+  font-family: var(--font-display); font-size: 1rem; font-weight: 600; line-height: 1.35;
+  margin-bottom: 6px;
 }
-
 .card-brutal-desc {
-  font-size: 0.8rem;
-  color: var(--gray-500);
-  line-height: 1.4;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
+  font-size: 0.8rem; color: var(--ink-soft);
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
 }
-
 .card-brutal-footer {
-  padding: var(--sp-3) var(--sp-4);
-  border-top: var(--border);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  font-size: 0.7rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
+  padding: 9px 14px;
+  border-top: 1px solid var(--hairline-soft);
+  display: flex; justify-content: space-between; align-items: center;
+  font-size: 0.66rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--ink-soft);
 }
 
-/* Mastery bar (5 segments) */
-.mastery-bar {
-  display: flex;
-  gap: 2px;
-  align-items: center;
-}
-.mastery-seg {
-  width: 16px;
-  height: 8px;
-  border: 1.5px solid var(--black);
-  background: var(--gray-200);
-}
-.mastery-seg.filled-green { background: var(--green); }
-.mastery-seg.filled-yellow { background: var(--yellow); }
-.mastery-seg.filled-pink { background: var(--pink); }
-.mastery-seg.filled-red { background: var(--red); }
-.mastery-seg.filled-blue { background: var(--blue); }
-.mastery-seg.filled-teal { background: var(--teal); }
+/* Category color variants — archival tints */
+.cat-A { background: #E9EDF4; color: #46608F; }
+.cat-B { background: #EAF0E6; color: #5A7350; }
+.cat-C { background: #F5EAE2; color: #A05C3B; }
+.cat-D { background: #F5EFDD; color: #8A6F2F; }
+.cat-E { background: #E8ECEC; color: #4E6A6A; }
+.cat-F { background: #EBEFE0; color: #6A7A42; }
+.cat-G { background: #F5E7E6; color: #9E5A55; }
+.cat-H { background: #F2EEE3; color: #8A7B4F; }
 
-/* Category color variants — American palette */
-.cat-A { background: var(--red-light); }
-.cat-B { background: var(--navy-light); }
-.cat-C { background: #EBF4FF; }
-.cat-D { background: var(--gold-light); }
-.cat-E { background: var(--green-light); }
-.cat-F { background: #FFF0E8; }
-.cat-G { background: #E8F5EC; }
-.cat-H { background: var(--navy-light); }
-
-.cat-icon-A { color: var(--red); }
-.cat-icon-B { color: var(--navy); }
-.cat-icon-C { color: var(--navy-mid); }
-.cat-icon-D { color: var(--gold); }
-.cat-icon-E { color: var(--green-dark); }
-.cat-icon-F { color: var(--orange); }
-.cat-icon-G { color: var(--green-dark); }
-.cat-icon-H { color: var(--navy); }
+.cat-icon-A { color: #46608F; }
+.cat-icon-B { color: #5A7350; }
+.cat-icon-C { color: #A05C3B; }
+.cat-icon-D { color: #8A6F2F; }
+.cat-icon-E { color: #4E6A6A; }
+.cat-icon-F { color: #6A7A42; }
+.cat-icon-G { color: #9E5A55; }
+.cat-icon-H { color: #8A7B4F; }
 
 /* ============================================================
    FILTER BAR
@@ -1632,11 +1586,6 @@ body::before {
   border-bottom-color: var(--red);
 }
 
-/* --- Card brutal header with American accent --- */
-.card-brutal-header {
-  background: var(--gray-100);
-}
-
 /* --- Rating buttons American palette --- */
 .rating-btn[data-rating="0"]:hover { background: var(--red); color: var(--white); }
 .rating-btn[data-rating="1"]:hover { background: var(--orange-light); }
@@ -1644,14 +1593,6 @@ body::before {
 .rating-btn[data-rating="3"]:hover { background: var(--navy-light); }
 .rating-btn[data-rating="4"]:hover { background: var(--navy); color: var(--white); }
 .rating-btn[data-rating="5"]:hover { background: var(--gold-bright); }
-
-/* --- Mastery segments patriotic palette --- */
-.mastery-seg.filled-green { background: var(--green); }
-.mastery-seg.filled-yellow { background: var(--gold-bright); }
-.mastery-seg.filled-pink { background: var(--red); }
-.mastery-seg.filled-red { background: var(--red-dark); }
-.mastery-seg.filled-blue { background: var(--navy-mid); }
-.mastery-seg.filled-teal { background: var(--navy); }
 
 /* --- History badge colors --- */
 .history-item-badge {

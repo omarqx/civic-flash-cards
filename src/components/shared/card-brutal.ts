@@ -3,7 +3,7 @@
  * Attributes: card-id
  * Dispatches: card-click (detail: { cardId: number })
  */
-import { CATEGORIES, CAT_CSS, CAT_ICONS } from '../../data/flashcards';
+import { CATEGORIES, CAT_CSS } from '../../data/flashcards';
 import { Store } from '../../state/store';
 import type { Flashcard, CategoryId } from '../../types';
 
@@ -51,23 +51,19 @@ export class CardBrutal extends HTMLElement {
     const cat = CATEGORIES[card.cat];
     const mastery = Store.getCardMastery(card.id);
     const cssClass = CAT_CSS[card.cat as CategoryId];
-    const icon = CAT_ICONS[card.cat as CategoryId];
 
     this.setAttribute('aria-label', `Question ${card.id}: ${card.q.substring(0, 40)}`);
     this.innerHTML = `
       <div class="card-brutal-header ${cssClass}">
-        <span>${cat.name.split(' ').slice(0, 2).join(' ').toUpperCase()}</span>
-        <span>${icon}</span>
+        <span>${cat.name.split(' ').slice(0, 2).join(' ')}</span>
+        <span class="card-brutal-qnum">No. ${card.id}</span>
       </div>
       <div class="card-brutal-body">
-        <div class="card-brutal-title">${card.q.length > 55 ? card.q.substring(0, 52) + '...' : card.q}</div>
+        <div class="card-brutal-title">${card.q.length > 80 ? card.q.substring(0, 77) + '…' : card.q}</div>
         <div class="card-brutal-desc">${card.a}</div>
       </div>
       <div class="card-brutal-footer">
-        <span>Mastery Level</span>
-        <span>${mastery.masteryLevel}/5</span>
-      </div>
-      <div style="padding: 0 12px 12px;">
+        <span>Mastery</span>
         <mastery-bar level="${mastery.masteryLevel}"></mastery-bar>
       </div>
     `;
