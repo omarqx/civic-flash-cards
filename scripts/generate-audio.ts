@@ -9,8 +9,10 @@
  *
  * Env: TTS_URL (default http://localhost:8880), TTS_VOICE (default af_heart)
  *
+ * Requires ffmpeg on PATH (clips are transcoded to 48 kbps mono MP3).
  * Never runs in CI or `npm run build` — the committed MP3s are the artifact.
  */
+import { spawn } from 'node:child_process';
 import { mkdir, readFile, readdir, unlink, writeFile } from 'node:fs/promises';
 import { parseBuffer } from 'music-metadata';
 import { FLASHCARDS } from '../src/data/flashcards';
@@ -63,6 +65,34 @@ async function synthesize(text: string): Promise<Buffer> {
   return Buffer.from(await res.arrayBuffer());
 }
 
+/** Transcode a TTS MP3 to 48 kbps mono 24 kHz — speech needs nothing more. */
+function transcode(buffer: Buffer): Promise<Buffer> {
+  return new Promise((resolve, reject) => {
+    const ff = spawn('ffmpeg', [
+      '-hide_banner', '-loglevel', 'error',
+      '-i', 'pipe:0',
+      '-ac', '1', '-ar', '24000', '-b:a', '48k',
+      '-f', 'mp3', 'pipe:1',
+    ], { stdio: ['pipe', 'pipe', 'pipe'] });
+
+    const out: Buffer[] = [];
+    const err: Buffer[] = [];
+    ff.stdout.on('data', (c: Buffer) => out.push(c));
+    ff.stderr.on('data', (c: Buffer) => err.push(c));
+    ff.on('error', (e: NodeJS.ErrnoException) => {
+      reject(e.code === 'ENOENT'
+        ? new Error('ffmpeg is required for audio generation — brew install ffmpeg')
+        : e);
+    });
+    ff.on('close', code => {
+      if (code === 0) resolve(Buffer.concat(out));
+      else reject(new Error(`ffmpeg exited with code ${code}: ${Buffer.concat(err).toString().trim()}`));
+    });
+    ff.stdin.on('error', () => {}); // EPIPE if ffmpeg dies early; 'close' reports the real error
+    ff.stdin.end(buffer);
+  });
+}
+
 async function main(): Promise<void> {
   await mkdir(AUDIO_DIR, { recursive: true });
   const manifest = await loadManifest();
@@ -87,7 +117,7 @@ async function main(): Promise<void> {
   let failed = 0;
   for (const [i, job] of pending.entries()) {
     try {
-      const mp3 = await synthesize(job.text);
+      const mp3 = await transcode(await synthesize(job.text));
       const meta = await parseBuffer(mp3, 'audio/mpeg');
       const duration = Math.round((meta.format.duration ?? 0) * 100) / 100;
       if (!duration) throw new Error('could not read duration');
