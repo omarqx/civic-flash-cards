@@ -4,7 +4,7 @@
 import { interval } from 'rxjs/internal/observable/interval';
 import { Subject } from 'rxjs/internal/Subject';
 import { takeUntil } from 'rxjs/internal/operators/takeUntil';
-import type { Subscription } from 'rxjs/internal/Subscription';
+import { Subscription } from 'rxjs/internal/Subscription';
 
 import { FLASHCARDS, SESSION_TYPES, STUDY_TIPS } from '../../data/flashcards';
 import { Store } from '../../state/store';
@@ -20,6 +20,7 @@ import '../shared/rating-bar';
 import '../shared/stat-colored';
 import '../shared/mastery-bar';
 import '../shared/civic-celebration';
+import '../shared/listen-player-bar';
 import type { CivicCelebration } from '../shared/civic-celebration';
 
 export class CivicStudy extends HTMLElement {
@@ -32,6 +33,8 @@ export class CivicStudy extends HTMLElement {
   private streak = 0;
   private sessionCompleted = false;
   private destroy$ = new Subject<void>();
+  private mode: 'practice' | 'listen' = 'practice';
+  private listenSub: Subscription | null = null;
 
   connectedCallback() {
     this.session = SessionManager.get();
@@ -45,6 +48,7 @@ export class CivicStudy extends HTMLElement {
     this.sessionCompleted = false;
     this.streak = 0;
     this.timerSeconds = 0;
+    this.mode = 'practice';
 
     this.render();
     this.renderCard();
@@ -54,6 +58,8 @@ export class CivicStudy extends HTMLElement {
   disconnectedCallback() {
     this.destroy$.next();
     this.timerSub?.unsubscribe();
+    this.listenSub?.unsubscribe();
+    AudioPlayer.stop();
   }
 
   private render() {
@@ -68,6 +74,10 @@ export class CivicStudy extends HTMLElement {
             <span class="eyebrow eyebrow-quiet">${this.session?.typeName ?? 'Study'}</span>
             <div class="session-track"><div class="session-track-fill" id="progress-fill" style="width:${pct}%"></div></div>
             <span class="session-count" id="progress-sub">${reviewed} / ${total}</span>
+            <div class="mode-toggle" role="group" aria-label="Study mode">
+              <button class="mode-toggle-btn active" data-mode="practice">Study</button>
+              <button class="mode-toggle-btn" data-mode="listen">Listen</button>
+            </div>
           </div>
 
           <div id="flashcard-container"></div>
@@ -90,6 +100,7 @@ export class CivicStudy extends HTMLElement {
           </div>
 
           <rating-bar id="rating-bar"></rating-bar>
+          <div id="player-bar-slot"></div>
         </div>
 
         <div class="study-sidebar">
@@ -132,7 +143,7 @@ export class CivicStudy extends HTMLElement {
     const fc = document.createElement('flash-card') as InstanceType<typeof import('../shared/flash-card').FlashCard>;
     fc.card = card;
     fc.flipped = false;
-    fc.audio = hasAudio(card.id);
+    fc.audio = this.mode === 'practice' && hasAudio(card.id);
     container.appendChild(fc);
 
     const ratingBar = this.querySelector('#rating-bar');
@@ -141,7 +152,101 @@ export class CivicStudy extends HTMLElement {
     this.updateProgress();
   }
 
+  private setMode(mode: 'practice' | 'listen') {
+    if (mode === this.mode) return;
+    this.mode = mode;
+    this.querySelectorAll<HTMLElement>('.mode-toggle-btn').forEach(b =>
+      b.classList.toggle('active', b.dataset.mode === mode));
+    this.querySelector('#study-view')?.classList.toggle('listen-mode', mode === 'listen');
+    if (mode === 'listen') this.enterListen();
+    else this.exitListen();
+  }
+
+  private enterListen() {
+    if (!this.session) return;
+    const slot = this.querySelector('#player-bar-slot');
+    if (slot && !slot.querySelector('listen-player-bar')) {
+      slot.appendChild(document.createElement('listen-player-bar'));
+    }
+    AudioPlayer.load(this.session.cardIds);
+
+    this.listenSub?.unsubscribe();
+    this.listenSub = new Subscription();
+    this.listenSub.add(AudioPlayer.position$.subscribe(pos => {
+      if (this.mode !== 'listen') return;
+      if (pos.cardIndex !== this.currentIndex) {
+        this.currentIndex = pos.cardIndex;
+        this.renderCard();
+      }
+      const fc = this.querySelector('flash-card') as InstanceType<typeof import('../shared/flash-card').FlashCard> | null;
+      if (!fc) return;
+      if (pos.phase === 'answer' && !this.isFlipped) {
+        this.isFlipped = true;
+        fc.flipped = true;
+      } else if (pos.phase !== 'answer' && this.isFlipped) {
+        this.isFlipped = false;
+        fc.flipped = false;
+      }
+      if (pos.phase === 'gap') {
+        fc.hint = `Answer in ${Math.ceil(pos.phaseRemaining)}…`;
+      } else if (pos.phase === 'question') {
+        fc.hint = 'Listen…';
+      }
+    }));
+    this.listenSub.add(AudioPlayer.status$.subscribe(s => {
+      if (this.mode === 'listen' && s === 'complete') this.showListenComplete();
+    }));
+
+    AudioPlayer.seekToCard(this.currentIndex); // the toggle tap is the user gesture
+  }
+
+  private exitListen() {
+    this.listenSub?.unsubscribe();
+    this.listenSub = null;
+    AudioPlayer.stop();
+    this.querySelector('#player-bar-slot')!.innerHTML = '';
+    this.renderCard(); // restores hint text and unflipped state
+  }
+
+  private showListenComplete() {
+    const queue = AudioPlayer.queue$.getValue();
+    const count = this.cards.length;
+    const minutes = queue ? Math.max(1, Math.round(queue.totalDuration / 60)) : 0;
+    const completeEl = this.querySelector('#session-complete') as HTMLElement | null;
+    if (!completeEl) return;
+    completeEl.style.display = 'block';
+    completeEl.innerHTML = `
+      <div class="card-detail-overlay" id="listen-complete-overlay">
+        <div class="card-detail" style="text-align: center;">
+          <div class="card-detail-body" style="padding: 40px;">
+            <div style="font-family: var(--font-display); font-weight: 600; font-size: 1.5rem; margin-bottom: 8px;">End of the deck</div>
+            <p style="margin-bottom: 24px; color: var(--gray-500);">
+              You listened through ${count} cards, about ${minutes} minute${minutes === 1 ? '' : 's'}.
+            </p>
+            <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
+              <button class="btn btn-yellow" id="listen-replay">Replay</button>
+              <button class="btn btn-white" id="listen-to-study">Switch to Study</button>
+              <button class="btn btn-white" id="listen-dashboard">Back to Dashboard</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+    completeEl.querySelector('#listen-replay')?.addEventListener('click', () => {
+      completeEl.style.display = 'none';
+      this.currentIndex = 0;
+      this.renderCard();
+      AudioPlayer.seekToCard(0);
+    });
+    completeEl.querySelector('#listen-to-study')?.addEventListener('click', () => {
+      completeEl.style.display = 'none';
+      this.setMode('practice');
+    });
+    completeEl.querySelector('#listen-dashboard')?.addEventListener('click', () => Router.navigate('#/dashboard'));
+  }
+
   private flipCard() {
+    if (this.mode === 'listen') return;
     if (this.cards.length === 0) return;
     this.isFlipped = !this.isFlipped;
     const fc = this.querySelector('flash-card') as InstanceType<typeof import('../shared/flash-card').FlashCard> | null;
@@ -156,6 +261,7 @@ export class CivicStudy extends HTMLElement {
   }
 
   private rateCard(rating: number) {
+    if (this.mode === 'listen') return;
     if (this.cards.length === 0 || this.sessionCompleted || !this.session) return;
 
     const card = this.cards[this.currentIndex];
@@ -299,6 +405,16 @@ export class CivicStudy extends HTMLElement {
 
   handleKey(e: KeyboardEvent) {
     if (this.sessionCompleted) return;
+    if (this.mode === 'listen') {
+      switch (e.key) {
+        case ' ': e.preventDefault(); AudioPlayer.toggle(); return;
+        case 'ArrowLeft': e.preventDefault(); AudioPlayer.prev(); return;
+        case 'ArrowRight': e.preventDefault(); AudioPlayer.next(); return;
+        case 'r': case 'R': e.preventDefault(); AudioPlayer.replayCard(); return;
+        case 'Escape': break; // fall through to the shared exit path below
+        default: return; // ratings and flip are disabled by ear
+      }
+    }
     switch (e.key) {
       case ' ': case 'Enter':
         if ((document.activeElement as HTMLElement)?.classList?.contains('rating-btn')) return;
@@ -312,6 +428,7 @@ export class CivicStudy extends HTMLElement {
         SessionManager.clear();
         this.destroy$.next();
         this.timerSub?.unsubscribe();
+        AudioPlayer.stop();
         Router.navigate('#/dashboard'); break;
     }
   }
@@ -337,8 +454,14 @@ export class CivicStudy extends HTMLElement {
     this.querySelector('#btn-i-know-this')?.addEventListener('click', () => {
       if (this.isFlipped) this.rateCard(5); else this.flipCard();
     });
-    this.querySelector('#card-prev')?.addEventListener('click', () => this.goPrev());
-    this.querySelector('#card-next')?.addEventListener('click', () => this.goNext());
+    this.querySelector('#card-prev')?.addEventListener('click', () =>
+      this.mode === 'listen' ? AudioPlayer.prev() : this.goPrev());
+    this.querySelector('#card-next')?.addEventListener('click', () =>
+      this.mode === 'listen' ? AudioPlayer.next() : this.goNext());
+
+    this.querySelectorAll<HTMLElement>('.mode-toggle-btn').forEach(btn => {
+      btn.addEventListener('click', () => this.setMode(btn.dataset.mode as 'practice' | 'listen'));
+    });
   }
 }
 
