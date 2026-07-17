@@ -224,9 +224,8 @@ export class CivicStudy extends HTMLElement {
     SessionManager.clear();
 
     const ratings = Object.values(saved.ratings);
-    const mastered = ratings.filter(r => r >= 4).length;
-    const isMock = saved.type === 'mock';
     const correct = ratings.filter(r => r >= 4).length;
+    const isMock = saved.type === 'mock';
     const passed = correct >= 12;
 
     const headerBlock = isMock
@@ -259,8 +258,8 @@ export class CivicStudy extends HTMLElement {
             <div class="card-detail-body" style="padding: 40px;">
               ${headerBlock}
               <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-bottom: 16px;">
-                <stat-colored icon="check_circle" value="${mastered}" label="Mastered" variant="stat-green"></stat-colored>
-                <stat-colored icon="trending_up" value="${ratings.length - mastered}" label="Learning" variant="stat-pink"></stat-colored>
+                <stat-colored icon="check_circle" value="${correct}" label="Mastered" variant="stat-green"></stat-colored>
+                <stat-colored icon="trending_up" value="${ratings.length - correct}" label="Learning" variant="stat-pink"></stat-colored>
               </div>
               <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
                 <button class="btn btn-yellow" id="complete-dashboard">Back to Dashboard</button>
@@ -285,6 +284,7 @@ export class CivicStudy extends HTMLElement {
         document.body.appendChild(celebration);
         celebration.blast();
         setTimeout(() => celebration.remove(), 6000);
+        window.addEventListener('hashchange', () => celebration.remove(), { once: true });
       }
     }
   }
