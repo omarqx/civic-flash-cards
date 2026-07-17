@@ -56,6 +56,22 @@ export interface AppSettings {
   theme: 'light' | 'dark' | 'system';
   playbackRate: number;      // 0.75–1.5, default 1
   recallGapSeconds: number;  // 3 | 5 | 8, default 5
+  interviewDate: string | null;        // ISO YYYY-MM-DD, local calendar
+  interviewDateIsDefault: boolean;     // true when set via "Skip — plan 1 month"
+  prepStartDate: string | null;        // anchors the punch-card grid
+}
+
+export interface PunchDay { quota: number; mastered: number; }
+export type PunchLog = Record<string, PunchDay>;
+
+export interface DailyPlan {
+  interviewDate: string | null;
+  isDefault: boolean;
+  daysLeft: number;        // daysBetween(today, interviewDate); 30 when no date is set; 0 = interview day; negative = expired
+  expired: boolean;        // daysLeft < 0
+  quotaToday: number;
+  masteredToday: number;
+  dailySize: number;       // clamp(quotaToday + 6, 10, 40)
 }
 
 export interface MasteryStats {
