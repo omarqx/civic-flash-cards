@@ -123,7 +123,7 @@ export const SPOKEN_ANSWERS: Record<number, string> = {
   110: 'To stop the spread of communism.',
   111: 'To stop the spread of communism.',
   112: 'It fought to end racial discrimination.',
-  113: 'You need to name one. You could say he fought for civil rights. Other good answers include that he worked for equality for all Americans, or that he worked to ensure people would be judged by the content of their character, not the color of their skin.',
+  113: 'You need to name one. You could say he fought for civil rights. Other good answers include that he worked for equality for all Americans, or that he worked to ensure people would not be judged by the color of their skin, but by the content of their character.',
   114: 'To force the Iraqi military out of Kuwait.',
   115: 'Terrorists attacked the United States. They crashed two hijacked planes into the World Trade Center in New York City, a third into the Pentagon in Arlington, Virginia, and a fourth, headed for Washington, D.C., crashed in a field in Pennsylvania.',
   116: 'You need to name one. You could say the War in Afghanistan. Other good answers include the War in Iraq, or the broader War on Terror.',
