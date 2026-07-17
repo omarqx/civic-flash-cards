@@ -234,20 +234,25 @@ function prev(): void { seekToCard(index - 1); }
 function replayCard(): void { seekToCard(index); }
 
 function setRate(r: number): void {
-  Store.updateSettings({ playbackRate: r });
-  if (audio && !silence) audio.playbackRate = r;
+  // rate is a divisor in queue/position math — reject non-finite, clamp to a sane range
+  if (!Number.isFinite(r) || r <= 0) return;
+  const clamped = Math.min(2, Math.max(0.5, r));
+  Store.updateSettings({ playbackRate: clamped });
+  if (audio && !silence) audio.playbackRate = clamped;
   rebuildQueue();
 }
 
 function setGap(s: number): void {
-  Store.updateSettings({ recallGapSeconds: s });
+  if (!Number.isFinite(s) || s <= 0) return; // drives timers and position math
+  const clamped = Math.min(30, Math.max(1, Math.round(s)));
+  Store.updateSettings({ recallGapSeconds: clamped });
   rebuildQueue(); // an in-flight gap keeps its old length; next gap uses the new one
 }
 
 function stop(): void {
   clearGapTimer();
   stopTicker();
-  if (audio) { audio.pause(); audio.removeAttribute('src'); }
+  if (audio) { audio.pause(); audio.removeAttribute('src'); audio.load(); } // load() aborts any in-flight fetch and releases the previous resource
   silence = false;
   oneShot = false;
   index = 0;

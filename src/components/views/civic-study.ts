@@ -419,6 +419,9 @@ export class CivicStudy extends HTMLElement {
     if (this.mode === 'listen') {
       // Completion overlay is up: freeze transport keys; only Escape exits.
       if (this.listenCompleted && e.key !== 'Escape') return;
+      // Focus inside the player bar: let native button/select semantics win
+      // (Space activates the focused control) instead of hijacking the keys.
+      if (e.key !== 'Escape' && (e.target as HTMLElement)?.closest?.('listen-player-bar')) return;
       switch (e.key) {
         case ' ': e.preventDefault(); AudioPlayer.toggle(); return;
         case 'ArrowLeft': e.preventDefault(); AudioPlayer.prev(); return;
