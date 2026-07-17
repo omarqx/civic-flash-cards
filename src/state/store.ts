@@ -25,7 +25,7 @@ const mastery$ = new BehaviorSubject<Record<number, CardMastery>>(
 const sessions$ = new BehaviorSubject<StudySession[]>(
   load(KEYS.sessions, [])
 );
-const DEFAULT_SETTINGS: AppSettings = { hideMastered: false, shuffleDefault: false, theme: 'system' };
+const DEFAULT_SETTINGS: AppSettings = { hideMastered: false, shuffleDefault: false, theme: 'system', playbackRate: 1, recallGapSeconds: 5 };
 const settings$ = new BehaviorSubject<AppSettings>(
   { ...DEFAULT_SETTINGS, ...load(KEYS.settings, {}) }
 );
