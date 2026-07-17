@@ -30,7 +30,7 @@ export class CivicStats extends HTMLElement {
     }).join('');
 
     this.innerHTML = `
-      <div>
+      <div class="stats-view">
         <div class="stats-view-header">
           <div class="eyebrow">The Record</div>
           <h1>Statistics</h1>

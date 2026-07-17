@@ -290,8 +290,9 @@ body::before {
 /* ============================================================
    MAIN CONTENT
    ============================================================ */
+/* Views own their gutters — no padding here or gutters double up */
 #main-content {
-  padding: var(--sp-8);
+  padding: 0;
   min-height: calc(100dvh - var(--topbar-height) - var(--ribbon-height, 0px));
   overflow-y: auto;
 }
@@ -783,6 +784,7 @@ flash-card { display: block; width: 100%; max-width: 620px; }
 /* ============================================================
    STATS & SETTINGS
    ============================================================ */
+.stats-view { padding: var(--sp-8) var(--sp-10); max-width: 1280px; margin: 0 auto; }
 .stats-view-header h1 {
   font-family: var(--font-display); font-size: 2.1rem; font-weight: 600; margin: 6px 0 4px;
 }
@@ -993,11 +995,10 @@ flash-card { display: block; width: 100%; max-width: 620px; }
   .sidebar-overlay { position: fixed; inset: 0; background: rgba(26,43,74,0.35); opacity: 0; pointer-events: none; transition: opacity .25s; z-index: 250; }
   .sidebar-overlay.visible { opacity: 1; pointer-events: auto; }
   .mobile-nav-toggle { display: flex; }
-  .dashboard-view, .study-view, .library-view { padding: var(--sp-5) var(--sp-4); }
+  .dashboard-view, .study-view, .library-view, .stats-view { padding: var(--sp-5) var(--sp-4); }
   .topbar-brand-sub { display: none; }
   .flashcard-question { font-size: 1.3rem; }
   .study-actions { flex-wrap: wrap; justify-content: center; }
-  #main-content { padding: var(--sp-4); }
   .session-grid { grid-template-columns: repeat(2, 1fr); }
   .card-grid { grid-template-columns: 1fr; }
   .flashcard { min-height: 260px; }

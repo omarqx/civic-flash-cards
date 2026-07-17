@@ -11,7 +11,7 @@ export class CivicSettings extends HTMLElement {
     const settings = Store.getSettings();
 
     this.innerHTML = `
-      <div>
+      <div class="stats-view">
         <div class="stats-view-header">
           <div class="eyebrow">Preferences</div>
           <h1>Settings</h1>
