@@ -25,8 +25,9 @@ const mastery$ = new BehaviorSubject<Record<number, CardMastery>>(
 const sessions$ = new BehaviorSubject<StudySession[]>(
   load(KEYS.sessions, [])
 );
+const DEFAULT_SETTINGS: AppSettings = { hideMastered: false, shuffleDefault: false, theme: 'system' };
 const settings$ = new BehaviorSubject<AppSettings>(
-  load(KEYS.settings, { hideMastered: false, shuffleDefault: false })
+  { ...DEFAULT_SETTINGS, ...load(KEYS.settings, {}) }
 );
 
 // Auto-persist
@@ -241,7 +242,7 @@ function resetAll(): void {
   for (const key of LEGACY_KEYS) localStorage.removeItem(key);
   mastery$.next({});
   sessions$.next([]);
-  settings$.next({ hideMastered: false, shuffleDefault: false });
+  settings$.next(DEFAULT_SETTINGS);
 }
 
 export const Store = {

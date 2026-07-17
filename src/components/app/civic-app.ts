@@ -53,11 +53,26 @@ export class CivicApp extends HTMLElement {
       <civic-toast></civic-toast>
     `;
 
+    this.setupTheme();
     this.setupRouter();
     this.setupKeyboard();
     this.setupMobileNav();
     this.setupNavSync();
     this.setupPreloading();
+  }
+
+  private setupTheme() {
+    const media = window.matchMedia('(prefers-color-scheme: dark)');
+    const apply = () => {
+      const pref = Store.getSettings().theme ?? 'system';
+      const dark = pref === 'dark' || (pref === 'system' && media.matches);
+      document.documentElement.dataset.theme = dark ? 'dark' : 'light';
+      document.querySelector('meta[name="theme-color"]')
+        ?.setAttribute('content', dark ? '#131A2C' : '#F7F3EA');
+    };
+    apply();
+    media.addEventListener('change', apply);
+    Store.settings$.subscribe(apply);
   }
 
   private setupRouter() {

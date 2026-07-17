@@ -53,6 +53,7 @@ export interface StudySession {
 export interface AppSettings {
   hideMastered: boolean;
   shuffleDefault: boolean;
+  theme: 'light' | 'dark' | 'system';
 }
 
 export interface MasteryStats {
