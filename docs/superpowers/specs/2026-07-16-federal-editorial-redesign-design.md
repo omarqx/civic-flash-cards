@@ -1,7 +1,8 @@
 # Federal Editorial Redesign — Design Spec
 
 **Date:** 2026-07-16
-**Status:** Approved
+**Status:** Approved (spec + visual mockup)
+**Mockup:** [`2026-07-16-federal-editorial-mockup.html`](./2026-07-16-federal-editorial-mockup.html) — user-approved static mockup of Dashboard and Study Mode; the visual source of truth for implementation.
 **Scope:** Full visual redesign + layout/UX polish of the Civic Flash Cards PWA. Same views, same features, same data model.
 
 ## Goal
@@ -70,6 +71,17 @@ Today the topbar (Dashboard / Study Mode / All Cards) duplicates the sidebar (Ho
 - **Library:** cleaner search/filter bar; card tiles with muted category tints; **mastery displayed as 5 small gold stars** (replacing gray segments) — implemented inside the existing `mastery-bar` component/classes.
 - **Stats:** same metrics, restyled — hairline-axis charts, ledger-style tables, gold accents for highlights.
 - **Settings:** clean form styling; gains the Reset Progress action (with confirmation).
+
+### Approved mockup details (carry into implementation)
+
+From the user-approved mockup, keep these touches:
+
+- Dashboard greeting block: date eyebrow + Fraunces greeting ("Good morning…") + progress sentence, with a double-rule below
+- Study plans numbered with gold roman numerals (I., II., …); primary plan rendered as a filled navy "featured" card
+- "Progress Ledger" panel naming and row layout; streak row highlighted in gold
+- Flashcard: gold corner brackets, category eyebrow flanked by hairlines, italic "No. N" seal top-right, `Press [Space] to reveal` hint
+- Sidebar footer: three gold stars + "E pluribus unum"
+- Session stats panel titled "Session Ledger"; study tip rendered as an italic serif quotation
 
 ## Invariants (must not change)
 
