@@ -616,8 +616,8 @@ flash-card { display: block; width: 100%; max-width: 620px; }
 /* ── Read-aloud speaker button (practice mode) ── */
 .flashcard-speak {
   position: absolute;
-  top: 14px;
-  right: 46px; /* clear of the corner flourish */
+  top: 50px;
+  right: 24px; /* below the corner number, clear of the flourish */
   z-index: 1;
   width: 34px;
   height: 34px;
