@@ -224,7 +224,10 @@ export class CivicStudy extends HTMLElement {
     SessionManager.clear();
 
     const ratings = Object.values(saved.ratings);
-    const correct = ratings.filter(r => r >= 4).length;
+    // Interview counting: a 3 ("Close") or better counts as answered correctly.
+    // Mastery elsewhere still requires 4+.
+    const correct = ratings.filter(r => r >= 3).length;
+    const mastered = ratings.filter(r => r >= 4).length;
     // Pass/fail scoring only applies to a real full-size mock interview —
     // custom sessions must never inherit the 12-of-20 bar.
     const isMock = saved.type === 'mock' && saved.cardIds.length === SESSION_TYPES.mock.cardCount;
@@ -260,8 +263,8 @@ export class CivicStudy extends HTMLElement {
             <div class="card-detail-body" style="padding: 40px;">
               ${headerBlock}
               <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-bottom: 16px;">
-                <stat-colored icon="check_circle" value="${correct}" label="Mastered" variant="stat-green"></stat-colored>
-                <stat-colored icon="trending_up" value="${ratings.length - correct}" label="Learning" variant="stat-pink"></stat-colored>
+                <stat-colored icon="check_circle" value="${mastered}" label="Mastered" variant="stat-green"></stat-colored>
+                <stat-colored icon="trending_up" value="${ratings.length - mastered}" label="Learning" variant="stat-pink"></stat-colored>
               </div>
               <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
                 <button class="btn btn-yellow" id="complete-dashboard">Back to Dashboard</button>
