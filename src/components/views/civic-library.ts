@@ -57,8 +57,10 @@ export class CivicLibrary extends HTMLElement {
     this.innerHTML = `
       <div class="library-view">
         <div class="library-header">
-          <h1>All Cards</h1>
-          <p>Browse and study all 128 USCIS civics questions.</p>
+          <div class="eyebrow">The Full Deck</div>
+          <h1>All 128 Cards</h1>
+          <p>Browse and study every USCIS civics question.</p>
+          <div class="double-rule"></div>
         </div>
 
         <div class="filter-bar">
@@ -86,9 +88,12 @@ export class CivicLibrary extends HTMLElement {
 
         <div class="library-stats">
           <span><span class="library-stat-value" id="lib-showing">${stats.total}</span> showing</span>
-          <span><span class="library-stat-value" style="color: var(--green-dark);">${stats.mastered}</span> mastered</span>
-          <span><span class="library-stat-value" style="color: var(--pink);">${stats.inProgress}</span> in progress</span>
-          <span><span class="library-stat-value" style="color: var(--orange);">${stats.notStarted}</span> not started</span>
+          <span class="library-stat-sep">·</span>
+          <span><span class="library-stat-value stat-gold">${stats.mastered}</span> mastered</span>
+          <span class="library-stat-sep">·</span>
+          <span><span class="library-stat-value">${stats.inProgress}</span> in progress</span>
+          <span class="library-stat-sep">·</span>
+          <span><span class="library-stat-value">${stats.notStarted}</span> not started</span>
         </div>
 
         <div class="card-grid" id="card-grid"></div>

@@ -641,40 +641,21 @@ flash-card { display: block; width: 100%; max-width: 620px; }
 .study-tip p { font-family: var(--font-display); font-style: italic; font-size: 0.85rem; color: var(--ink-soft); line-height: 1.5; }
 
 /* ============================================================
-   LIBRARY VIEW
+   LIBRARY
    ============================================================ */
-.library-header {
-  margin-bottom: var(--sp-4);
-}
+.library-view { padding: var(--sp-8) var(--sp-10); max-width: 1280px; margin: 0 auto; }
 .library-header h1 {
-  font-family: var(--font-display);
-  font-weight: 800;
-  font-size: 2.2rem;
-  text-transform: uppercase;
-  letter-spacing: -0.02em;
-  line-height: 1;
-  margin-bottom: var(--sp-2);
+  font-family: var(--font-display); font-size: 2.1rem; font-weight: 600;
+  letter-spacing: -0.01em; margin: 6px 0 4px;
 }
-.library-header p {
-  font-size: 0.85rem;
-  color: var(--gray-500);
-}
-
+.library-header p { color: var(--ink-soft); font-size: 0.95rem; }
 .library-stats {
-  display: flex;
-  gap: var(--sp-6);
-  padding: var(--sp-3) 0;
-  margin-bottom: var(--sp-4);
-  font-size: 0.75rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  color: var(--gray-400);
+  display: flex; gap: 10px; align-items: baseline;
+  font-size: 0.82rem; color: var(--ink-soft); margin: var(--sp-4) 0 var(--sp-5);
 }
-.library-stat-value {
-  font-weight: 800;
-  color: var(--black);
-}
+.library-stat-value { font-family: var(--font-display); font-weight: 600; font-size: 1rem; color: var(--ink); }
+.library-stat-value.stat-gold { color: var(--gold); }
+.library-stat-sep { color: var(--hairline); }
 
 /* Card detail overlay */
 .card-detail-overlay {
@@ -1060,8 +1041,7 @@ flash-card { display: block; width: 100%; max-width: 620px; }
   flex-shrink: 0;
 }
 
-/* --- Library/stats header titles American style --- */
-.library-header h1,
+/* --- Stats header title American style --- */
 .stats-view-header h1 {
   font-family: var(--font-display);
   font-weight: 700;
