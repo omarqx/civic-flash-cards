@@ -6,6 +6,7 @@ import { Store } from '../../state/store';
 import { SessionManager } from '../../state/session-manager';
 import { Router } from '../../router/router';
 import { showToast } from '../shared/civic-toast';
+import { getTodaysHoliday } from '../../data/holidays';
 import type { Flashcard, CategoryId } from '../../types';
 
 // Ensure child custom elements are registered
@@ -32,13 +33,17 @@ export class CivicDashboard extends HTMLElement {
 
     const greeting = new Date().getHours() < 12 ? 'Good morning' : new Date().getHours() < 18 ? 'Good afternoon' : 'Good evening';
     const dateStr = new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
+    const holiday = getTodaysHoliday();
+    const heading = holiday
+      ? `Happy ${holiday.name}, Citizen&#8209;to&#8209;be.`
+      : `${greeting}, Citizen&#8209;to&#8209;be.`;
 
     this.innerHTML = `
       <div class="dashboard-view">
         <div class="dashboard-main">
           <div class="dashboard-header">
             <div class="eyebrow">${dateStr}</div>
-            <h1>${greeting}, Citizen&#8209;to&#8209;be.</h1>
+            <h1>${heading}</h1>
             <p>You've mastered ${stats.mastered} of ${stats.total} questions. Steady on — the oath awaits.</p>
             <div class="double-rule"></div>
           </div>

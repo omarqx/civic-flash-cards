@@ -15,6 +15,7 @@ import { Store } from '../../state/store';
 import { SessionManager } from '../../state/session-manager';
 import { Router } from '../../router/router';
 import { showToast } from '../shared/civic-toast';
+import { getTodaysHoliday } from '../../data/holidays';
 import type { ViewName } from '../../types';
 
 // Eagerly import shell + dashboard (critical path)
@@ -52,6 +53,15 @@ export class CivicApp extends HTMLElement {
       </div>
       <civic-toast></civic-toast>
     `;
+
+    const holiday = getTodaysHoliday();
+    if (holiday) {
+      const ribbon = document.createElement('div');
+      ribbon.className = 'holiday-ribbon';
+      ribbon.setAttribute('role', 'note');
+      ribbon.innerHTML = `<span class="holiday-ribbon-star">★</span> Happy ${holiday.name} <span class="holiday-ribbon-sep">—</span> ${holiday.message} <span class="holiday-ribbon-star">★</span>`;
+      this.querySelector('civic-topbar')?.after(ribbon);
+    }
 
     this.setupTheme();
     this.setupRouter();

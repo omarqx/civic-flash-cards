@@ -198,6 +198,16 @@ body::before {
   display: flex; align-items: center; gap: 10px;
 }
 .topbar-brand::before { content: '★'; color: var(--gold); font-size: 0.85rem; }
+.holiday-ribbon {
+  text-align: center;
+  padding: 7px 16px;
+  background: linear-gradient(90deg, transparent, var(--gold-tint) 20%, var(--gold-tint) 80%, transparent);
+  border-bottom: 1px solid var(--hairline-soft);
+  font-size: 0.72rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--gold-text);
+}
+.holiday-ribbon-star { color: var(--red); }
+.holiday-ribbon-sep { color: var(--hairline); text-transform: none; }
 .topbar-brand-sub {
   font-size: 0.66rem; font-weight: 600; letter-spacing: 0.16em;
   text-transform: uppercase; color: var(--ink-soft);
