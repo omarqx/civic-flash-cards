@@ -121,6 +121,11 @@
 [data-theme="dark"] .cat-H { background: #2C2921; color: #BFAE7E; }
 [data-theme="dark"] body::before { opacity: 0.05; }
 [data-theme="dark"] .rating-chip.mid { color: #C9AC61; }
+[data-theme="dark"] .filter-chip.active { color: var(--gold-soft); }
+[data-theme="dark"] .stars-mastery .off { color: rgba(233, 228, 216, 0.18); }
+[data-theme="dark"] .session-track { background: rgba(233, 228, 216, 0.12); }
+[data-theme="dark"] .category-row-bar { background: rgba(233, 228, 216, 0.1); }
+[data-theme="dark"] .ledger-dot { background: rgba(233, 228, 216, 0.25); }
 
 html {
   font-family: var(--font-body);
