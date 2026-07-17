@@ -9,16 +9,13 @@ export class StatColored extends HTMLElement {
   attributeChangedCallback() { this.render(); }
 
   private render() {
-    const icon = this.getAttribute('icon') || 'info';
     const value = this.getAttribute('value') || '0';
     const label = this.getAttribute('label') || '';
     const variant = this.getAttribute('variant') || '';
-
     this.innerHTML = `
-      <div class="stat-colored ${variant}">
-        <span class="material-icons-round">${icon}</span>
-        <span>${value}</span>
-        <span class="stat-colored-label">${label}</span>
+      <div class="ledger-row ${variant}">
+        <span class="ledger-row-label"><span class="ledger-dot"></span>${label}</span>
+        <span class="ledger-row-value">${value}</span>
       </div>
     `;
   }
