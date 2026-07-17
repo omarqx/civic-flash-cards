@@ -613,6 +613,25 @@ flash-card { display: block; width: 100%; max-width: 620px; }
   border-radius: 4px; padding: 1px 6px; background: var(--paper); font-family: var(--font-body);
 }
 
+/* ── Read-aloud speaker button (practice mode) ── */
+.flashcard-speak {
+  position: absolute;
+  top: 14px;
+  right: 46px; /* clear of the corner flourish */
+  z-index: 1;
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--hairline);
+  border-radius: 50%;
+  background: transparent;
+  color: var(--gold-text);
+  cursor: pointer;
+}
+.flashcard-speak:hover { box-shadow: var(--shadow-soft); color: var(--ink); }
+.flashcard-speak .material-icons-round { font-size: 18px; }
+
 /* Actions */
 .study-actions { display: flex; gap: var(--sp-3); margin-top: var(--sp-6); align-items: center; }
 .btn-nav-arrow {

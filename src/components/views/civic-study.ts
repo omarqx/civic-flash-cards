@@ -11,6 +11,8 @@ import { Store } from '../../state/store';
 import { SessionManager } from '../../state/session-manager';
 import { Router } from '../../router/router';
 import { showToast } from '../shared/civic-toast';
+import { AudioPlayer } from '../../state/audio-player';
+import { hasAudio } from '../../data/audio-manifest';
 import type { Flashcard, StudySession } from '../../types';
 
 import '../shared/flash-card';
@@ -130,6 +132,7 @@ export class CivicStudy extends HTMLElement {
     const fc = document.createElement('flash-card') as InstanceType<typeof import('../shared/flash-card').FlashCard>;
     fc.card = card;
     fc.flipped = false;
+    fc.audio = hasAudio(card.id);
     container.appendChild(fc);
 
     const ratingBar = this.querySelector('#rating-bar');
@@ -321,6 +324,11 @@ export class CivicStudy extends HTMLElement {
 
     this.addEventListener('rate', ((e: CustomEvent) => {
       this.rateCard(e.detail.rating);
+    }) as EventListener);
+
+    this.addEventListener('speak', ((e: CustomEvent) => {
+      const card = this.cards[this.currentIndex];
+      if (card) AudioPlayer.playClip(e.detail.kind, card.id);
     }) as EventListener);
 
     this.querySelector('#btn-still-learning')?.addEventListener('click', () => {
