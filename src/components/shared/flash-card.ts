@@ -42,23 +42,28 @@ export class FlashCard extends HTMLElement {
 
     const cat = CATEGORIES[card.cat];
     const css = CAT_CSS[card.cat as CategoryId];
+    const corner = `<svg viewBox="0 0 14 14" aria-hidden="true"><path d="M1 13V4a3 3 0 0 1 3-3h9" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>`;
+    const frame = `
+      <span class="flashcard-corner tl">${corner}</span>
+      <span class="flashcard-corner tr">${corner}</span>
+      <span class="flashcard-corner br">${corner}</span>
+      <span class="flashcard-corner bl">${corner}</span>
+      <span class="flashcard-number">No. ${card.id}</span>
+    `;
 
     this.innerHTML = `
       <div class="flashcard-scene">
         <div class="flashcard ${this._flipped ? 'flipped' : ''}" tabindex="0" role="button"
              aria-label="Press Space to flip card">
           <div class="flashcard-face front">
-            <span class="flashcard-cat-tag ${css}">${cat ? cat.name.split(' ').slice(0, 2).join(' ').toUpperCase() : ''}</span>
-            <span class="flashcard-number">Q${card.id}</span>
+            ${frame}
+            <div class="flashcard-cat-eyebrow ${css}">${cat ? cat.name : ''}</div>
             <div class="flashcard-question">${card.q}</div>
-            <div class="flashcard-hint">
-              <span>◆</span> Click or press Space to reveal
-            </div>
+            <div class="flashcard-hint">Press <kbd>Space</kbd> to reveal the answer</div>
           </div>
           <div class="flashcard-face back">
-            <span class="flashcard-cat-tag ${css}">${cat ? cat.name.split(' ').slice(0, 2).join(' ').toUpperCase() : ''}</span>
-            <span class="flashcard-number">Q${card.id}</span>
-            <div class="flashcard-answer-label">Answer</div>
+            ${frame}
+            <div class="flashcard-cat-eyebrow ${css}">Answer</div>
             <div class="flashcard-answer">${card.a}</div>
           </div>
         </div>

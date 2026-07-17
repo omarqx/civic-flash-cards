@@ -6,7 +6,7 @@ import { Subject } from 'rxjs/internal/Subject';
 import { takeUntil } from 'rxjs/internal/operators/takeUntil';
 import type { Subscription } from 'rxjs/internal/Subscription';
 
-import { FLASHCARDS, CATEGORIES, SESSION_TYPES, STUDY_TIPS } from '../../data/flashcards';
+import { FLASHCARDS, SESSION_TYPES, STUDY_TIPS } from '../../data/flashcards';
 import { Store } from '../../state/store';
 import { SessionManager } from '../../state/session-manager';
 import { Router } from '../../router/router';
@@ -60,12 +60,10 @@ export class CivicStudy extends HTMLElement {
     this.innerHTML = `
       <div class="study-view" id="study-view">
         <div class="study-main">
-          <div class="session-progress-bar">
-            <div class="session-progress-ring" id="progress-ring">${pct}%</div>
-            <div class="session-progress-text">
-              <span class="session-progress-title">Session Progress</span>
-              <span class="session-progress-sub" id="progress-sub">You've reviewed ${reviewed} of ${total} cards.</span>
-            </div>
+          <div class="session-bar">
+            <span class="eyebrow eyebrow-quiet">${this.session ? SESSION_TYPES[this.session.type]?.name ?? this.session.typeName : 'Study'}</span>
+            <div class="session-track"><div class="session-track-fill" id="progress-fill" style="width:${pct}%"></div></div>
+            <span class="session-count" id="progress-sub">${reviewed} / ${total}</span>
           </div>
 
           <div id="flashcard-container"></div>
@@ -91,28 +89,23 @@ export class CivicStudy extends HTMLElement {
         </div>
 
         <div class="study-sidebar">
-          <div class="sidebar-box">
-            <div class="sidebar-box-header">Session Statistics</div>
-            <div class="sidebar-box-body">
-              <div class="stat-row"><span class="stat-row-label">Mastered</span><span class="stat-row-value" id="stat-mastered" style="color: var(--green-dark)">0</span></div>
-              <div class="stat-row"><span class="stat-row-label">Struggling</span><span class="stat-row-value" id="stat-struggling" style="color: var(--pink)">0</span></div>
-              <div class="stat-row"><span class="stat-row-label">Accuracy</span><span class="stat-row-value" id="stat-accuracy">0%</span></div>
-              <div class="stat-row"><span class="stat-row-label">Avg Time</span><span class="stat-row-value" id="stat-time">0.0s</span></div>
-            </div>
-          </div>
           <div class="streak-box">
-            <div class="streak-box-label">Current Streak</div>
-            <div class="streak-box-value">
-              <span class="material-icons-round">local_fire_department</span>
-              <span id="stat-streak">0 Cards</span>
+            <div class="streak-box-stars">★ ★ ★</div>
+            <div class="streak-box-value" id="stat-streak">0</div>
+            <div class="streak-box-label">Card streak</div>
+          </div>
+          <div class="sidebar-box">
+            <div class="sidebar-box-header">Session Ledger</div>
+            <div class="sidebar-box-body">
+              <div class="stat-row"><span class="stat-row-label">Mastered</span><span class="stat-row-value stat-good" id="stat-mastered">0</span></div>
+              <div class="stat-row"><span class="stat-row-label">Still learning</span><span class="stat-row-value stat-bad" id="stat-struggling">0</span></div>
+              <div class="stat-row"><span class="stat-row-label">Accuracy</span><span class="stat-row-value" id="stat-accuracy">0%</span></div>
+              <div class="stat-row"><span class="stat-row-label">Avg. time</span><span class="stat-row-value" id="stat-time">0.0s</span></div>
             </div>
           </div>
           <div class="study-tip">
-            <div class="study-tip-header">
-              <span class="material-icons-round">lightbulb</span>
-              Pro Study Tip
-            </div>
-            <p>${STUDY_TIPS[Math.floor(Math.random() * STUDY_TIPS.length)]}</p>
+            <div class="sidebar-box-header study-tip-header">Study Tip</div>
+            <p>“${STUDY_TIPS[Math.floor(Math.random() * STUDY_TIPS.length)]}”</p>
           </div>
         </div>
 
@@ -188,10 +181,10 @@ export class CivicStudy extends HTMLElement {
     const reviewed = Object.keys(this.session.ratings).length;
     const total = this.session.cardIds.length;
     const pct = total > 0 ? Math.round((reviewed / total) * 100) : 0;
-    const ring = this.querySelector('#progress-ring');
-    if (ring) ring.textContent = `${pct}%`;
+    const fill = this.querySelector('#progress-fill') as HTMLElement | null;
+    if (fill) fill.style.width = `${pct}%`;
     const sub = this.querySelector('#progress-sub');
-    if (sub) sub.textContent = `You've reviewed ${reviewed} of ${total} cards.`;
+    if (sub) sub.textContent = `${reviewed} / ${total}`;
   }
 
   private updateStats() {
@@ -207,7 +200,7 @@ export class CivicStudy extends HTMLElement {
     const e2 = el('stat-struggling'); if (e2) e2.textContent = String(struggling);
     const e3 = el('stat-accuracy'); if (e3) e3.textContent = `${accuracy}%`;
     const e4 = el('stat-time'); if (e4) e4.textContent = `${avgTime}s`;
-    const e5 = el('stat-streak'); if (e5) e5.textContent = `${this.streak} Cards`;
+    const e5 = el('stat-streak'); if (e5) e5.textContent = String(this.streak);
 
     this.updateProgress();
   }
@@ -239,7 +232,7 @@ export class CivicStudy extends HTMLElement {
           <div class="card-detail" style="text-align: center;">
             <div class="card-detail-body" style="padding: 40px;">
               <div style="font-size: 3rem; margin-bottom: 12px;">🏆</div>
-              <div style="font-family: var(--font-display); font-weight: 800; font-size: 1.5rem; text-transform: uppercase; margin-bottom: 8px;">Session Complete!</div>
+              <div style="font-family: var(--font-display); font-weight: 600; font-size: 1.5rem; margin-bottom: 8px;">Session Complete!</div>
               <p style="margin-bottom: 24px; color: var(--gray-500);">
                 You reviewed ${ratings.length} cards with an average score of ${saved.score.toFixed(1)}/5.
               </p>
