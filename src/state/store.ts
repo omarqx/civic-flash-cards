@@ -151,6 +151,14 @@ function getSessions(): StudySession[] {
   return sessions$.getValue();
 }
 
+function shuffle<T>(arr: T[]): T[] {
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
 function createSession(type: string, categoryFilter: string[] | null = null): StudySession | null {
   const sessionType = SESSION_TYPES[type];
   if (!sessionType) return null;
@@ -163,8 +171,16 @@ function createSession(type: string, categoryFilter: string[] | null = null): St
 
   let selected;
   if (type === 'full') {
-    selected = pool;
+    selected = shuffle(pool);
+  } else if (type === 'mock') {
+    // A real interview draws questions at random from the whole pool,
+    // not from the applicant's weakest cards.
+    selected = shuffle(pool).slice(0, sessionType.cardCount);
   } else {
+    // Randomize before the stable sort so equally-ranked cards don't
+    // fall back to ID order, then shuffle the selection so the session
+    // isn't presented strictly weakest-first.
+    shuffle(pool);
     pool.sort((a, b) => {
       const ma = all[a.id] || defaultMastery();
       const mb = all[b.id] || defaultMastery();
@@ -173,7 +189,7 @@ function createSession(type: string, categoryFilter: string[] | null = null): St
       if (ma.masteryLevel !== mb.masteryLevel) return ma.masteryLevel - mb.masteryLevel;
       return (ma.lastReviewedAt || 0) - (mb.lastReviewedAt || 0);
     });
-    selected = pool.slice(0, sessionType.cardCount);
+    selected = shuffle(pool.slice(0, sessionType.cardCount));
   }
 
   return {

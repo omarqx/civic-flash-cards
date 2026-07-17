@@ -154,7 +154,7 @@ export const FLASHCARDS: Flashcard[] = [
 ];
 
 export const SESSION_TYPES: Record<string, SessionType> = {
-  mock: { id: 'mock', name: 'Interview Mock', cardCount: 10, icon: 'record_voice_over', timeLimit: 7, description: 'Simulate a real interview' },
+  mock: { id: 'mock', name: 'Interview Mock', cardCount: 20, icon: 'record_voice_over', timeLimit: 7, description: 'Simulate a real interview' },
   daily: { id: 'daily', name: 'Daily Review', cardCount: 16, icon: 'today', timeLimit: 15, description: 'Quick daily practice' },
   weekly: { id: 'weekly', name: 'Weekly Review', cardCount: 32, icon: 'date_range', timeLimit: 30, description: 'Reinforce weekly progress' },
   monthly: { id: 'monthly', name: 'Monthly Review', cardCount: 64, icon: 'calendar_month', timeLimit: 60, description: 'Comprehensive monthly check' },
@@ -170,7 +170,7 @@ export const STUDY_TIPS: string[] = [
   "Teaching someone else what you've learned is one of the most effective study techniques.",
   "Try grouping related questions together mentally — it helps with associative memory.",
   "Don't rush through cards. Spend a moment reflecting on each answer, even ones you know well.",
-  "The civics test asks 10 questions and you need to answer 6 correctly. Focus on your weakest areas.",
+  "At your interview, the officer asks 20 of the 128 questions and you need 12 correct. Focus on your weakest areas.",
   "Review your mistakes from the last session before starting a new one.",
 ];
 
