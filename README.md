@@ -40,8 +40,10 @@ A progressive web app for mastering all **128 USCIS Naturalization Civics Test**
 | D | Colonial Period and Independence |
 | E | 1800s |
 | F | Recent American History |
-| G | Geography |
-| H | Symbols and Holidays |
+| G | Symbols |
+| H | Holidays |
+
+Categories mirror the official USCIS subsections, and card ids 1–128 match the official question numbering.
 
 ## Tech Stack
 
@@ -113,4 +115,4 @@ civic-flash-cards/
 
 ## Data & Privacy
 
-All study progress is stored in `localStorage` — nothing leaves your device. Resetting progress clears only the app's own keys (`civic_mastery`, `civic_sessions`, `civic_settings`).
+All study progress is stored in `localStorage` — nothing leaves your device. Resetting progress clears only the app's own keys (`civic_mastery_v2`, `civic_sessions_v2`, `civic_settings`, plus the legacy pre-v2 `civic_mastery`/`civic_sessions` keys).

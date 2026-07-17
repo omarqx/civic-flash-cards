@@ -8,11 +8,15 @@ import { FLASHCARDS, CATEGORIES, SESSION_TYPES } from '../data/flashcards';
 import type { CardMastery, StudySession, AppSettings, MasteryStats, CategoryStat, CategoryId } from '../types';
 import { Observable } from 'rxjs/internal/Observable';
 
+// v2: question bank replaced with the official 2025 USCIS 128-question list
+// (ids renumbered to the official numbering), so old progress keys are orphaned.
 const KEYS = {
-  mastery: 'civic_mastery',
-  sessions: 'civic_sessions',
+  mastery: 'civic_mastery_v2',
+  sessions: 'civic_sessions_v2',
   settings: 'civic_settings',
 } as const;
+
+const LEGACY_KEYS = ['civic_mastery', 'civic_sessions'] as const;
 
 // ── Reactive state ──
 const mastery$ = new BehaviorSubject<Record<number, CardMastery>>(
@@ -234,6 +238,7 @@ function resetAll(): void {
   localStorage.removeItem(KEYS.mastery);
   localStorage.removeItem(KEYS.sessions);
   localStorage.removeItem(KEYS.settings);
+  for (const key of LEGACY_KEYS) localStorage.removeItem(key);
   mastery$.next({});
   sessions$.next([]);
   settings$.next({ hideMastered: false, shuffleDefault: false });
