@@ -15,7 +15,7 @@ A progressive web app for mastering all **128 USCIS Naturalization Civics Test**
 - **Statistics** — session history, per-category mastery rings, aggregate progress over time
 - **PWA / offline** — installable on iOS and Android, works without a network connection after first load
 - **Keyboard-first** — full keyboard navigation and hotkeys for power users
-- **Patriotic Brutalism** design — bold red-white-blue palette, thick borders, Oswald + Barlow typefaces
+- **Federal Editorial** design — archival paper-and-ink palette, Fraunces + Public Sans, hairline rules, gold-foil accents
 
 ## Keyboard Shortcuts
 

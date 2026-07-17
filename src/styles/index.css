@@ -947,9 +947,10 @@ flash-card { display: block; width: 100%; max-width: 620px; }
 /* ============================================================
    RESPONSIVE
    ============================================================ */
-@media (max-width: 900px) {
-  .dashboard-view { grid-template-columns: 1fr; }
-  .study-view { grid-template-columns: 1fr; }
+@media (max-width: 1024px) {
+  .dashboard-view, .study-view { grid-template-columns: 1fr; }
+  .dashboard-sidebar, .study-sidebar { position: static; flex-direction: row; flex-wrap: wrap; }
+  .dashboard-sidebar > *, .study-sidebar > * { flex: 1 1 240px; }
   .session-grid { grid-template-columns: repeat(3, 1fr); }
   .stats-grid-4 { grid-template-columns: repeat(2, 1fr); }
 }
@@ -957,37 +958,25 @@ flash-card { display: block; width: 100%; max-width: 620px; }
 @media (max-width: 768px) {
   .app-body { grid-template-columns: 1fr; }
   #sidebar {
-    position: fixed;
-    left: 0;
-    top: var(--topbar-height);
-    bottom: 0;
-    width: var(--sidebar-width);
-    transform: translateX(-100%);
-    transition: transform 250ms var(--ease);
-    z-index: 300;
-    box-shadow: 8px 0 0 var(--black);
+    position: fixed; left: 0; top: var(--topbar-height); bottom: 0; width: 240px;
+    transform: translateX(-100%); transition: transform .25s var(--ease); z-index: 300;
   }
   #sidebar.open { transform: translateX(0); }
-  .sidebar-overlay {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(26, 43, 74, 0.4);
-    z-index: 250;
-    top: var(--topbar-height);
-  }
-  .sidebar-overlay.visible { display: block; }
+  .sidebar-overlay { position: fixed; inset: 0; background: rgba(26,43,74,0.35); opacity: 0; pointer-events: none; transition: opacity .25s; z-index: 250; }
+  .sidebar-overlay.visible { opacity: 1; pointer-events: auto; }
   .mobile-nav-toggle { display: flex; }
+  .dashboard-view, .study-view, .library-view { padding: var(--sp-5) var(--sp-4); }
+  .topbar-brand-sub { display: none; }
+  .flashcard-question { font-size: 1.3rem; }
+  .study-actions { flex-wrap: wrap; justify-content: center; }
   #main-content { padding: var(--sp-4); }
   .session-grid { grid-template-columns: repeat(2, 1fr); }
   .card-grid { grid-template-columns: 1fr; }
-  .flashcard-question { font-size: 1.2rem; }
   .flashcard { min-height: 260px; }
   .dashboard-header h1,
   .library-header h1 { font-size: 1.6rem; }
   .category-row { flex-wrap: wrap; }
   .category-row-label { min-width: 100%; font-size: 0.75rem; }
-  .study-actions { flex-wrap: wrap; }
   .btn-still-learning, .btn-i-know-this { min-width: 120px; font-size: 0.9rem; padding: var(--sp-3) var(--sp-5); }
 }
 

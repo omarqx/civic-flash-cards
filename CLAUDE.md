@@ -20,4 +20,4 @@ A PWA for mastering the 128 USCIS Naturalization Civics Test questions using spa
 - [Architecture](.claude/architecture.md) — Web Components, routing, state management
 - [TypeScript](.claude/typescript.md) — Types, patterns, strict mode conventions
 - [Performance](.claude/performance.md) — Bundle optimization skills
-- [Design System](.claude/design-system.md) — Patriotic Brutalism theme tokens
+- [Design System](.claude/design-system.md) — Federal Editorial theme tokens
