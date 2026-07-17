@@ -120,18 +120,23 @@ function setCardRating(cardId: number, rating: number): CardMastery {
   const recent = card.ratingHistory.slice(-5).map(r => r.rating);
   card.masteryLevel = Math.round(recent.reduce((a, b) => a + b, 0) / recent.length);
   all[cardId] = card;
+
+  // Punch log: count first crossings into mastered (4+) toward today's quota.
+  // Must snapshot today's quota BEFORE mastery$.next(all) below — otherwise a
+  // crossing that creates today's entry would compute the quota against a
+  // remainingUnmastered() count that already excludes this just-mastered card.
+  const crossed = prevLevel < 4 && card.masteryLevel >= 4;
+  const s = settings$.getValue();
+  const today = todayISO();
+  const crossedLive = crossed && !!s.interviewDate && daysBetween(today, s.interviewDate) >= 0;
+  if (crossedLive) ensureTodayEntry();
+
   mastery$.next(all);
 
-  // Punch log: count first crossings into mastered (4+) toward today's quota
-  if (prevLevel < 4 && card.masteryLevel >= 4) {
-    const s = settings$.getValue();
-    const today = todayISO();
-    if (s.interviewDate && daysBetween(today, s.interviewDate) >= 0) {
-      ensureTodayEntry();
-      const log = { ...punchlog$.getValue() };
-      log[today] = { ...log[today], mastered: log[today].mastered + 1 };
-      punchlog$.next(log);
-    }
+  if (crossedLive) {
+    const log = { ...punchlog$.getValue() };
+    log[today] = { ...log[today], mastered: log[today].mastered + 1 };
+    punchlog$.next(log);
   }
   return card;
 }

@@ -27,6 +27,7 @@ export class CivicDashboard extends HTMLElement {
   private destroy$ = new Subject<void>();
 
   connectedCallback() {
+    this.destroy$ = new Subject<void>();
     this.hideMastered = Store.getSettings().hideMastered;
     this.render();
 
@@ -40,6 +41,7 @@ export class CivicDashboard extends HTMLElement {
 
   disconnectedCallback() {
     this.destroy$.next();
+    this.destroy$.complete();
   }
 
   private render() {

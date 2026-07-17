@@ -65,6 +65,8 @@ export class CivicSettings extends HTMLElement {
       if (v && v > todayISO()) {
         Store.setInterviewDate(v, false);
         this.render();
+      } else {
+        (e.target as HTMLInputElement).value = Store.getSettings().interviewDate ?? '';
       }
     });
 

@@ -37,7 +37,13 @@ export class InterviewDateModal extends HTMLElement {
 
     this.querySelector('[data-action="set"]')?.addEventListener('click', () => {
       const v = input.value;
-      if (v && v >= minDate) finish(v, false); else skip();
+      if (v && v >= minDate) {
+        finish(v, false);
+      } else {
+        input.value = '';
+        input.focus();
+        input.classList.add('invalid');
+      }
     });
     this.querySelector('[data-action="skip"]')?.addEventListener('click', skip);
     dialog.addEventListener('cancel', (e) => { e.preventDefault(); skip(); });          // Escape

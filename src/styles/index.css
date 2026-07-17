@@ -952,6 +952,7 @@ flash-card { display: block; width: 100%; max-width: 620px; }
   padding: 8px 12px; margin-bottom: var(--sp-4);
 }
 .interview-date-input:focus-visible { outline: 2px solid var(--gold); outline-offset: 1px; }
+.interview-date-input.invalid { border-color: var(--red); }
 .interview-modal-actions { display: flex; gap: var(--sp-3); justify-content: center; flex-wrap: wrap; }
 .btn-quiet { background: none; color: var(--ink-soft); border-color: var(--hairline); }
 .btn-quiet:hover { color: var(--ink); }

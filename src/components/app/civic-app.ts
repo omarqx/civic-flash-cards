@@ -87,7 +87,7 @@ export class CivicApp extends HTMLElement {
     if (plan.interviewDate !== null && !plan.expired) return;
     const modal = document.createElement('interview-date-modal') as InterviewDateModal;
     document.body.appendChild(modal);
-    modal.open(plan.expired && plan.interviewDate !== null);
+    modal.open(plan.expired);
   }
 
   private setupTheme() {
