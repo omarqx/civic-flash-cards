@@ -164,7 +164,7 @@ export class CivicLibrary extends HTMLElement {
     // Modal study-card → launch session
     this.addEventListener('study-card', ((e: CustomEvent) => {
       const s = {
-        id: `session_${Date.now()}`, type: 'mock' as const, typeName: `Single Card Q${e.detail.cardId}`,
+        id: `session_${Date.now()}`, type: 'full' as const, typeName: `Single Card Q${e.detail.cardId}`,
         startedAt: Date.now(), completedAt: null, cardIds: [e.detail.cardId], ratings: {}, score: 0,
       };
       SessionManager.set(s);

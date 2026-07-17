@@ -63,7 +63,7 @@ export class CivicStudy extends HTMLElement {
       <div class="study-view" id="study-view">
         <div class="study-main">
           <div class="session-bar">
-            <span class="eyebrow eyebrow-quiet">${this.session ? SESSION_TYPES[this.session.type]?.name ?? this.session.typeName : 'Study'}</span>
+            <span class="eyebrow eyebrow-quiet">${this.session?.typeName ?? 'Study'}</span>
             <div class="session-track"><div class="session-track-fill" id="progress-fill" style="width:${pct}%"></div></div>
             <span class="session-count" id="progress-sub">${reviewed} / ${total}</span>
           </div>
@@ -225,7 +225,9 @@ export class CivicStudy extends HTMLElement {
 
     const ratings = Object.values(saved.ratings);
     const correct = ratings.filter(r => r >= 4).length;
-    const isMock = saved.type === 'mock';
+    // Pass/fail scoring only applies to a real full-size mock interview —
+    // custom sessions must never inherit the 12-of-20 bar.
+    const isMock = saved.type === 'mock' && saved.cardIds.length === SESSION_TYPES.mock.cardCount;
     const passed = correct >= 12;
 
     const headerBlock = isMock

@@ -64,7 +64,7 @@ export class FlashCard extends HTMLElement {
           <div class="flashcard-face back">
             ${frame}
             <div class="flashcard-cat-eyebrow ${css}">Answer</div>
-            <div class="flashcard-answer">${card.a}</div>
+            <div class="flashcard-answer ${card.a.length > 220 ? 'long' : ''}">${card.a}</div>
           </div>
         </div>
       </div>
