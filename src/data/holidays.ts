@@ -16,7 +16,7 @@ function fixed(date: Date, month: number, day: number): boolean {
 const RULES: Array<{ holiday: Holiday; match: (d: Date) => boolean }> = [
   { holiday: { name: "New Year's Day", message: 'A fresh year of study begins.' }, match: d => fixed(d, 0, 1) },
   { holiday: { name: 'Martin Luther King, Jr. Day', message: 'He worked for equality for all Americans.' }, match: d => nthWeekday(d, 0, 1, 3) },
-  { holiday: { name: "Presidents' Day", message: 'Honoring the nation’s highest office.' }, match: d => nthWeekday(d, 1, 1, 3) },
+  { holiday: { name: "Presidents' Day", message: "Honoring the nation's highest office." }, match: d => nthWeekday(d, 1, 1, 3) },
   { holiday: { name: 'Memorial Day', message: 'Honoring those who died in military service.' }, match: d => lastWeekday(d, 4, 1) },
   { holiday: { name: 'Flag Day', message: 'Fifty stars, thirteen stripes.' }, match: d => fixed(d, 5, 14) },
   { holiday: { name: 'Juneteenth', message: 'Celebrating the end of slavery in the United States.' }, match: d => fixed(d, 5, 19) },

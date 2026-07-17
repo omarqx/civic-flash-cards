@@ -251,8 +251,8 @@ body::before {
   background: var(--surface);
   padding: var(--sp-5) var(--sp-3);
   display: flex; flex-direction: column; gap: var(--sp-2);
-  position: sticky; top: var(--topbar-height);
-  height: calc(100dvh - var(--topbar-height));
+  position: sticky; top: calc(var(--topbar-height) + var(--ribbon-height, 0px));
+  height: calc(100dvh - var(--topbar-height) - var(--ribbon-height, 0px));
   overflow-y: auto;
 }
 .nav-links { list-style: none; display: flex; flex-direction: column; gap: 2px; }
@@ -292,7 +292,7 @@ body::before {
    ============================================================ */
 #main-content {
   padding: var(--sp-8);
-  min-height: calc(100dvh - var(--topbar-height));
+  min-height: calc(100dvh - var(--topbar-height) - var(--ribbon-height, 0px));
   overflow-y: auto;
 }
 
@@ -439,7 +439,7 @@ body::before {
 .session-launcher[featured] .session-launcher-go { color: var(--gold-soft); }
 
 /* Progress ledger (right rail) */
-.dashboard-sidebar { display: flex; flex-direction: column; gap: var(--sp-4); position: sticky; top: calc(var(--topbar-height) + var(--sp-6)); }
+.dashboard-sidebar { display: flex; flex-direction: column; gap: var(--sp-4); position: sticky; top: calc(var(--topbar-height) + var(--ribbon-height, 0px) + var(--sp-6)); }
 .progress-ledger {
   background: var(--surface); border: 1px solid var(--hairline);
   border-radius: var(--radius-md); box-shadow: var(--shadow-soft); overflow: hidden;
@@ -975,7 +975,7 @@ flash-card { display: block; width: 100%; max-width: 620px; }
 @media (max-width: 768px) {
   .app-body { grid-template-columns: 1fr; }
   #sidebar {
-    position: fixed; left: 0; top: var(--topbar-height); bottom: 0; width: 240px;
+    position: fixed; left: 0; top: calc(var(--topbar-height) + var(--ribbon-height, 0px)); bottom: 0; width: 240px;
     transform: translateX(-100%); transition: transform .25s var(--ease); z-index: 300;
   }
   #sidebar.open { transform: translateX(0); }

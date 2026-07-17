@@ -61,6 +61,14 @@ export class CivicApp extends HTMLElement {
       ribbon.setAttribute('role', 'note');
       ribbon.innerHTML = `<span class="holiday-ribbon-star">★</span> Happy ${holiday.name} <span class="holiday-ribbon-sep">—</span> ${holiday.message} <span class="holiday-ribbon-star">★</span>`;
       this.querySelector('civic-topbar')?.after(ribbon);
+
+      // Ribbon height is variable (text wraps on narrow screens); expose it so
+      // sticky/fixed layout offsets can account for it. No ribbon → var stays
+      // unset and CSS falls back to 0px.
+      const setRibbonHeight = () =>
+        document.documentElement.style.setProperty('--ribbon-height', `${ribbon.offsetHeight}px`);
+      setRibbonHeight();
+      window.addEventListener('resize', setRibbonHeight);
     }
 
     this.setupTheme();
