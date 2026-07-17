@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Civic Flash Cards — Federal Editorial Mockup</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Public+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #F7F3EA;
+    --surface: #FFFDF7;
+    --ink: #1A2B4A;
+    --ink-soft: #4A5878;
+    --navy: #20345C;
+    --red: #9E2B25;
+    --gold: #B08D3E;
+    --gold-soft: #C9AE6E;
+    --hairline: rgba(26, 43, 74, 0.16);
+    --hairline-soft: rgba(26, 43, 74, 0.09);
+    --shadow-soft: 0 1px 2px rgba(26,43,74,0.05), 0 8px 24px -12px rgba(26,43,74,0.18);
+    --font-display: 'Fraunces', Georgia, serif;
+    --font-body: 'Public Sans', -apple-system, sans-serif;
+
+    /* Category tints — muted archival */
+    --cat-a-bg: #E9EDF4; --cat-a: #46608F;  /* dusty blue */
+    --cat-b-bg: #EAF0E6; --cat-b: #5A7350;  /* sage */
+    --cat-c-bg: #F5EAE2; --cat-c: #A05C3B;  /* clay */
+    --cat-d-bg: #F5EFDD; --cat-d: #8A6F2F;  /* wheat */
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--font-body);
+    font-size: 15px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* paper grain */
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    pointer-events: none;
+    z-index: 999;
+    opacity: 0.035;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  /* ============ mockup chrome ============ */
+  .mock-label {
+    max-width: 1180px;
+    margin: 56px auto 16px;
+    padding: 0 24px;
+    display: flex; align-items: center; gap: 14px;
+  }
+  .mock-label:first-child { margin-top: 40px; }
+  .mock-label .tag {
+    font-size: 11px; font-weight: 700; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--gold);
+  }
+  .mock-label .line { flex: 1; height: 1px; background: var(--hairline); }
+
+  .frame {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 0 24px 8px;
+  }
+  .screen {
+    background: var(--paper);
+    border: 1px solid var(--hairline);
+    border-radius: 8px;
+    box-shadow: var(--shadow-soft);
+    overflow: hidden;
+  }
+
+  /* ============ masthead ============ */
+  .masthead {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 14px 28px;
+    background: var(--surface);
+    border-bottom: 1px solid var(--hairline);
+    position: relative;
+  }
+  .masthead::after {
+    content: ''; position: absolute; left: 0; right: 0; bottom: 3px;
+    height: 1px; background: var(--hairline-soft);
+  }
+  .wordmark {
+    font-family: var(--font-display);
+    font-weight: 600; font-size: 19px; letter-spacing: 0.01em;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .wordmark .star { color: var(--gold); font-size: 14px; transform: translateY(-1px); }
+  .wordmark .est {
+    font-family: var(--font-body); font-size: 10px; font-weight: 600;
+    letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-soft);
+    border-left: 1px solid var(--hairline); padding-left: 10px; margin-left: 2px;
+  }
+  .masthead .kbd-btn {
+    font-family: var(--font-body); font-size: 12px; font-weight: 600;
+    color: var(--ink-soft); background: none;
+    border: 1px solid var(--hairline); border-radius: 6px;
+    padding: 6px 12px; cursor: pointer; display: flex; align-items: center; gap: 8px;
+  }
+  .masthead .kbd-btn kbd {
+    font-family: var(--font-body); font-size: 10px; border: 1px solid var(--hairline);
+    border-bottom-width: 2px; border-radius: 4px; padding: 1px 5px; background: var(--paper);
+  }
+
+  /* ============ shell ============ */
+  .shell { display: flex; min-height: 640px; }
+
+  .sidebar {
+    width: 208px; flex-shrink: 0;
+    background: var(--surface);
+    border-right: 1px solid var(--hairline);
+    padding: 20px 14px;
+    display: flex; flex-direction: column; gap: 2px;
+  }
+  .nav-item {
+    display: flex; align-items: center; gap: 11px;
+    padding: 9px 12px; border-radius: 6px;
+    font-size: 13.5px; font-weight: 500; color: var(--ink-soft);
+    text-decoration: none; border: 1px solid transparent;
+  }
+  .nav-item svg { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 1.6; }
+  .nav-item:hover { color: var(--ink); background: rgba(26,43,74,0.04); }
+  .nav-item.active {
+    color: var(--navy); font-weight: 600;
+    background: var(--paper);
+    border-color: var(--hairline);
+    position: relative;
+  }
+  .nav-item.active::before {
+    content: ''; position: absolute; left: -15px; top: 8px; bottom: 8px;
+    width: 2px; background: var(--gold); border-radius: 2px;
+  }
+  .sidebar .spacer { flex: 1; }
+  .sidebar-foot {
+    border-top: 1px solid var(--hairline-soft); padding-top: 14px;
+    font-size: 11px; color: var(--ink-soft); text-align: center;
+    letter-spacing: 0.06em;
+  }
+  .sidebar-foot .stars { color: var(--gold-soft); letter-spacing: 0.3em; font-size: 10px; display: block; margin-bottom: 4px; }
+
+  main { flex: 1; padding: 36px 40px 44px; min-width: 0; }
+
+  /* ============ typography helpers ============ */
+  .eyebrow {
+    font-size: 10.5px; font-weight: 700; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--gold);
+    display: flex; align-items: center; gap: 10px;
+  }
+  h1.page-title {
+    font-family: var(--font-display);
+    font-size: 34px; font-weight: 600; letter-spacing: -0.01em;
+    margin: 6px 0 4px; line-height: 1.15;
+  }
+  .page-sub { color: var(--ink-soft); font-size: 14px; }
+
+  .double-rule {
+    margin: 22px 0 26px;
+    border-top: 1px solid var(--ink);
+    position: relative; opacity: 0.85;
+  }
+  .double-rule::after {
+    content: ''; position: absolute; left: 0; right: 0; top: 2px;
+    border-top: 1px solid var(--hairline);
+  }
+
+  .section-head {
+    display: flex; align-items: baseline; justify-content: space-between;
+    margin: 30px 0 14px;
+  }
+  .section-head h2 {
+    font-family: var(--font-display); font-size: 19px; font-weight: 600;
+  }
+  .section-head .more { font-size: 12.5px; font-weight: 600; color: var(--navy); text-decoration: none; }
+
+  /* ============ dashboard hero row ============ */
+  .hero-row { display: flex; gap: 32px; align-items: flex-start; }
+  .hero-left { flex: 1; min-width: 0; }
+
+  .progress-ledger {
+    width: 320px; flex-shrink: 0;
+    background: var(--surface);
+    border: 1px solid var(--hairline);
+    border-radius: 8px;
+    box-shadow: var(--shadow-soft);
+    overflow: hidden;
+  }
+  .ledger-head {
+    padding: 14px 18px 12px;
+    border-bottom: 1px solid var(--hairline);
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .ledger-head .eyebrow { color: var(--ink-soft); }
+  .ledger-big {
+    padding: 18px;
+    display: flex; align-items: baseline; gap: 10px;
+    border-bottom: 1px solid var(--hairline-soft);
+  }
+  .ledger-big .num {
+    font-family: var(--font-display); font-size: 44px; font-weight: 600; line-height: 1;
+  }
+  .ledger-big .of { color: var(--ink-soft); font-size: 13px; }
+  .ledger-rows { padding: 6px 0; }
+  .ledger-row {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 8px 18px; font-size: 13px;
+  }
+  .ledger-row + .ledger-row { border-top: 1px solid var(--hairline-soft); }
+  .ledger-row .k { color: var(--ink-soft); display: flex; align-items: center; gap: 8px; }
+  .ledger-row .dot { width: 7px; height: 7px; border-radius: 50%; }
+  .ledger-row .v { font-weight: 600; font-variant-numeric: tabular-nums; }
+
+  /* ============ study plans ============ */
+  .plans { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; margin-top: 18px; }
+  .plan {
+    background: var(--surface);
+    border: 1px solid var(--hairline);
+    border-radius: 8px;
+    padding: 16px 16px 14px;
+    cursor: pointer;
+    position: relative;
+    transition: box-shadow .18s ease, transform .18s ease, border-color .18s ease;
+  }
+  .plan:hover { box-shadow: var(--shadow-soft); transform: translateY(-2px); border-color: rgba(176,141,62,0.5); }
+  .plan .roman {
+    font-family: var(--font-display); font-size: 13px; font-weight: 600;
+    color: var(--gold); letter-spacing: 0.08em;
+  }
+  .plan h3 {
+    font-family: var(--font-display); font-size: 15.5px; font-weight: 600;
+    margin: 6px 0 2px; white-space: nowrap;
+  }
+  .plan .meta { font-size: 11.5px; color: var(--ink-soft); white-space: nowrap; }
+  .plan .rule { height: 1px; background: var(--hairline-soft); margin: 12px 0 10px; }
+  .plan .go {
+    font-size: 11.5px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--navy); display: flex; align-items: center; gap: 6px;
+  }
+  .plan.featured { background: var(--navy); border-color: var(--navy); color: #F4F1E8; }
+  .plan.featured .roman { color: var(--gold-soft); }
+  .plan.featured .meta { color: rgba(244,241,232,0.65); }
+  .plan.featured .rule { background: rgba(244,241,232,0.15); }
+  .plan.featured .go { color: var(--gold-soft); }
+
+  /* ============ library cards ============ */
+  .card-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+  .qcard {
+    background: var(--surface);
+    border: 1px solid var(--hairline);
+    border-radius: 8px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: box-shadow .18s ease, transform .18s ease;
+    display: flex; flex-direction: column;
+  }
+  .qcard:hover { box-shadow: var(--shadow-soft); transform: translateY(-2px); }
+  .qcard .cat-band {
+    padding: 8px 14px;
+    font-size: 10px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .qcard .cat-band .qnum { font-family: var(--font-display); font-style: italic; font-weight: 500; letter-spacing: 0; text-transform: none; font-size: 12px; opacity: 0.8; }
+  .qcard .body { padding: 14px 14px 12px; flex: 1; }
+  .qcard h4 {
+    font-family: var(--font-display); font-size: 15.5px; font-weight: 600; line-height: 1.35;
+    margin-bottom: 6px;
+  }
+  .qcard .ans { font-size: 12.5px; color: var(--ink-soft); }
+  .qcard .foot {
+    padding: 9px 14px;
+    border-top: 1px solid var(--hairline-soft);
+    display: flex; justify-content: space-between; align-items: center;
+    font-size: 10.5px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+  .stars-mastery { color: var(--gold); font-size: 13px; letter-spacing: 0.18em; }
+  .stars-mastery .off { color: rgba(26,43,74,0.18); }
+
+  .band-a { background: var(--cat-a-bg); color: var(--cat-a); }
+  .band-b { background: var(--cat-b-bg); color: var(--cat-b); }
+  .band-c { background: var(--cat-c-bg); color: var(--cat-c); }
+
+  /* ============ study view ============ */
+  .study-wrap { display: flex; gap: 32px; }
+  .study-main { flex: 1; display: flex; flex-direction: column; align-items: center; }
+
+  .session-bar {
+    width: 100%; display: flex; align-items: center; gap: 16px;
+    margin-bottom: 30px;
+  }
+  .session-bar .eyebrow { color: var(--ink-soft); flex-shrink: 0; }
+  .session-track { flex: 1; height: 3px; background: rgba(26,43,74,0.1); border-radius: 3px; overflow: hidden; }
+  .session-track .fill { width: 31%; height: 100%; background: var(--gold); }
+  .session-bar .count { font-family: var(--font-display); font-size: 14px; font-weight: 600; font-variant-numeric: tabular-nums; }
+
+  .flashcard {
+    width: 100%; max-width: 620px;
+    background: var(--surface);
+    border: 1px solid var(--hairline);
+    border-radius: 10px;
+    box-shadow: var(--shadow-soft);
+    padding: 10px;
+  }
+  .flashcard .inner {
+    border: 1px solid var(--hairline);
+    border-radius: 6px;
+    padding: 46px 48px 38px;
+    text-align: center;
+    position: relative;
+    min-height: 300px;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+  }
+  .flashcard .corner { position: absolute; width: 14px; height: 14px; color: var(--gold-soft); }
+  .flashcard .corner svg { width: 100%; height: 100%; stroke: currentColor; fill: none; stroke-width: 1.5; }
+  .corner.tl { top: 10px; left: 10px; }
+  .corner.tr { top: 10px; right: 10px; transform: rotate(90deg); }
+  .corner.br { bottom: 10px; right: 10px; transform: rotate(180deg); }
+  .corner.bl { bottom: 10px; left: 10px; transform: rotate(270deg); }
+
+  .flashcard .cat-eyebrow {
+    font-size: 10.5px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--cat-a);
+    display: flex; align-items: center; gap: 10px;
+    margin-bottom: 22px;
+  }
+  .flashcard .cat-eyebrow::before, .flashcard .cat-eyebrow::after {
+    content: ''; width: 24px; height: 1px; background: var(--hairline);
+  }
+  .flashcard .question {
+    font-family: var(--font-display);
+    font-size: 27px; font-weight: 500; line-height: 1.3; letter-spacing: -0.005em;
+    max-width: 480px;
+  }
+  .flashcard .hint {
+    margin-top: 26px; font-size: 11px; font-weight: 600; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--ink-soft);
+    display: flex; align-items: center; gap: 8px;
+  }
+  .flashcard .hint kbd {
+    font-size: 10px; border: 1px solid var(--hairline); border-bottom-width: 2px;
+    border-radius: 4px; padding: 1px 6px; background: var(--paper);
+  }
+  .flashcard .qnum-seal {
+    position: absolute; top: 18px; right: 20px;
+    font-family: var(--font-display); font-style: italic; font-size: 13px; color: var(--ink-soft);
+  }
+
+  .rating-row { display: flex; gap: 12px; margin-top: 28px; align-items: center; }
+  .nav-arrow {
+    width: 40px; height: 40px; border-radius: 50%;
+    border: 1px solid var(--hairline); background: var(--surface);
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; color: var(--ink-soft); font-size: 15px;
+  }
+  .btn {
+    font-family: var(--font-body); font-size: 12.5px; font-weight: 700;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    padding: 13px 26px; border-radius: 6px; cursor: pointer;
+    border: 1px solid transparent;
+    transition: transform .15s ease, box-shadow .15s ease;
+  }
+  .btn:hover { transform: translateY(-1px); box-shadow: var(--shadow-soft); }
+  .btn .sub { display: block; font-weight: 500; font-size: 10px; letter-spacing: 0.04em; text-transform: none; opacity: 0.75; margin-top: 2px; }
+  .btn-red { background: var(--red); color: #F7F3EA; }
+  .btn-navy { background: var(--navy); color: #F7F3EA; }
+
+  .study-aside { width: 264px; flex-shrink: 0; display: flex; flex-direction: column; gap: 16px; }
+  .aside-box {
+    background: var(--surface); border: 1px solid var(--hairline); border-radius: 8px;
+    padding: 16px 18px;
+  }
+  .aside-box .eyebrow { color: var(--ink-soft); margin-bottom: 10px; }
+  .aside-stat { display: flex; justify-content: space-between; font-size: 13px; padding: 6px 0; }
+  .aside-stat + .aside-stat { border-top: 1px solid var(--hairline-soft); }
+  .aside-stat .v { font-weight: 600; font-variant-numeric: tabular-nums; }
+  .aside-stat .v.good { color: #4C7A48; }
+  .aside-stat .v.bad { color: var(--red); }
+
+  .streak-box { text-align: center; padding: 20px 18px; }
+  .streak-box .stars { color: var(--gold); letter-spacing: 0.3em; font-size: 11px; }
+  .streak-box .num { font-family: var(--font-display); font-size: 34px; font-weight: 600; margin: 4px 0 0; }
+  .streak-box .lbl { font-size: 10.5px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-soft); }
+
+  .footer-note {
+    max-width: 1180px; margin: 26px auto 60px; padding: 0 24px;
+    text-align: center; font-size: 12px; color: var(--ink-soft);
+  }
+  .footer-note .stars { color: var(--gold-soft); letter-spacing: 0.4em; display: block; margin-bottom: 6px; }
+</style>
+</head>
+<body>
+
+<!-- ==================== DASHBOARD ==================== -->
+<div class="mock-label">
+  <span class="tag">Mockup · View 1 — Dashboard</span>
+  <span class="line"></span>
+</div>
+<div class="frame">
+  <div class="screen">
+    <div class="masthead">
+      <div class="wordmark">
+        <span class="star">★</span> Civic Flash Cards
+        <span class="est">USCIS Civics · 2025 Edition</span>
+      </div>
+      <button class="kbd-btn">Shortcuts <kbd>?</kbd></button>
+    </div>
+    <div class="shell">
+      <nav class="sidebar">
+        <a class="nav-item active" href="#">
+          <svg viewBox="0 0 24 24"><path d="M3 10.5 12 3l9 7.5M5 9.5V21h14V9.5"/></svg>
+          Dashboard
+        </a>
+        <a class="nav-item" href="#">
+          <svg viewBox="0 0 24 24"><rect x="3" y="5" width="14" height="15" rx="1.5"/><path d="M7 5V3.8A0.8 0.8 0 0 1 7.8 3H20.2a0.8 0.8 0 0 1 .8.8V17"/></svg>
+          Study
+        </a>
+        <a class="nav-item" href="#">
+          <svg viewBox="0 0 24 24"><path d="M4 19.5V5a1 1 0 0 1 1-1h5v16.5M20 19.5V5a1 1 0 0 0-1-1h-5v16.5M4 19.5h16"/></svg>
+          Library
+        </a>
+        <a class="nav-item" href="#">
+          <svg viewBox="0 0 24 24"><path d="M4 20V10M10 20V4M16 20v-7M21 20H3"/></svg>
+          Stats
+        </a>
+        <a class="nav-item" href="#">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M19.1 4.9 17 7M7 17l-2.1 2.1"/></svg>
+          Settings
+        </a>
+        <div class="spacer"></div>
+        <div class="sidebar-foot">
+          <span class="stars">★ ★ ★</span>
+          E pluribus unum
+        </div>
+      </nav>
+      <main>
+        <div class="hero-row">
+          <div class="hero-left">
+            <div class="eyebrow">Wednesday, July 16</div>
+            <h1 class="page-title">Good morning, Citizen&#8209;to&#8209;be.</h1>
+            <p class="page-sub">You've mastered 42 of 128 questions. Steady on — the oath awaits.</p>
+            <div class="double-rule"></div>
+
+            <div class="section-head" style="margin-top:0">
+              <h2>Study Plans</h2>
+              <a class="more" href="#">Choose category →</a>
+            </div>
+            <div class="plans" style="margin-top:8px">
+              <div class="plan featured">
+                <div class="roman">I.</div>
+                <h3>Daily Review</h3>
+                <div class="meta">16 cards · ~5 min</div>
+                <div class="rule"></div>
+                <div class="go">Begin →</div>
+              </div>
+              <div class="plan">
+                <div class="roman">II.</div>
+                <h3>Weekly Review</h3>
+                <div class="meta">32 cards · ~12 min</div>
+                <div class="rule"></div>
+                <div class="go">Begin →</div>
+              </div>
+              <div class="plan">
+                <div class="roman">III.</div>
+                <h3>Interview Mock</h3>
+                <div class="meta">10 cards · timed</div>
+                <div class="rule"></div>
+                <div class="go">Begin →</div>
+              </div>
+              <div class="plan">
+                <div class="roman">IV.</div>
+                <h3>Full Study</h3>
+                <div class="meta">All 128 cards</div>
+                <div class="rule"></div>
+                <div class="go">Begin →</div>
+              </div>
+            </div>
+          </div>
+
+          <aside class="progress-ledger">
+            <div class="ledger-head">
+              <span class="eyebrow">Progress Ledger</span>
+              <span style="color:var(--gold); font-size:12px">★</span>
+            </div>
+            <div class="ledger-big">
+              <span class="num">42</span>
+              <span class="of">of 128 mastered</span>
+            </div>
+            <div class="ledger-rows">
+              <div class="ledger-row">
+                <span class="k"><span class="dot" style="background:var(--gold)"></span>Mastered</span>
+                <span class="v">42</span>
+              </div>
+              <div class="ledger-row">
+                <span class="k"><span class="dot" style="background:var(--navy)"></span>In progress</span>
+                <span class="v">31</span>
+              </div>
+              <div class="ledger-row">
+                <span class="k"><span class="dot" style="background:rgba(26,43,74,0.25)"></span>Not started</span>
+                <span class="v">55</span>
+              </div>
+              <div class="ledger-row">
+                <span class="k">Current streak</span>
+                <span class="v" style="color:var(--gold)">6 days ★</span>
+              </div>
+            </div>
+          </aside>
+        </div>
+
+        <div class="section-head">
+          <h2>Continue where you left off</h2>
+          <a class="more" href="#">All 128 cards →</a>
+        </div>
+        <div class="card-grid">
+          <div class="qcard">
+            <div class="cat-band band-a">Principles of Gov’t <span class="qnum">No. 1</span></div>
+            <div class="body">
+              <h4>What is the form of government of the United States?</h4>
+              <div class="ans">Republic · representative democracy</div>
+            </div>
+            <div class="foot">
+              Mastery
+              <span class="stars-mastery">★★★<span class="off">★★</span></span>
+            </div>
+          </div>
+          <div class="qcard">
+            <div class="cat-band band-b">System of Gov’t <span class="qnum">No. 22</span></div>
+            <div class="body">
+              <h4>Who is in charge of the executive branch?</h4>
+              <div class="ans">The President of the United States</div>
+            </div>
+            <div class="foot">
+              Mastery
+              <span class="stars-mastery">★★★★<span class="off">★</span></span>
+            </div>
+          </div>
+          <div class="qcard">
+            <div class="cat-band band-c">Rights &amp; Duties <span class="qnum">No. 51</span></div>
+            <div class="body">
+              <h4>What does the Bill of Rights protect?</h4>
+              <div class="ans">The basic rights of all people living in the U.S.</div>
+            </div>
+            <div class="foot">
+              Mastery
+              <span class="stars-mastery">★<span class="off">★★★★</span></span>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== STUDY MODE ==================== -->
+<div class="mock-label">
+  <span class="tag">Mockup · View 2 — Study Mode</span>
+  <span class="line"></span>
+</div>
+<div class="frame">
+  <div class="screen">
+    <div class="masthead">
+      <div class="wordmark">
+        <span class="star">★</span> Civic Flash Cards
+        <span class="est">Daily Review · Session in progress</span>
+      </div>
+      <button class="kbd-btn">End session</button>
+    </div>
+    <div class="shell" style="min-height: 560px">
+      <main style="padding: 36px 48px">
+        <div class="study-wrap">
+          <div class="study-main">
+            <div class="session-bar">
+              <span class="eyebrow">Daily Review</span>
+              <div class="session-track"><div class="fill"></div></div>
+              <span class="count">5 / 16</span>
+            </div>
+
+            <div class="flashcard">
+              <div class="inner">
+                <span class="corner tl"><svg viewBox="0 0 14 14"><path d="M1 13V4a3 3 0 0 1 3-3h9"/></svg></span>
+                <span class="corner tr"><svg viewBox="0 0 14 14"><path d="M1 13V4a3 3 0 0 1 3-3h9"/></svg></span>
+                <span class="corner br"><svg viewBox="0 0 14 14"><path d="M1 13V4a3 3 0 0 1 3-3h9"/></svg></span>
+                <span class="corner bl"><svg viewBox="0 0 14 14"><path d="M1 13V4a3 3 0 0 1 3-3h9"/></svg></span>
+                <span class="qnum-seal">No. 12</span>
+                <div class="cat-eyebrow">Principles of American Government</div>
+                <div class="question">What is the supreme law of the land?</div>
+                <div class="hint">Press <kbd>Space</kbd> to reveal the answer</div>
+              </div>
+            </div>
+
+            <div class="rating-row">
+              <button class="nav-arrow">←</button>
+              <button class="btn btn-red">Still learning<span class="sub">I'll see this again soon</span></button>
+              <button class="btn btn-navy">I know this<span class="sub">Add to mastered deck</span></button>
+              <button class="nav-arrow">→</button>
+            </div>
+          </div>
+
+          <aside class="study-aside">
+            <div class="aside-box streak-box">
+              <div class="stars">★ ★ ★</div>
+              <div class="num">6</div>
+              <div class="lbl">Card streak</div>
+            </div>
+            <div class="aside-box">
+              <div class="eyebrow">Session Ledger</div>
+              <div class="aside-stat"><span>Mastered</span><span class="v good">3</span></div>
+              <div class="aside-stat"><span>Still learning</span><span class="v bad">1</span></div>
+              <div class="aside-stat"><span>Accuracy</span><span class="v">75%</span></div>
+              <div class="aside-stat"><span>Avg. time</span><span class="v">8.2s</span></div>
+            </div>
+            <div class="aside-box" style="background: var(--paper)">
+              <div class="eyebrow" style="color: var(--gold)">Study Tip</div>
+              <div style="font-size: 12.5px; color: var(--ink-soft); font-family: var(--font-display); font-style: italic; line-height: 1.5">
+                “Review your mistakes from the last session before starting a new one.”
+              </div>
+            </div>
+          </aside>
+        </div>
+      </main>
+    </div>
+  </div>
+</div>
+
+<div class="footer-note">
+  <span class="stars">★ ★ ★</span>
+  Federal Editorial — design mockup for review · not the live app
+</div>
+
+</body>
+</html>

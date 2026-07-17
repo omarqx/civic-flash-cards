@@ -11,7 +11,7 @@ A PWA for mastering the 128 USCIS Naturalization Civics Test questions using spa
 
 ## Critical Rules
 
-- **Card IDs are immutable** — IDs are `localStorage` mastery keys. Never renumber existing cards in `src/data/flashcards.ts`.
+- **Card IDs are immutable** — IDs are `localStorage` mastery keys. Never renumber existing cards in `src/data/flashcards.ts`. (IDs follow the official 2025 USCIS numbering.)
 - **Light DOM only** — Web Components render into the light DOM (no Shadow DOM). All styling comes from `src/styles/index.css`.
 - **Direct RxJS imports** — Import from `rxjs/internal/*` sub-modules, never from barrel `rxjs` or `rxjs/operators`. See [Performance](.claude/performance.md).
 
@@ -20,4 +20,4 @@ A PWA for mastering the 128 USCIS Naturalization Civics Test questions using spa
 - [Architecture](.claude/architecture.md) — Web Components, routing, state management
 - [TypeScript](.claude/typescript.md) — Types, patterns, strict mode conventions
 - [Performance](.claude/performance.md) — Bundle optimization skills
-- [Design System](.claude/design-system.md) — Patriotic Brutalism theme tokens
+- [Design System](.claude/design-system.md) — Federal Editorial theme tokens

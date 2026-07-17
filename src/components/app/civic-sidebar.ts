@@ -2,8 +2,6 @@
  * <civic-sidebar> — Left sidebar navigation
  * Attributes: active-route
  */
-import { Store } from '../../state/store';
-import { showToast } from '../shared/civic-toast';
 
 export class CivicSidebar extends HTMLElement {
   static observedAttributes = ['active-route'];
@@ -24,45 +22,24 @@ export class CivicSidebar extends HTMLElement {
     this.setAttribute('aria-label', 'Main navigation');
     this.innerHTML = `
       <ul class="nav-links" role="list">
-        <li>
-          <a href="#/dashboard" class="nav-link" data-route="dashboard">
-            <span class="material-icons-round">home</span>
-            <span>Home</span>
-          </a>
-        </li>
-        <li>
-          <a href="#/library" class="nav-link" data-route="library">
-            <span class="material-icons-round">library_books</span>
-            <span>Library</span>
-          </a>
-        </li>
-        <li>
-          <a href="#/stats" class="nav-link" data-route="stats">
-            <span class="material-icons-round">bar_chart</span>
-            <span>Stats</span>
-          </a>
-        </li>
-        <li>
-          <a href="#/settings" class="nav-link" data-route="settings">
-            <span class="material-icons-round">settings</span>
-            <span>Settings</span>
-          </a>
-        </li>
+        <li><a href="#/dashboard" class="nav-link" data-route="dashboard">
+          <span class="material-icons-round">home</span><span>Dashboard</span></a></li>
+        <li><a href="#/study-launch" class="nav-link" data-route="study">
+          <span class="material-icons-round">style</span><span>Study</span></a></li>
+        <li><a href="#/library" class="nav-link" data-route="library">
+          <span class="material-icons-round">library_books</span><span>Library</span></a></li>
+        <li><a href="#/stats" class="nav-link" data-route="stats">
+          <span class="material-icons-round">bar_chart</span><span>Stats</span></a></li>
+        <li><a href="#/settings" class="nav-link" data-route="settings">
+          <span class="material-icons-round">settings</span><span>Settings</span></a></li>
       </ul>
-      <div class="sidebar-footer">
-        <button class="sidebar-upgrade" id="btn-reset-progress">Reset Progress</button>
+      <div class="sidebar-motto">
+        <span class="sidebar-motto-stars">★ ★ ★</span>
+        E pluribus unum
       </div>
     `;
 
     this.updateActive();
-
-    this.querySelector('#btn-reset-progress')?.addEventListener('click', () => {
-      if (confirm('Are you sure you want to reset all progress? This cannot be undone.')) {
-        Store.resetAll();
-        showToast('All progress has been reset.', 'warning');
-        window.location.hash = '#/dashboard';
-      }
-    });
 
     // Mobile nav: close on link click
     this.querySelectorAll('.nav-link[data-route]').forEach(link => {

@@ -3,8 +3,9 @@
  * Properties: sessionType (SessionType)
  * Dispatches: launch (detail: { type: string })
  */
-import { SESSION_ICONS } from '../../data/flashcards';
 import type { SessionType } from '../../types';
+
+const ROMANS: Record<string, string> = { mock: 'I.', daily: 'II.', weekly: 'III.', monthly: 'IV.', full: 'V.' };
 
 export class SessionLauncher extends HTMLElement {
   private _type: SessionType | null = null;
@@ -43,13 +44,15 @@ export class SessionLauncher extends HTMLElement {
   private render() {
     const t = this._type;
     if (!t) return;
-    const icon = SESSION_ICONS[t.id] || '📚';
     this.className = 'session-launcher';
+    if (t.id === 'daily') this.setAttribute('featured', '');
     this.setAttribute('aria-label', `Start ${t.name} — ${t.cardCount} cards`);
     this.innerHTML = `
-      <div class="session-launcher-icon">${icon}</div>
+      <div class="session-launcher-roman">${ROMANS[t.id] ?? '•'}</div>
       <div class="session-launcher-name">${t.name}</div>
       <div class="session-launcher-meta">${t.cardCount} cards</div>
+      <div class="session-launcher-rule"></div>
+      <div class="session-launcher-go">Begin →</div>
     `;
   }
 }

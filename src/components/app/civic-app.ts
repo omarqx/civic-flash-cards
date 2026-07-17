@@ -15,6 +15,7 @@ import { Store } from '../../state/store';
 import { SessionManager } from '../../state/session-manager';
 import { Router } from '../../router/router';
 import { showToast } from '../shared/civic-toast';
+import { getTodaysHoliday } from '../../data/holidays';
 import type { ViewName } from '../../types';
 
 // Eagerly import shell + dashboard (critical path)
@@ -53,11 +54,43 @@ export class CivicApp extends HTMLElement {
       <civic-toast></civic-toast>
     `;
 
+    const holiday = getTodaysHoliday();
+    if (holiday) {
+      const ribbon = document.createElement('div');
+      ribbon.className = 'holiday-ribbon';
+      ribbon.setAttribute('role', 'note');
+      ribbon.innerHTML = `<span class="holiday-ribbon-star">★</span> Happy ${holiday.name} <span class="holiday-ribbon-sep">—</span> ${holiday.message} <span class="holiday-ribbon-star">★</span>`;
+      this.querySelector('civic-topbar')?.after(ribbon);
+
+      // Ribbon height is variable (text wraps on narrow screens); expose it so
+      // sticky/fixed layout offsets can account for it. No ribbon → var stays
+      // unset and CSS falls back to 0px.
+      const setRibbonHeight = () =>
+        document.documentElement.style.setProperty('--ribbon-height', `${ribbon.offsetHeight}px`);
+      setRibbonHeight();
+      window.addEventListener('resize', setRibbonHeight);
+    }
+
+    this.setupTheme();
     this.setupRouter();
     this.setupKeyboard();
     this.setupMobileNav();
     this.setupNavSync();
     this.setupPreloading();
+  }
+
+  private setupTheme() {
+    const media = window.matchMedia('(prefers-color-scheme: dark)');
+    const apply = () => {
+      const pref = Store.getSettings().theme ?? 'system';
+      const dark = pref === 'dark' || (pref === 'system' && media.matches);
+      document.documentElement.dataset.theme = dark ? 'dark' : 'light';
+      document.querySelector('meta[name="theme-color"]')
+        ?.setAttribute('content', dark ? '#131A2C' : '#F7F3EA');
+    };
+    apply();
+    media.addEventListener('change', apply);
+    Store.settings$.subscribe(apply);
   }
 
   private setupRouter() {

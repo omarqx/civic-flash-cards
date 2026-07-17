@@ -8,11 +8,15 @@ import { FLASHCARDS, CATEGORIES, SESSION_TYPES } from '../data/flashcards';
 import type { CardMastery, StudySession, AppSettings, MasteryStats, CategoryStat, CategoryId } from '../types';
 import { Observable } from 'rxjs/internal/Observable';
 
+// v2: question bank replaced with the official 2025 USCIS 128-question list
+// (ids renumbered to the official numbering), so old progress keys are orphaned.
 const KEYS = {
-  mastery: 'civic_mastery',
-  sessions: 'civic_sessions',
+  mastery: 'civic_mastery_v2',
+  sessions: 'civic_sessions_v2',
   settings: 'civic_settings',
 } as const;
+
+const LEGACY_KEYS = ['civic_mastery', 'civic_sessions'] as const;
 
 // ── Reactive state ──
 const mastery$ = new BehaviorSubject<Record<number, CardMastery>>(
@@ -21,8 +25,9 @@ const mastery$ = new BehaviorSubject<Record<number, CardMastery>>(
 const sessions$ = new BehaviorSubject<StudySession[]>(
   load(KEYS.sessions, [])
 );
+const DEFAULT_SETTINGS: AppSettings = { hideMastered: false, shuffleDefault: false, theme: 'system' };
 const settings$ = new BehaviorSubject<AppSettings>(
-  load(KEYS.settings, { hideMastered: false, shuffleDefault: false })
+  { ...DEFAULT_SETTINGS, ...load(KEYS.settings, {}) }
 );
 
 // Auto-persist
@@ -151,6 +156,14 @@ function getSessions(): StudySession[] {
   return sessions$.getValue();
 }
 
+function shuffle<T>(arr: T[]): T[] {
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
 function createSession(type: string, categoryFilter: string[] | null = null): StudySession | null {
   const sessionType = SESSION_TYPES[type];
   if (!sessionType) return null;
@@ -163,8 +176,16 @@ function createSession(type: string, categoryFilter: string[] | null = null): St
 
   let selected;
   if (type === 'full') {
-    selected = pool;
+    selected = shuffle(pool);
+  } else if (type === 'mock') {
+    // A real interview draws questions at random from the whole pool,
+    // not from the applicant's weakest cards.
+    selected = shuffle(pool).slice(0, sessionType.cardCount);
   } else {
+    // Randomize before the stable sort so equally-ranked cards don't
+    // fall back to ID order, then shuffle the selection so the session
+    // isn't presented strictly weakest-first.
+    shuffle(pool);
     pool.sort((a, b) => {
       const ma = all[a.id] || defaultMastery();
       const mb = all[b.id] || defaultMastery();
@@ -173,7 +194,7 @@ function createSession(type: string, categoryFilter: string[] | null = null): St
       if (ma.masteryLevel !== mb.masteryLevel) return ma.masteryLevel - mb.masteryLevel;
       return (ma.lastReviewedAt || 0) - (mb.lastReviewedAt || 0);
     });
-    selected = pool.slice(0, sessionType.cardCount);
+    selected = shuffle(pool.slice(0, sessionType.cardCount));
   }
 
   return {
@@ -218,9 +239,10 @@ function resetAll(): void {
   localStorage.removeItem(KEYS.mastery);
   localStorage.removeItem(KEYS.sessions);
   localStorage.removeItem(KEYS.settings);
+  for (const key of LEGACY_KEYS) localStorage.removeItem(key);
   mastery$.next({});
   sessions$.next([]);
-  settings$.next({ hideMastered: false, shuffleDefault: false });
+  settings$.next(DEFAULT_SETTINGS);
 }
 
 export const Store = {

@@ -13,30 +13,55 @@ export class CivicSettings extends HTMLElement {
     this.innerHTML = `
       <div>
         <div class="stats-view-header">
+          <div class="eyebrow">Preferences</div>
           <h1>Settings</h1>
           <p>Customize your study experience.</p>
+          <div class="double-rule"></div>
         </div>
 
-        <div style="border: var(--border); background: var(--white); padding: 24px; max-width: 480px;">
-          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px;">
+        <div class="settings-panel">
+          <div class="setting-row">
             <div>
-              <div style="font-weight: 700; font-size: 0.85rem;">Hide Mastered Cards</div>
-              <div style="font-size: 0.75rem; color: var(--gray-400);">Hide cards you've already mastered from study sessions</div>
+              <div class="setting-row-title">Theme</div>
+              <div class="setting-row-desc">Choose how Civic Flash Cards looks on this device</div>
+            </div>
+            <div class="setting-row-chips">
+              <button class="filter-chip ${settings.theme === 'light' ? 'active' : ''}" id="settings-theme-light">Light</button>
+              <button class="filter-chip ${settings.theme === 'dark' ? 'active' : ''}" id="settings-theme-dark">Dark</button>
+              <button class="filter-chip ${settings.theme === 'system' ? 'active' : ''}" id="settings-theme-system">System</button>
+            </div>
+          </div>
+          <div class="setting-row">
+            <div>
+              <div class="setting-row-title">Hide Mastered Cards</div>
+              <div class="setting-row-desc">Hide cards you've already mastered from study sessions</div>
             </div>
             <button class="filter-chip ${settings.hideMastered ? 'active' : ''}" id="settings-hide-mastered">
               ${settings.hideMastered ? 'ON' : 'OFF'}
             </button>
           </div>
-
-          <div style="padding-top: 16px; border-top: var(--border);">
-            <button class="btn btn-white" id="settings-reset" style="color: var(--red); border-color: var(--red);">
-              <span class="material-icons-round">delete_forever</span>
-              Reset All Progress
-            </button>
+          <div class="setting-row setting-row-danger">
+            <div>
+              <div class="setting-row-title">Reset All Progress</div>
+              <div class="setting-row-desc">Erases mastery, sessions, and settings. Cannot be undone.</div>
+            </div>
+            <button class="btn btn-danger" id="settings-reset">Reset</button>
           </div>
         </div>
       </div>
     `;
+
+    const themeButtons: [string, 'light' | 'dark' | 'system'][] = [
+      ['#settings-theme-light', 'light'],
+      ['#settings-theme-dark', 'dark'],
+      ['#settings-theme-system', 'system'],
+    ];
+    for (const [selector, value] of themeButtons) {
+      this.querySelector(selector)?.addEventListener('click', () => {
+        Store.updateSettings({ theme: value });
+        this.render();
+      });
+    }
 
     this.querySelector('#settings-hide-mastered')?.addEventListener('click', () => {
       const newVal = !Store.getSettings().hideMastered;

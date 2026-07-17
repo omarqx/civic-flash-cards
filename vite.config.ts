@@ -40,8 +40,8 @@ export default defineConfig({
         name: 'Civic Flash Cards — USCIS Naturalization Test',
         short_name: 'CivicCards',
         description: 'Master the 128 USCIS Naturalization Civics Test questions with spaced repetition.',
-        theme_color: '#002868',
-        background_color: '#F2F5FF',
+        theme_color: '#F7F3EA',
+        background_color: '#F7F3EA',
         display: 'standalone',
         start_url: '/',
         icons: [

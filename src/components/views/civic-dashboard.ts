@@ -6,6 +6,7 @@ import { Store } from '../../state/store';
 import { SessionManager } from '../../state/session-manager';
 import { Router } from '../../router/router';
 import { showToast } from '../shared/civic-toast';
+import { getTodaysHoliday } from '../../data/holidays';
 import type { Flashcard, CategoryId } from '../../types';
 
 // Ensure child custom elements are registered
@@ -30,16 +31,30 @@ export class CivicDashboard extends HTMLElement {
     const stats = Store.getMasteryStats();
     const sessions = Store.getSessions();
 
+    const greeting = new Date().getHours() < 12 ? 'Good morning' : new Date().getHours() < 18 ? 'Good afternoon' : 'Good evening';
+    const dateStr = new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
+    const holiday = getTodaysHoliday();
+    const heading = holiday
+      ? `Happy ${holiday.name}, Citizen&#8209;to&#8209;be.`
+      : `${greeting}, Citizen&#8209;to&#8209;be.`;
+
     this.innerHTML = `
       <div class="dashboard-view">
         <div class="dashboard-main">
           <div class="dashboard-header">
-            <h1>My Flashcards</h1>
-            <p>Continue your mindful journey and master your deck.</p>
+            <div class="eyebrow">${dateStr}</div>
+            <h1>${heading}</h1>
+            <p>You've mastered ${stats.mastered} of ${stats.total} questions. Steady on — the oath awaits.</p>
+            <div class="double-rule"></div>
           </div>
 
+          <div class="section-head"><h2>Study Plans</h2></div>
           <div class="session-grid" id="session-grid"></div>
 
+          <div class="section-head">
+            <h2>Continue where you left off</h2>
+            <a class="section-head-link" href="#/library">All ${stats.total} cards →</a>
+          </div>
           <div class="filter-bar">
             <select class="filter-select" id="category-filter" aria-label="Filter by category">
               <option value="all">Category: All</option>
@@ -56,42 +71,32 @@ export class CivicDashboard extends HTMLElement {
               Shuffle
             </button>
           </div>
-
           <div class="card-grid" id="card-grid"></div>
 
-          <div class="history-section">
-            <div class="history-title">
-              <span class="material-icons-round">history</span>
-              Recent Sessions
-            </div>
-            ${this.renderHistory(sessions)}
-          </div>
+          <div class="section-head"><h2>Recent Sessions</h2></div>
+          ${this.renderHistory(sessions)}
         </div>
 
         <div class="dashboard-sidebar">
-          <button class="btn btn-pink btn-lg" id="start-study-mode" style="width: 100%;">
-            Start Study Mode
-          </button>
-          <div class="sidebar-box">
-            <div class="sidebar-box-header">
-              <span class="material-icons-round" style="font-size: 1rem;">analytics</span>
-              Study Statistics
+          <div class="progress-ledger">
+            <div class="progress-ledger-head">
+              <span class="eyebrow eyebrow-quiet">Progress Ledger</span>
+              <span class="progress-ledger-star">★</span>
             </div>
-            <div class="sidebar-box-body">
-              <div class="stat-total">
-                <div class="stat-total-label">Total Cards</div>
-                <div class="stat-total-value">${stats.total}</div>
-              </div>
-              <stat-colored icon="check_circle" value="${stats.mastered}" label="Mastered" variant="stat-green"></stat-colored>
-              <stat-colored icon="trending_up" value="${stats.inProgress}" label="In Progress" variant="stat-pink"></stat-colored>
-              <stat-colored icon="schedule" value="${stats.notStarted}" label="Not Started" variant="stat-yellow"></stat-colored>
+            <div class="progress-ledger-big">
+              <span class="progress-ledger-num">${stats.mastered}</span>
+              <span class="progress-ledger-of">of ${stats.total} mastered</span>
             </div>
+            <div class="progress-ledger-rows">
+              <stat-colored value="${stats.mastered}" label="Mastered" variant="stat-green"></stat-colored>
+              <stat-colored value="${stats.inProgress}" label="In progress" variant="stat-pink"></stat-colored>
+              <stat-colored value="${stats.notStarted}" label="Not started" variant="stat-yellow"></stat-colored>
+            </div>
+            <button class="btn btn-navy" id="start-study-mode">Start Daily Review</button>
           </div>
           <div class="sidebar-box">
             <div class="sidebar-box-header">Mastery Trend</div>
-            <div class="mastery-trend">
-              <trend-chart></trend-chart>
-            </div>
+            <div class="mastery-trend"><trend-chart></trend-chart></div>
           </div>
         </div>
       </div>
@@ -139,14 +144,14 @@ export class CivicDashboard extends HTMLElement {
     }
 
     grid.innerHTML = '';
-    filtered.slice(0, 20).forEach(card => {
+    filtered.slice(0, 6).forEach(card => {
       const el = document.createElement('card-brutal') as InstanceType<typeof import('../shared/card-brutal').CardBrutal>;
       el.className = 'card-brutal';
       el.card = card;
       grid.appendChild(el);
     });
 
-    if (filtered.length > 20) {
+    if (filtered.length > 6) {
       const more = document.createElement('div');
       more.className = 'add-card-placeholder';
       more.tabIndex = 0;
