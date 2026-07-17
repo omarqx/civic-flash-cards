@@ -5,9 +5,9 @@ import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import { map } from 'rxjs/internal/operators/map';
 import { distinctUntilChanged } from 'rxjs/internal/operators/distinctUntilChanged';
 import { FLASHCARDS, CATEGORIES, SESSION_TYPES } from '../data/flashcards';
-import type { CardMastery, StudySession, AppSettings, MasteryStats, CategoryStat, CategoryId, PunchLog, PunchDay, DailyPlan } from '../types';
+import type { CardMastery, StudySession, AppSettings, MasteryStats, CategoryStat, CategoryId, PunchLog, DailyPlan } from '../types';
 import { Observable } from 'rxjs/internal/Observable';
-import { todayISO, daysBetween, addDaysISO } from '../utils/dates';
+import { todayISO, daysBetween } from '../utils/dates';
 
 // v2: question bank replaced with the official 2025 USCIS 128-question list
 // (ids renumbered to the official numbering), so old progress keys are orphaned.

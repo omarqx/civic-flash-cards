@@ -65,7 +65,7 @@ export type PunchLog = Record<string, PunchDay>;
 export interface DailyPlan {
   interviewDate: string | null;
   isDefault: boolean;
-  daysLeft: number;        // daysBetween(today, interviewDate); 0 = interview day; negative = expired
+  daysLeft: number;        // daysBetween(today, interviewDate); 30 when no date is set; 0 = interview day; negative = expired
   expired: boolean;        // daysLeft < 0
   quotaToday: number;
   masteredToday: number;
