@@ -51,6 +51,20 @@ export class FlashCard extends HTMLElement {
       <span class="flashcard-number">No. ${card.id}</span>
     `;
 
+    const caption = card.answers.length > 1
+      ? card.requires === 3 ? 'Name three:' : card.requires === 2 ? 'Name two:' : 'Any one of:'
+      : '';
+    const answersHtml = card.answers.length === 1
+      ? `<div class="flashcard-answer ${card.answers[0].length > 220 ? 'long' : ''}">${card.answers[0]}</div>`
+      : `<div class="flashcard-answers ${card.answers.length > 8 ? 'cols' : ''}">${
+          card.answers.map(a => `<div class="flashcard-answer-item">${a}</div>`).join('')
+        }</div>`;
+    const footnote = card.note
+      ? `<div class="flashcard-footnote">${card.note}</div>`
+      : card.hint
+        ? `<div class="flashcard-footnote"><span class="flashcard-footnote-label">Hint —</span> ${card.hint}</div>`
+        : '';
+
     this.innerHTML = `
       <div class="flashcard-scene">
         <div class="flashcard ${this._flipped ? 'flipped' : ''}" tabindex="0" role="button"
@@ -64,7 +78,9 @@ export class FlashCard extends HTMLElement {
           <div class="flashcard-face back">
             ${frame}
             <div class="flashcard-cat-eyebrow ${css}">Answer</div>
-            <div class="flashcard-answer ${card.a.length > 220 ? 'long' : ''}">${card.a}</div>
+            ${caption ? `<div class="flashcard-answers-caption">${caption}</div>` : ''}
+            <div class="flashcard-answer-wrap">${answersHtml}</div>
+            ${footnote}
           </div>
         </div>
       </div>
