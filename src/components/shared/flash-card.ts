@@ -3,7 +3,7 @@
  * Properties: card (Flashcard), flipped (boolean)
  * Dispatches: flip
  */
-import { CATEGORIES, CAT_CSS } from '../../data/flashcards';
+import { CATEGORIES, CAT_CSS, ANSWER_CAPTIONS } from '../../data/flashcards';
 import type { Flashcard, CategoryId } from '../../types';
 
 export class FlashCard extends HTMLElement {
@@ -51,8 +51,7 @@ export class FlashCard extends HTMLElement {
       <span class="flashcard-number">No. ${card.id}</span>
     `;
 
-    const CAPTIONS: Record<number, string> = {1: 'Any one of:', 2: 'Name two:', 3: 'Name three:', 4: 'Name four:', 5: 'Name five:'};
-    const caption = card.answers.length > 1 ? (CAPTIONS[card.requires] ?? 'Any one of:') : '';
+    const caption = card.answers.length > 1 ? (ANSWER_CAPTIONS[card.requires] ?? 'Any one of:') : '';
     const answersHtml = card.answers.length === 1
       ? `<div class="flashcard-answer ${card.answers[0].length > 220 ? 'long' : ''}">${card.answers[0]}</div>`
       : `<div class="flashcard-answers ${card.answers.length > 8 ? 'cols' : ''}">${

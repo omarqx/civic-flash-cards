@@ -14,7 +14,7 @@ export interface Flashcard {
   q: string;
   cat: CategoryId;
   answers: string[];     // discrete acceptable answers (≥1), official wording
-  requires: number;      // how many the officer asks for (1–5)
+  requires: 1 | 2 | 3 | 4 | 5;      // how many the officer asks for (1–5)
   note?: string;         // guidance for user-specific answers
   why?: string;          // 1–2 sentence factual explanation (authored Tasks 2–4)
   hint?: string;         // short memory hook (authored Tasks 2–4)

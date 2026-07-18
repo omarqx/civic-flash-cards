@@ -20,10 +20,14 @@ const RANGES: Record<string, [number, number]> = { A: [1,15], B: [16,62], C: [63
 for (const c of all) {
   const [lo, hi] = RANGES[c.cat] ?? [0, -1];
   if (c.id < lo || c.id > hi) errors.push(`card ${c.id}: cat ${c.cat} out of official range`);
-  if (!c.answers || c.answers.length < 1) errors.push(`card ${c.id}: no answers`);
+  if (!c.answers || c.answers.length < 1) {
+    errors.push(`card ${c.id}: no answers`);
+    continue;
+  }
   if (c.answers.some(a => !a.trim())) errors.push(`card ${c.id}: empty answer entry`);
   if (c.requires < 1 || c.requires > 5) errors.push(`card ${c.id}: requires ${c.requires}`);
   if (c.requires > c.answers.length) errors.push(`card ${c.id}: requires > answers`);
+  if ((c.related ?? []).length > 3) errors.push(`card ${c.id}: more than 3 related links`);
   for (const r of c.related ?? []) {
     if (r === c.id) errors.push(`card ${c.id}: self-link`);
     if (!ids.has(r)) errors.push(`card ${c.id}: related ${r} does not exist`);

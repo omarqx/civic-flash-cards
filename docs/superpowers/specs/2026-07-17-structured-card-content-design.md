@@ -16,7 +16,7 @@ export interface Flashcard {
   q: string;             // unchanged
   cat: CategoryId;       // unchanged
   answers: string[];     // discrete acceptable answers (≥1), official wording
-  requires: number;      // how many the officer asks for: 1, 2, or 3
+  requires: number;      // how many the officer asks for: 1–5 (Q81 "Name five")
   note?: string;         // guidance, e.g. "Answers will vary — visit senate.gov…"
   why?: string;          // 1–2 sentence factual explanation/context
   hint?: string;         // short memory hook
@@ -76,7 +76,7 @@ Matches against `q`, every entry of `answers`, and `why`. (Category-name matchin
 
 ## Verification
 
-- Scripted data audit (run in CI-less repo as a node script during implementation, committed under `scripts/`): exactly 128 cards; ids 1–128 unique; every card `answers.length ≥ 1`, `1 ≤ requires ≤ 3`, `requires ≤ answers.length`, every `related` id exists and no self-links; every card has non-empty `why` and `hint`.
+- Scripted data audit (run in CI-less repo as a node script during implementation, committed under `scripts/`): exactly 128 cards; ids 1–128 unique; every card `answers.length ≥ 1`, `1 ≤ requires ≤ 5`, `requires ≤ answers.length`, every `related` id exists and no self-links; every card has non-empty `why` and `hint`.
 - `npm run build` passes.
-- Browser checks: Q48 renders as an in-frame two-column list with "ANY ONE OF:"; Q126 (three holidays) shows "NAME THREE:"; a user-specific card shows its note; library tiles show "+N more"; detail modal shows why/hint/related and related-links navigate; search finds a card by an answer word and by a why-word; both themes; mobile.
+- Browser checks: Q48 renders as an in-frame two-column list with "Name two:"; Q126 (three holidays) shows "NAME THREE:"; a user-specific card shows its note; library tiles show "+N more"; detail modal shows why/hint/related and related-links navigate; search finds a card by an answer word and by a why-word; both themes; mobile.
 - Factual review: each category batch's why/hint content reviewed against official USCIS study materials before commit.

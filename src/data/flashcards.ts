@@ -63,3 +63,7 @@ export const CAT_COLORS: Record<CategoryId, string> = {
 export const SESSION_BADGE_COLORS: Record<string, string> = {
   mock: 'cat-D', daily: 'cat-A', weekly: 'cat-B', monthly: 'cat-E', full: 'cat-G',
 };
+
+export const ANSWER_CAPTIONS: Record<number, string> = {
+  1: 'Any one of:', 2: 'Name two:', 3: 'Name three:', 4: 'Name four:', 5: 'Name five:',
+};
