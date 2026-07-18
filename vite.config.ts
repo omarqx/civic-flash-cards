@@ -1,9 +1,15 @@
 import { defineConfig } from 'vite';
 import { VitePWA } from 'vite-plugin-pwa';
 
+// vite.config runs under Node; avoid requiring @types/node for one env read
+declare const process: { env: Record<string, string | undefined> };
+
 export default defineConfig({
   root: '.',
   base: '/civic-flash-cards/',
+  server: {
+    port: Number(process.env.PORT) || 5173,
+  },
   build: {
     outDir: 'dist',
     target: 'es2020',
