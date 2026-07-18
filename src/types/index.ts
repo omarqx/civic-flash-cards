@@ -10,10 +10,15 @@ export interface Category {
 }
 
 export interface Flashcard {
-  id: number;
+  id: number;            // official USCIS number — immutable (mastery key)
   q: string;
-  a: string;
   cat: CategoryId;
+  answers: string[];     // discrete acceptable answers (≥1), official wording
+  requires: 1 | 2 | 3 | 4 | 5;      // how many the officer asks for (1–5)
+  note?: string;         // guidance for user-specific answers
+  why?: string;          // 1–2 sentence factual explanation (authored Tasks 2–4)
+  hint?: string;         // short memory hook (authored Tasks 2–4)
+  related?: number[];    // cross-linked card ids
 }
 
 export interface CardMastery {

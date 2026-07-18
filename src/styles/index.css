@@ -122,6 +122,7 @@
 [data-theme="dark"] body::before { opacity: 0.05; }
 [data-theme="dark"] .rating-chip.mid { color: #C9AC61; }
 [data-theme="dark"] .filter-chip.active { color: var(--gold-soft); }
+[data-theme="dark"] .related-link { color: var(--gold-soft); }
 [data-theme="dark"] .stars-mastery .off { color: rgba(233, 228, 216, 0.18); }
 [data-theme="dark"] .session-track { background: rgba(233, 228, 216, 0.12); }
 [data-theme="dark"] .category-row-bar { background: rgba(233, 228, 216, 0.1); }
@@ -652,11 +653,39 @@ flash-card { display: block; width: 100%; max-width: 620px; }
 }
 .flashcard-answer {
   font-size: 1.35rem;
-  max-height: 230px;
-  overflow-y: auto;
 }
 /* Long official answers (cabinet lists, amendments) shrink to stay in frame */
 .flashcard-answer.long { font-size: 1rem; line-height: 1.45; }
+.flashcard-answers-caption {
+  font-size: 0.66rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--gold-text); margin-bottom: 8px;
+}
+.flashcard-answer-wrap { max-height: 230px; overflow-y: auto; width: 100%; padding: 0 var(--sp-6); }
+.flashcard-answers { display: block; text-align: center; }
+.flashcard-answers.cols { column-count: 2; column-gap: var(--sp-5); text-align: left; }
+.flashcard-answer-item {
+  font-family: var(--font-display); font-size: 1.05rem; line-height: 1.4;
+  break-inside: avoid; padding: 2px 0;
+}
+.flashcard-footnote {
+  margin-top: var(--sp-4); font-family: var(--font-display); font-style: italic;
+  font-size: 0.82rem; color: var(--ink-soft); max-width: 460px;
+}
+.flashcard-footnote-label { color: var(--gold-text); font-style: normal; font-weight: 600; }
+.card-more-tag {
+  font-size: 0.68rem; font-weight: 600; color: var(--gold-text);
+  background: var(--gold-tint); border-radius: 4px; padding: 1px 6px; white-space: nowrap;
+}
+.card-detail-answers { list-style: none; display: flex; flex-direction: column; gap: 4px; }
+.card-detail-answers li { padding-left: 14px; position: relative; }
+.card-detail-answers li::before { content: '★'; position: absolute; left: 0; font-size: 0.6rem; color: var(--gold-soft); top: 5px; }
+.card-detail-hint { font-style: italic; }
+.related-link {
+  font-family: var(--font-display); font-style: italic; font-size: 0.85rem;
+  color: var(--navy); background: none; border: 1px solid var(--hairline);
+  border-radius: var(--radius-md); padding: 3px 10px; cursor: pointer;
+}
+.related-link:hover { border-color: var(--gold); color: var(--gold-text); }
 .flashcard-hint {
   margin-top: var(--sp-6); font-size: 0.68rem; font-weight: 600; letter-spacing: 0.12em;
   text-transform: uppercase; color: var(--ink-soft);

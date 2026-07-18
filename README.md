@@ -12,10 +12,15 @@ A progressive web app for mastering all **128 USCIS Naturalization Civics Test**
 - **Spaced repetition** — cards you struggle with surface more often; mastered cards fade back
 - **Study sessions** — rate each card 0–5, session score calculated on completion
 - **Card library** — search all 128 questions, filter by category or mastery level, expand to reveal answers inline
+- **Rich answers** — every card shows its acceptable answers as a list ("name two…"), with explanations and memory hints
 - **Statistics** — session history, per-category mastery rings, aggregate progress over time
 - **PWA / offline** — installable on iOS and Android, works without a network connection after first load
 - **Keyboard-first** — full keyboard navigation and hotkeys for power users
 - **Federal Editorial** design — archival paper-and-ink palette, Fraunces + Public Sans, hairline rules, gold-foil accents
+
+## Card content
+
+Answers are stored as discrete acceptable options, each card carrying a `requires` count for how many the officer actually asks for. Every card also carries an authored explanation (`why`) and a memory hint (`hint`), grounded in the official USCIS study materials. Run `npm run audit:cards` to validate the deck (128 cards, valid category ranges, non-empty answers/explanations/hints).
 
 ## Keyboard Shortcuts
 
@@ -94,7 +99,9 @@ civic-flash-cards/
 │   │       ├── civic-stats.ts      # Statistics (lazy)
 │   │       └── civic-settings.ts   # Settings (lazy)
 │   ├── data/
-│   │   └── flashcards.ts           # 128 questions + category definitions
+│   │   ├── cards/
+│   │   │   └── a–h.ts              # 128 official questions, one file per category, with answers/requires/why/hint/related
+│   │   └── flashcards.ts           # assembles the deck; categories + session types
 │   ├── router/
 │   │   └── router.ts               # Hash-based SPA router
 │   ├── state/

@@ -3,7 +3,7 @@
  * Properties: cardId (number | null)
  * Dispatches: close, study-card (detail: { cardId: number })
  */
-import { FLASHCARDS, CATEGORIES } from '../../data/flashcards';
+import { FLASHCARDS, CATEGORIES, ANSWER_CAPTIONS } from '../../data/flashcards';
 import { Store } from '../../state/store';
 import type { CategoryId } from '../../types';
 
@@ -62,9 +62,13 @@ export class CardDetailModal extends HTMLElement {
               <div class="card-detail-section-content card-detail-question">${card.q}</div>
             </div>
             <div class="card-detail-section">
-              <div class="card-detail-section-title">Answer</div>
-              <div class="card-detail-section-content">${card.a}</div>
+              <div class="card-detail-section-title">${card.answers.length > 1 ? (ANSWER_CAPTIONS[card.requires] ?? 'Any one of:') : 'Answer'}</div>
+              <ul class="card-detail-answers">${card.answers.map(a => `<li>${a}</li>`).join('')}</ul>
             </div>
+            ${card.why ? `<div class="card-detail-section"><div class="card-detail-section-title">Why</div><div class="card-detail-section-content">${card.why}</div></div>` : ''}
+            ${card.hint ? `<div class="card-detail-section"><div class="card-detail-section-title">Hint</div><div class="card-detail-section-content card-detail-hint">${card.hint}</div></div>` : ''}
+            ${card.note ? `<div class="card-detail-section"><div class="card-detail-section-title">Note</div><div class="card-detail-section-content">${card.note}</div></div>` : ''}
+            ${card.related?.length ? `<div class="card-detail-section"><div class="card-detail-section-title">See also</div><div>${card.related.map(r => `<button class="related-link" data-related="${r}">No. ${r}</button>`).join(' ')}</div></div>` : ''}
             <div class="card-detail-section">
               <div class="card-detail-section-title">Mastery Progress</div>
               <div style="display: flex; align-items: center; gap: 12px;">
@@ -101,6 +105,7 @@ export class CardDetailModal extends HTMLElement {
       </div>
     `;
 
+    this.querySelectorAll('.related-link').forEach(b => b.addEventListener('click', () => { this.cardId = Number((b as HTMLElement).dataset.related); }));
     this.querySelector('.card-detail-close')?.addEventListener('click', () => this.close());
     this.querySelector('#detail-overlay')?.addEventListener('click', (e) => {
       if ((e.target as HTMLElement).id === 'detail-overlay') this.close();

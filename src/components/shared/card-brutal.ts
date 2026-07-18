@@ -52,6 +52,8 @@ export class CardBrutal extends HTMLElement {
     const mastery = Store.getCardMastery(card.id);
     const cssClass = CAT_CSS[card.cat as CategoryId];
 
+    const more = card.answers.length > 1 ? ` <span class="card-more-tag">+${card.answers.length - 1} more</span>` : '';
+
     this.setAttribute('aria-label', `Question ${card.id}: ${card.q.substring(0, 40)}`);
     this.innerHTML = `
       <div class="card-brutal-header ${cssClass}">
@@ -60,7 +62,7 @@ export class CardBrutal extends HTMLElement {
       </div>
       <div class="card-brutal-body">
         <div class="card-brutal-title">${card.q.length > 80 ? card.q.substring(0, 77) + '…' : card.q}</div>
-        <div class="card-brutal-desc">${card.a}</div>
+        <div class="card-brutal-desc">${card.answers[0]}${more}</div>
       </div>
       <div class="card-brutal-footer">
         <span>Mastery</span>

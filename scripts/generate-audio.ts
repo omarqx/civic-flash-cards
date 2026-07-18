@@ -41,7 +41,7 @@ function buildJobs(): Job[] {
   }
   return cards.flatMap(card => [
     { key: `q-${card.id}`, file: `q-${card.id}.mp3`, text: card.q },
-    { key: `a-${card.id}`, file: `a-${card.id}.mp3`, text: SPOKEN_ANSWERS[card.id] ?? speakText(card.a) },
+    { key: `a-${card.id}`, file: `a-${card.id}.mp3`, text: SPOKEN_ANSWERS[card.id] ?? speakText(card.answers.join('; ')) },
   ]);
 }
 

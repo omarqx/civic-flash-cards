@@ -113,7 +113,10 @@ export class CivicLibrary extends HTMLElement {
     if (this.searchQuery.trim()) {
       const q = this.searchQuery.toLowerCase();
       filtered = filtered.filter(c =>
-        c.q.toLowerCase().includes(q) || c.a.toLowerCase().includes(q) ||
+        c.q.toLowerCase().includes(q) ||
+        c.answers.some(a => a.toLowerCase().includes(q)) ||
+        (c.why ?? '').toLowerCase().includes(q) ||
+        (c.note ?? '').toLowerCase().includes(q) ||
         CATEGORIES[c.cat].name.toLowerCase().includes(q)
       );
     }

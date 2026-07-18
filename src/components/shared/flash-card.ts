@@ -3,7 +3,7 @@
  * Properties: card (Flashcard), flipped (boolean)
  * Dispatches: flip
  */
-import { CATEGORIES, CAT_CSS } from '../../data/flashcards';
+import { CATEGORIES, CAT_CSS, ANSWER_CAPTIONS } from '../../data/flashcards';
 import type { Flashcard, CategoryId } from '../../types';
 
 export class FlashCard extends HTMLElement {
@@ -74,6 +74,17 @@ export class FlashCard extends HTMLElement {
       <span class="flashcard-number">No. ${card.id}</span>
     `;
 
+    const caption = card.answers.length > 1 ? (ANSWER_CAPTIONS[card.requires] ?? 'Any one of:') : '';
+    const answersHtml = card.answers.length === 1
+      ? `<div class="flashcard-answer ${card.answers[0].length > 220 ? 'long' : ''}">${card.answers[0]}</div>`
+      : `<div class="flashcard-answers ${card.answers.length > 8 ? 'cols' : ''}">${
+          card.answers.map(a => `<div class="flashcard-answer-item">${a}</div>`).join('')
+        }</div>`;
+    const footnote = card.note
+      ? `<div class="flashcard-footnote">${card.note}</div>`
+      : card.hint
+        ? `<div class="flashcard-footnote"><span class="flashcard-footnote-label">Hint —</span> ${card.hint}</div>`
+        : '';
     const speakBtn = (kind: 'q' | 'a', label: string) => this._audio
       ? `<button class="flashcard-speak" data-kind="${kind}" aria-label="${label}">
            <span class="material-icons-round">volume_up</span>
@@ -95,7 +106,9 @@ export class FlashCard extends HTMLElement {
             ${frame}
             ${speakBtn('a', 'Read answer aloud')}
             <div class="flashcard-cat-eyebrow ${css}">Answer</div>
-            <div class="flashcard-answer ${card.a.length > 220 ? 'long' : ''}">${card.a}</div>
+            ${caption ? `<div class="flashcard-answers-caption">${caption}</div>` : ''}
+            <div class="flashcard-answer-wrap">${answersHtml}</div>
+            ${footnote}
           </div>
         </div>
       </div>
