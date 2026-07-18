@@ -77,9 +77,24 @@ export class CivicApp extends HTMLElement {
     this.setupRouter();
     this.setupKeyboard();
     this.setupMobileNav();
+    this.setupShortcutsModal();
     this.setupNavSync();
     this.setupPreloading();
     this.setupInterviewPrompt();
+  }
+
+  private setupShortcutsModal() {
+    // The shortcuts ("cheat sheet") dialog lives in index.html. Its close (✕)
+    // button has no default behavior — a <dialog> only auto-closes a button
+    // inside a <form method="dialog">, which this isn't — so wire it up.
+    // Without this, the ✕ is dead and mobile users (no Esc key) get stuck.
+    const modal = document.getElementById('shortcuts-modal') as HTMLDialogElement | null;
+    if (!modal) return;
+    modal.querySelector('.modal-close')?.addEventListener('click', () => modal.close());
+    // Light-dismiss: clicking the backdrop (outside the dialog box) closes it.
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) modal.close();
+    });
   }
 
   private setupInterviewPrompt() {
