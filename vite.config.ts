@@ -64,11 +64,16 @@ export default defineConfig({
         theme_color: '#F7F3EA',
         background_color: '#F7F3EA',
         display: 'standalone',
-        start_url: '/',
+        // App is served from the /civic-flash-cards/ base (GitHub Pages project
+        // site). start_url/scope/icons must include it, or an installed PWA
+        // opens https://<user>.github.io/ (the account root) instead of the app.
+        id: '/civic-flash-cards/',
+        scope: '/civic-flash-cards/',
+        start_url: '/civic-flash-cards/',
         icons: [
-          { src: '/pwa-192x192.png', sizes: '192x192', type: 'image/png' },
-          { src: '/pwa-512x512.png', sizes: '512x512', type: 'image/png' },
-          { src: '/pwa-512x512.png', sizes: '512x512', type: 'image/png', purpose: 'any maskable' },
+          { src: '/civic-flash-cards/pwa-192x192.png', sizes: '192x192', type: 'image/png' },
+          { src: '/civic-flash-cards/pwa-512x512.png', sizes: '512x512', type: 'image/png' },
+          { src: '/civic-flash-cards/pwa-512x512.png', sizes: '512x512', type: 'image/png', purpose: 'any maskable' },
         ],
       },
     }),

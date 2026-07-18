@@ -1221,24 +1221,38 @@ flash-card { display: block; width: 100%; max-width: 620px; }
   .dashboard-view, .study-view, .library-view, .stats-view { padding: var(--sp-5) var(--sp-4); }
   .topbar-brand-sub { display: none; }
   .flashcard-question { font-size: 1.3rem; }
-  .study-actions { flex-wrap: wrap; justify-content: center; }
+  /* Reserve a top band so the vertically-centred content can't rise under the
+     top-right number + read-aloud speaker button (which collide on the shorter
+     mobile card). */
+  .flashcard-face.front, .flashcard-face.back { padding-top: 92px; padding-bottom: 28px; }
+  /* Keep prev/still/know/next on one row so the arrows always flank the two
+     primary buttons; the old flex-wrap staggered them 2x2 on narrow screens. */
+  .study-actions {
+    display: grid; grid-template-columns: auto 1fr 1fr auto;
+    width: 100%; max-width: 520px; justify-content: center;
+  }
   .session-grid { grid-template-columns: repeat(2, 1fr); }
   .card-grid { grid-template-columns: 1fr; }
-  .flashcard { min-height: 260px; }
+  .flashcard { min-height: 300px; }
   .dashboard-header h1,
   .library-header h1 { font-size: 1.6rem; }
   .category-row { flex-wrap: wrap; }
   .category-row-label { min-width: 100%; font-size: 0.75rem; }
-  .btn-still-learning, .btn-i-know-this { min-width: 120px; font-size: 0.9rem; padding: var(--sp-3) var(--sp-5); }
+  .btn-still-learning, .btn-i-know-this { min-width: 0; font-size: 0.9rem; padding: var(--sp-3); }
 }
 
 @media (max-width: 480px) {
   .session-grid { grid-template-columns: 1fr; }
 }
 
-/* --- study-active hides sidebar --- */
-.study-active #sidebar { display: none; }
-.study-active .app-body { grid-template-columns: 1fr; }
+/* --- study-active hides sidebar ---
+   Desktop only: on mobile (<=768px) the sidebar is an off-canvas drawer
+   reachable via the burger, so `display:none` here would break it (the drawer
+   could never slide in during study — only the backdrop would show). */
+@media (min-width: 769px) {
+  .study-active #sidebar { display: none; }
+  .study-active .app-body { grid-template-columns: 1fr; }
+}
 
 /* --- Print --- */
 @media print {
