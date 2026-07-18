@@ -23,6 +23,20 @@ export class FlashCard extends HTMLElement {
     fc?.classList.toggle('flipped', val);
   }
 
+  private _audio = false;
+
+  /** Show read-aloud speaker buttons (practice mode only). */
+  set audio(val: boolean) {
+    this._audio = val;
+    this.render();
+  }
+
+  /** Replace the front-face hint line (listen mode's gap countdown). */
+  set hint(text: string) {
+    const el = this.querySelector('.flashcard-face.front .flashcard-hint');
+    if (el) el.textContent = text;
+  }
+
   connectedCallback() {
     this.addEventListener('click', this.handleClick);
     if (this._card) this.render();
@@ -32,7 +46,16 @@ export class FlashCard extends HTMLElement {
     this.removeEventListener('click', this.handleClick);
   }
 
-  private handleClick = () => {
+  private handleClick = (e: MouseEvent) => {
+    const speak = (e.target as HTMLElement).closest('.flashcard-speak');
+    if (speak) {
+      e.stopPropagation();
+      this.dispatchEvent(new CustomEvent('speak', {
+        bubbles: true,
+        detail: { kind: (speak as HTMLElement).dataset.kind as 'q' | 'a' },
+      }));
+      return;
+    }
     this.dispatchEvent(new CustomEvent('flip', { bubbles: true }));
   };
 
@@ -62,6 +85,11 @@ export class FlashCard extends HTMLElement {
       : card.hint
         ? `<div class="flashcard-footnote"><span class="flashcard-footnote-label">Hint —</span> ${card.hint}</div>`
         : '';
+    const speakBtn = (kind: 'q' | 'a', label: string) => this._audio
+      ? `<button class="flashcard-speak" data-kind="${kind}" aria-label="${label}">
+           <span class="material-icons-round">volume_up</span>
+         </button>`
+      : '';
 
     this.innerHTML = `
       <div class="flashcard-scene">
@@ -69,12 +97,14 @@ export class FlashCard extends HTMLElement {
              aria-label="Press Space to flip card">
           <div class="flashcard-face front">
             ${frame}
+            ${speakBtn('q', 'Read question aloud')}
             <div class="flashcard-cat-eyebrow ${css}">${cat ? cat.name : ''}</div>
             <div class="flashcard-question">${card.q}</div>
             <div class="flashcard-hint">Press <kbd>Space</kbd> to reveal the answer</div>
           </div>
           <div class="flashcard-face back">
             ${frame}
+            ${speakBtn('a', 'Read answer aloud')}
             <div class="flashcard-cat-eyebrow ${css}">Answer</div>
             ${caption ? `<div class="flashcard-answers-caption">${caption}</div>` : ''}
             <div class="flashcard-answer-wrap">${answersHtml}</div>

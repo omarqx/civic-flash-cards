@@ -29,6 +29,7 @@ const sessions$ = new BehaviorSubject<StudySession[]>(
 );
 const DEFAULT_SETTINGS: AppSettings = {
   hideMastered: false, shuffleDefault: false, theme: 'system',
+  playbackRate: 1, recallGapSeconds: 5,
   interviewDate: null, interviewDateIsDefault: false, prepStartDate: null,
 };
 const settings$ = new BehaviorSubject<AppSettings>(

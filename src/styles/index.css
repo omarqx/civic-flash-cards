@@ -566,6 +566,37 @@ body::before {
 .session-track-fill { height: 100%; background: var(--gold); transition: width .3s var(--ease); }
 .session-count { font-family: var(--font-display); font-size: 0.9rem; font-weight: 600; font-variant-numeric: tabular-nums; }
 
+/* ── Study/Listen mode toggle ── */
+.mode-toggle {
+  display: flex;
+  border: 1px solid var(--hairline);
+  border-radius: 999px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.mode-toggle-btn {
+  padding: 4px 14px;
+  border: none;
+  background: transparent;
+  font-family: var(--font-body);
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--ink-soft);
+  cursor: pointer;
+}
+.mode-toggle-btn.active {
+  background: var(--navy);
+  color: #fff;
+}
+
+/* Listen mode hides rating interactions and the practice speaker button
+   (narration is already running); arrows stay as player prev/next */
+.listen-mode .btn-still-learning,
+.listen-mode .btn-i-know-this,
+.listen-mode .flashcard-speak,
+.listen-mode rating-bar { display: none; }
+
 /* Certificate flashcard */
 #flashcard-container { width: 100%; display: flex; justify-content: center; }
 flash-card { display: block; width: 100%; max-width: 620px; }
@@ -665,6 +696,25 @@ flash-card { display: block; width: 100%; max-width: 620px; }
   border-radius: 4px; padding: 1px 6px; background: var(--paper); font-family: var(--font-body);
 }
 
+/* ── Read-aloud speaker button (practice mode) ── */
+.flashcard-speak {
+  position: absolute;
+  top: 50px;
+  right: 24px; /* below the corner number, clear of the flourish */
+  z-index: 1;
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--hairline);
+  border-radius: 50%;
+  background: transparent;
+  color: var(--gold-text);
+  cursor: pointer;
+}
+.flashcard-speak:hover { box-shadow: var(--shadow-soft); color: var(--ink); }
+.flashcard-speak .material-icons-round { font-size: 18px; }
+
 /* Actions */
 .study-actions { display: flex; gap: var(--sp-3); margin-top: var(--sp-6); align-items: center; }
 .btn-nav-arrow {
@@ -724,6 +774,106 @@ flash-card { display: block; width: 100%; max-width: 620px; }
 }
 .study-tip-header { color: var(--gold-text); margin-bottom: 6px; }
 .study-tip p { font-family: var(--font-display); font-style: italic; font-size: 0.85rem; color: var(--ink-soft); line-height: 1.5; }
+
+/* ── Listen mode player bar ── */
+.lpb {
+  width: 100%;
+  max-width: 620px;
+  margin-top: var(--sp-6);
+  padding: var(--sp-4);
+  background: var(--surface);
+  border: 1px solid var(--hairline);
+  border-radius: 6px;
+  box-shadow: var(--shadow-soft);
+}
+.lpb-track {
+  display: flex;
+  gap: 2px;
+  height: 10px;
+  margin-bottom: var(--sp-4);
+  cursor: pointer;
+}
+.lpb-chunk {
+  position: relative;
+  flex-basis: 0;
+  min-width: 2px;
+  background: color-mix(in srgb, var(--hairline) 60%, transparent);
+  border-radius: 2px;
+  overflow: hidden;
+  appearance: none;
+  padding: 0;
+  border: none;
+  display: block;
+}
+.lpb-chunk.current { outline: 1px solid var(--gold); outline-offset: 1px; }
+.lpb-chunk:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+.lpb-chunk-fill {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 0%;
+  background: var(--gold);
+}
+.lpb-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-3);
+}
+.lpb-buttons { display: flex; align-items: center; gap: var(--sp-2); }
+.lpb-time {
+  font-variant-numeric: tabular-nums;
+  font-size: 0.8rem;
+  color: var(--ink-soft);
+  min-width: 42px;
+}
+.lpb-btn {
+  width: 38px;
+  height: 38px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--hairline);
+  border-radius: 50%;
+  background: transparent;
+  color: var(--ink);
+  cursor: pointer;
+}
+.lpb-btn:hover { box-shadow: var(--shadow-soft); }
+.lpb-btn-play {
+  width: 48px;
+  height: 48px;
+  background: var(--navy);
+  border-color: var(--navy);
+  color: #fff;
+}
+.lpb-btn-text {
+  width: auto;
+  padding: 0 var(--sp-3);
+  border-radius: 999px;
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  font-variant-numeric: tabular-nums;
+}
+.lpb-gap {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--ink-soft);
+}
+.lpb-gap select {
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  padding: 2px 6px;
+  border: 1px solid var(--hairline);
+  border-radius: 6px;
+  background: var(--surface);
+  color: var(--ink);
+}
+@media (max-width: 640px) {
+  .lpb-controls { flex-wrap: wrap; justify-content: center; }
+}
 
 /* ============================================================
    LIBRARY

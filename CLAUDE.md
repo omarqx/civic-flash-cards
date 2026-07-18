@@ -8,6 +8,7 @@ A PWA for mastering the 128 USCIS Naturalization Civics Test questions using spa
 - `npm run build` — TypeScript type-check + Vite production build
 - `npm run preview` — Serve the production build locally
 - `npx tsc --noEmit` — Type-check only (no emit)
+- `npm run generate:audio` — Regenerate card narration MP3s from the local Kokoro TTS server (requires `http://localhost:8880` and `ffmpeg` on PATH; clips are transcoded to 48 kbps mono; only changed clips regenerate). Flags: `--dry-run`, `--sample <id>`, `--force`. Env: `TTS_URL`, `TTS_VOICE`.
 
 ## Critical Rules
 
