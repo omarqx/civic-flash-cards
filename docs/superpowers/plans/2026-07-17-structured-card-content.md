@@ -81,7 +81,7 @@ Example conversions (transcribe this style exactly):
 { id: 6, q: "What does the Bill of Rights protect?", cat: "A",
   answers: ["(The basic) rights of Americans", "(The basic) rights of people living in the United States"], requires: 1 },
 { id: 126, q: "Name three national U.S. holidays.", cat: "H",
-  answers: ["New Year's Day", "Martin Luther King, Jr. Day", "Presidents' Day", "Memorial Day", "Independence Day", "Labor Day", "Columbus Day", "Veterans Day", "Thanksgiving", "Christmas"], requires: 3 },
+  answers: ["New Year's Day", "Martin Luther King, Jr. Day", "Presidents Day (Washington's Birthday)", "Memorial Day", "Independence Day", "Labor Day", "Columbus Day", "Veterans Day", "Thanksgiving Day", "Christmas Day"], requires: 3 },
 { id: 23, q: "Who is one of your state's U.S. senators now?", cat: "B",
   answers: ["Answers will vary by state"], requires: 1,
   note: "Visit senate.gov. D.C. residents and residents of U.S. territories should answer that D.C. (or the territory) has no U.S. senators." },

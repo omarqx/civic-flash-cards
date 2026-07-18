@@ -19,7 +19,7 @@ export const CARDS_D: Flashcard[] = [
   { id: 80, q: "The American Revolution had many important events. Name one.", cat: "D",
     answers: ["(Battle of) Bunker Hill", "Declaration of Independence", "Washington Crossing the Delaware (Battle of Trenton)", "(Battle of) Saratoga", "Valley Forge (Encampment)", "(Battle of) Yorktown (British surrender at Yorktown)"], requires: 1 },
   { id: 81, q: "There were 13 original states. Name five.", cat: "D",
-    answers: ["New Hampshire", "Massachusetts", "Rhode Island", "Connecticut", "New York", "New Jersey", "Pennsylvania", "Delaware", "Maryland", "Virginia", "North Carolina", "South Carolina", "Georgia"], requires: 1 },
+    answers: ["New Hampshire", "Massachusetts", "Rhode Island", "Connecticut", "New York", "New Jersey", "Pennsylvania", "Delaware", "Maryland", "Virginia", "North Carolina", "South Carolina", "Georgia"], requires: 5 },
   { id: 82, q: "What founding document was written in 1787?", cat: "D",
     answers: ["The (U.S.) Constitution"], requires: 1 },
   { id: 83, q: "The Federalist Papers supported the passage of the U.S. Constitution. Name one of the writers.", cat: "D",

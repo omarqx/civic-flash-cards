@@ -22,7 +22,7 @@ for (const c of all) {
   if (c.id < lo || c.id > hi) errors.push(`card ${c.id}: cat ${c.cat} out of official range`);
   if (!c.answers || c.answers.length < 1) errors.push(`card ${c.id}: no answers`);
   if (c.answers.some(a => !a.trim())) errors.push(`card ${c.id}: empty answer entry`);
-  if (c.requires < 1 || c.requires > 3) errors.push(`card ${c.id}: requires ${c.requires}`);
+  if (c.requires < 1 || c.requires > 5) errors.push(`card ${c.id}: requires ${c.requires}`);
   if (c.requires > c.answers.length) errors.push(`card ${c.id}: requires > answers`);
   for (const r of c.related ?? []) {
     if (r === c.id) errors.push(`card ${c.id}: self-link`);

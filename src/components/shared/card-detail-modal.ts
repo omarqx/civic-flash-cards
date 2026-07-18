@@ -41,6 +41,8 @@ export class CardDetailModal extends HTMLElement {
     const card = FLASHCARDS.find(c => c.id === this._cardId);
     if (!card) return;
 
+    const CAPTIONS: Record<number, string> = {1: 'Any one of:', 2: 'Name two:', 3: 'Name three:', 4: 'Name four:', 5: 'Name five:'};
+
     const mastery = Store.getCardMastery(card.id);
     const cat = CATEGORIES[card.cat];
 
@@ -62,7 +64,7 @@ export class CardDetailModal extends HTMLElement {
               <div class="card-detail-section-content card-detail-question">${card.q}</div>
             </div>
             <div class="card-detail-section">
-              <div class="card-detail-section-title">${card.answers.length > 1 ? (card.requires === 3 ? 'Name three:' : card.requires === 2 ? 'Name two:' : 'Any one of:') : 'Answer'}</div>
+              <div class="card-detail-section-title">${card.answers.length > 1 ? (CAPTIONS[card.requires] ?? 'Any one of:') : 'Answer'}</div>
               <ul class="card-detail-answers">${card.answers.map(a => `<li>${a}</li>`).join('')}</ul>
             </div>
             ${card.why ? `<div class="card-detail-section"><div class="card-detail-section-title">Why</div><div class="card-detail-section-content">${card.why}</div></div>` : ''}

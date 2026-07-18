@@ -51,9 +51,8 @@ export class FlashCard extends HTMLElement {
       <span class="flashcard-number">No. ${card.id}</span>
     `;
 
-    const caption = card.answers.length > 1
-      ? card.requires === 3 ? 'Name three:' : card.requires === 2 ? 'Name two:' : 'Any one of:'
-      : '';
+    const CAPTIONS: Record<number, string> = {1: 'Any one of:', 2: 'Name two:', 3: 'Name three:', 4: 'Name four:', 5: 'Name five:'};
+    const caption = card.answers.length > 1 ? (CAPTIONS[card.requires] ?? 'Any one of:') : '';
     const answersHtml = card.answers.length === 1
       ? `<div class="flashcard-answer ${card.answers[0].length > 220 ? 'long' : ''}">${card.answers[0]}</div>`
       : `<div class="flashcard-answers ${card.answers.length > 8 ? 'cols' : ''}">${
